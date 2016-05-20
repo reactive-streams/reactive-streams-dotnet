@@ -35,7 +35,7 @@ let envBuildNumber = System.Environment.GetEnvironmentVariable("BUILD_NUMBER")
 let buildNumber = if String.IsNullOrWhiteSpace(envBuildNumber) then "0" else envBuildNumber
 
 let version = parsedRelease.AssemblyVersion + "." + buildNumber
-let preReleaseVersion = version + "-beta"
+let preReleaseVersion = version + "-beta1"
 
 let isUnstableDocs = hasBuildParam "unstable"
 let isPreRelease = hasBuildParam "nugetprerelease"
@@ -149,7 +149,7 @@ module Nuget =
     // used to add -pre suffix to pre-release packages
     let getProjectVersion project =
       match project with
-      | _ -> release.NugetVersion
+      | _ -> preReleaseVersion
 
 open Nuget
 open NuGet.Update
