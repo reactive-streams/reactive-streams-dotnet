@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <id>$id$</id>
-    <title>$id$</title>
-    <version>$version$</version>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <id>@project@</id>
+    <title>@project@@title@</title>
+    <version>@build.number@</version>
+    <authors>@authors@</authors>
+    <owners>@authors@</owners>
     <description>Reactive Streams API </description>
     <licenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</licenseUrl>
     <projectUrl>https://github.com/reactive-streams/reactive-streams-dotnet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>CC0 1.0 Universal</copyright>
-    <tags>reactive stream</tags>
+    <releaseNotes>@releaseNotes@</releaseNotes>
+    <copyright>@copyright@</copyright>
+    <tags>@tags@</tags>
+    @dependencies@
+    @references@
   </metadata>
 </package>
