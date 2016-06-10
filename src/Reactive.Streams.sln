@@ -19,6 +19,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{D389959C
 		..\build.fsx = ..\build.fsx
 		..\build.sh = ..\build.sh
 	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reactive.Streams.TCK", "Reactive.Streams.TCK\Reactive.Streams.TCK.csproj", "{7DBE1261-04EB-4DA7-9953-C8E8CCC49010}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reactive.Streams.TCK.Tests", "Reactive.Streams.TCK.Tests\Reactive.Streams.TCK.Tests.csproj", "{0F1C51EB-3554-487F-8CE4-75CAAD2887F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reactive.Streams.Example.Unicast", "Reactive.Streams.Example.Unicast\Reactive.Streams.Example.Unicast.csproj", "{01737D0D-ED40-499B-A706-12BE9847491B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reactive.Streams.Example.Unicast.Tests", "Reactive.Streams.Example.Unicast.Tests\Reactive.Streams.Example.Unicast.Tests.csproj", "{A69C5115-5E39-47ED-B8EF-83A342968999}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reactive.Streams.Utils", "Reactive.Streams.Utils\Reactive.Streams.Utils.csproj", "{17F95839-D7C6-474B-8230-4BAA9E4B175B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +39,26 @@ Global
 		{68FBB4DF-6D83-4CF1-8105-A1D41912852F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68FBB4DF-6D83-4CF1-8105-A1D41912852F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68FBB4DF-6D83-4CF1-8105-A1D41912852F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DBE1261-04EB-4DA7-9953-C8E8CCC49010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DBE1261-04EB-4DA7-9953-C8E8CCC49010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DBE1261-04EB-4DA7-9953-C8E8CCC49010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DBE1261-04EB-4DA7-9953-C8E8CCC49010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F1C51EB-3554-487F-8CE4-75CAAD2887F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F1C51EB-3554-487F-8CE4-75CAAD2887F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F1C51EB-3554-487F-8CE4-75CAAD2887F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F1C51EB-3554-487F-8CE4-75CAAD2887F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01737D0D-ED40-499B-A706-12BE9847491B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01737D0D-ED40-499B-A706-12BE9847491B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01737D0D-ED40-499B-A706-12BE9847491B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01737D0D-ED40-499B-A706-12BE9847491B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A69C5115-5E39-47ED-B8EF-83A342968999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A69C5115-5E39-47ED-B8EF-83A342968999}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A69C5115-5E39-47ED-B8EF-83A342968999}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A69C5115-5E39-47ED-B8EF-83A342968999}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F95839-D7C6-474B-8230-4BAA9E4B175B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F95839-D7C6-474B-8230-4BAA9E4B175B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F95839-D7C6-474B-8230-4BAA9E4B175B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F95839-D7C6-474B-8230-4BAA9E4B175B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

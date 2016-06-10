@@ -123,18 +123,18 @@ Target "CleanTests" <| fun _ ->
     DeleteDir testOutput
 //--------------------------------------------------------------------------------
 // Run tests
+open Fake.Testing
 
-open XUnit2Helper
 Target "RunTests" <| fun _ ->  
-    let xunitTestAssemblies = !! "src/**/bin/Release/*.Tests.dll" 
+    let nunitTestAssemblies = !! "src/**/bin/Release/*.Tests.dll" 
 
     mkdir testOutput
 
-    let xunitToolPath = findToolInSubPath "xunit.console.exe" "src/packages/xunit.runner.console*/tools"
-    printfn "Using XUnit runner: %s" xunitToolPath
-    xUnit2
-        (fun p -> { p with OutputDir = testOutput; ToolPath = xunitToolPath })
-        xunitTestAssemblies
+    let nunitToolPath = findToolInSubPath "nunit3-console.exe" "src/packages/FAKE/NUnit.ConsoleRunner/tools"
+    printfn "Using NUnit runner: %s" nunitToolPath
+    NUnit3
+        (fun p -> { p with ToolPath = nunitToolPath; ResultSpecs = [testOutput + "/TestResults.xml"] })
+        nunitTestAssemblies
 
 //--------------------------------------------------------------------------------
 // Nuget targets 
