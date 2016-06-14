@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace Reactive.Streams.Utils
+namespace Reactive.Streams.TCK.Support
 {
     /// <summary>
     /// An atomic 32 bit integer counter.

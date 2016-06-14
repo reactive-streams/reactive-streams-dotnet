@@ -42,16 +42,14 @@
   <ItemGroup>
     <Compile Include="AsyncIterablePublisher.cs" />
     <Compile Include="AsyncSubscriber.cs" />
+    <Compile Include="AtomicBoolean.cs" />
+    <Compile Include="IllegalStateException.cs" />
     <Compile Include="InfiniteIncrementNumberPublisher.cs" />
     <Compile Include="NumberIterablePublisher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyncSubscriber.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Reactive.Streams.Utils\Reactive.Streams.Utils.csproj">
-      <Project>{17f95839-d7c6-474b-8230-4baa9e4b175b}</Project>
-      <Name>Reactive.Streams.Utils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Reactive.Streams\Reactive.Streams.csproj">
       <Project>{68fbb4df-6d83-4cf1-8105-a1d41912852f}</Project>
       <Name>Reactive.Streams</Name>

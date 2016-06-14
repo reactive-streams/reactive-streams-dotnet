@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Reactive.Streams.Utils;
 
 namespace Reactive.Streams.Example.Unicast
 {

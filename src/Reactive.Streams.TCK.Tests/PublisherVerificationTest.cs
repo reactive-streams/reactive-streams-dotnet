@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Reactive.Streams.TCK.Support;
 using Reactive.Streams.TCK.Tests.Support;
-using Reactive.Streams.Utils;
 
 namespace Reactive.Streams.TCK.Tests
 {

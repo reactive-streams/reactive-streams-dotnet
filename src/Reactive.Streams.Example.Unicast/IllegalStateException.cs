@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reactive.Streams.Utils
+namespace Reactive.Streams.Example.Unicast
 {
     public class IllegalStateException : Exception
     {

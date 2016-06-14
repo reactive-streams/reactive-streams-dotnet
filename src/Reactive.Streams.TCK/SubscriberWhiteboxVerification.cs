@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using Reactive.Streams.TCK.Support;
-using Reactive.Streams.Utils;
 
 namespace Reactive.Streams.TCK
 {

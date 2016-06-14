@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Reactive.Streams.Utils
+namespace Reactive.Streams.TCK.Support
 {
     /// <summary>
     /// Allows tracking of whether a value has be initialized (even with the default value) for both

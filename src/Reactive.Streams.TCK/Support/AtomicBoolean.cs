@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace Reactive.Streams.Utils
+namespace Reactive.Streams.TCK.Support
 {
     /// <summary>
     /// Implementation of the java.concurrent.util.AtomicBoolean type.

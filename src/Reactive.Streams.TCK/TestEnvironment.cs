@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading;
 using NUnit.Framework;
 using Reactive.Streams.TCK.Support;
-using Reactive.Streams.Utils;
 
 namespace Reactive.Streams.TCK
 {

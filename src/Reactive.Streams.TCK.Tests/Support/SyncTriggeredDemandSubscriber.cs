@@ -1,5 +1,5 @@
 ﻿using System;
-using Reactive.Streams.Utils;
+using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.TCK.Tests.Support
 {

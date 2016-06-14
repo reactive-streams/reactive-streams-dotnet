@@ -2,7 +2,7 @@
 using System.Threading;
 using NUnit.Framework;
 using Reactive.Streams.TCK;
-using Reactive.Streams.Utils;
+using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {

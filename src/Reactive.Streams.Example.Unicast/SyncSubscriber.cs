@@ -1,5 +1,4 @@
 ﻿using System;
-using Reactive.Streams.Utils;
 
 namespace Reactive.Streams.Example.Unicast
 {

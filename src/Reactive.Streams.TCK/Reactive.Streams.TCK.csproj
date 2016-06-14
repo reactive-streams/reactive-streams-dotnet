@@ -51,11 +51,17 @@
     <Compile Include="PublisherVerification.cs" />
     <Compile Include="SubscriberBlackboxVerification.cs" />
     <Compile Include="SubscriberWhiteboxVerification.cs" />
+    <Compile Include="Support\AtomicBoolean.cs" />
+    <Compile Include="Support\AtomicCounter.cs" />
+    <Compile Include="Support\AtomicCounterLong.cs" />
+    <Compile Include="Support\AtomicReference.cs" />
     <Compile Include="Support\HelperPublisher.cs" />
+    <Compile Include="Support\IllegalStateException.cs" />
     <Compile Include="Support\InfiniteHelperPublisher.cs" />
     <Compile Include="Support\IPublisherVerificationRules .cs" />
     <Compile Include="Support\ISubscriberWhiteboxVerificationRules.cs" />
     <Compile Include="Support\ISubscriberBlackboxVerificationRules.cs" />
+    <Compile Include="Support\Option.cs" />
     <Compile Include="Support\SubscriberBufferOverflowException.cs" />
     <Compile Include="Support\TestException.cs" />
     <Compile Include="TestEnvironment.cs" />
@@ -65,10 +71,6 @@
     <ProjectReference Include="..\Reactive.Streams.Example.Unicast\Reactive.Streams.Example.Unicast.csproj">
       <Project>{01737D0D-ED40-499B-A706-12BE9847491B}</Project>
       <Name>Reactive.Streams.Example.Unicast</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Reactive.Streams.Utils\Reactive.Streams.Utils.csproj">
-      <Project>{17f95839-d7c6-474b-8230-4baa9e4b175b}</Project>
-      <Name>Reactive.Streams.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Reactive.Streams\Reactive.Streams.csproj">
       <Project>{68fbb4df-6d83-4cf1-8105-a1d41912852f}</Project>

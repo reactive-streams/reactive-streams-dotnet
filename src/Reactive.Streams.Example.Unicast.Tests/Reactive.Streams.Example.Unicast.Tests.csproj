@@ -63,10 +63,6 @@
       <Project>{7dbe1261-04eb-4da7-9953-c8e8ccc49010}</Project>
       <Name>Reactive.Streams.TCK</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Reactive.Streams.Utils\Reactive.Streams.Utils.csproj">
-      <Project>{17F95839-D7C6-474B-8230-4BAA9E4B175B}</Project>
-      <Name>Reactive.Streams.Utils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Reactive.Streams\Reactive.Streams.csproj">
       <Project>{68FBB4DF-6D83-4CF1-8105-A1D41912852F}</Project>
       <Name>Reactive.Streams</Name>
