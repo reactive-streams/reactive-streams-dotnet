@@ -50,7 +50,8 @@ let testOutput = "TestResults"
 
 let nugetDir = binDir @@ "nuget"
 let workingDir = binDir @@ "build"
-let libDir = workingDir @@ @"lib\net40\"
+let libDir40 = workingDir @@ @"lib\net40\"
+let libDir45 = workingDir @@ @"lib\net45\"
 let nugetExe = FullName @"src\.nuget\NuGet.exe"
 let slnFile = "./src/Reactive.Streams.sln"
 
@@ -238,7 +239,9 @@ let createNugetPackages _ =
                         Dependencies = dependencies })
                 nuspec
 
-        // Copy dll, pdb and xml to libdir = workingDir/lib/net45/
+        
+        // Copy dll, pdb and xml to libdir = workingDir/lib/net4x/
+        let libDir = if project.Contains ".TCK" then libDir45 else libDir40
         ensureDirectory libDir
         !! (releaseDir @@ project + ".dll")
         ++ (releaseDir @@ project + ".pdb")
