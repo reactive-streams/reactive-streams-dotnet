@@ -6,30 +6,30 @@
     /// </summary>
     internal interface ISubscriberBlackboxVerificationRules
     {
-        void required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest();
-        void untested_spec202_blackbox_shouldAsynchronouslyDispatch();
-        void required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete();
-        void required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError();
-        void untested_spec204_blackbox_mustConsiderTheSubscriptionAsCancelledInAfterRecievingOnCompleteOrOnError();
-        void required_spec205_blackbox_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal();
-        void untested_spec206_blackbox_mustCallSubscriptionCancelIfItIsNoLongerValid();
-        void untested_spec207_blackbox_mustEnsureAllCallsOnItsSubscriptionTakePlaceFromTheSameThreadOrTakeCareOfSynchronization();
-        void untested_spec208_blackbox_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel();
-        void required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall();
-        void required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall();
-        void required_spec210_blackbox_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall();
-        void untested_spec211_blackbox_mustMakeSureThatAllCallsOnItsMethodsHappenBeforeTheProcessingOfTheRespectiveEvents();
-        void untested_spec212_blackbox_mustNotCallOnSubscribeMoreThanOnceBasedOnObjectEquality();
-        void untested_spec213_blackbox_failingOnSignalInvocation();
-        void required_spec213_blackbox_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull();
-        void required_spec213_blackbox_onNext_mustThrowNullPointerExceptionWhenParametersAreNull();
-        void required_spec213_blackbox_onError_mustThrowNullPointerExceptionWhenParametersAreNull();
-        void untested_spec301_blackbox_mustNotBeCalledOutsideSubscriberContext();
-        void untested_spec308_blackbox_requestMustRegisterGivenNumberElementsToBeProduced();
-        void untested_spec310_blackbox_requestMaySynchronouslyCallOnNextOnSubscriber();
-        void untested_spec311_blackbox_requestMaySynchronouslyCallOnCompleteOrOnError();
-        void untested_spec314_blackbox_cancelMayCauseThePublisherToShutdownIfNoOtherSubscriptionExists();
-        void untested_spec315_blackbox_cancelMustNotThrowExceptionAndMustSignalOnError();
-        void untested_spec316_blackbox_requestMustNotThrowExceptionAndMustOnErrorTheSubscriber();
+        void Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest();
+        void Untested_spec202_blackbox_shouldAsynchronouslyDispatch();
+        void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete();
+        void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError();
+        void Untested_spec204_blackbox_mustConsiderTheSubscriptionAsCancelledInAfterRecievingOnCompleteOrOnError();
+        void Required_spec205_blackbox_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal();
+        void Untested_spec206_blackbox_mustCallSubscriptionCancelIfItIsNoLongerValid();
+        void Untested_spec207_blackbox_mustEnsureAllCallsOnItsSubscriptionTakePlaceFromTheSameThreadOrTakeCareOfSynchronization();
+        void Untested_spec208_blackbox_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel();
+        void Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall();
+        void Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall();
+        void Required_spec210_blackbox_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall();
+        void Untested_spec211_blackbox_mustMakeSureThatAllCallsOnItsMethodsHappenBeforeTheProcessingOfTheRespectiveEvents();
+        void Untested_spec212_blackbox_mustNotCallOnSubscribeMoreThanOnceBasedOnObjectEquality();
+        void Untested_spec213_blackbox_failingOnSignalInvocation();
+        void Required_spec213_blackbox_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull();
+        void Required_spec213_blackbox_onNext_mustThrowNullPointerExceptionWhenParametersAreNull();
+        void Required_spec213_blackbox_onError_mustThrowNullPointerExceptionWhenParametersAreNull();
+        void Untested_spec301_blackbox_mustNotBeCalledOutsideSubscriberContext();
+        void Untested_spec308_blackbox_requestMustRegisterGivenNumberElementsToBeProduced();
+        void Untested_spec310_blackbox_requestMaySynchronouslyCallOnNextOnSubscriber();
+        void Untested_spec311_blackbox_requestMaySynchronouslyCallOnCompleteOrOnError();
+        void Untested_spec314_blackbox_cancelMayCauseThePublisherToShutdownIfNoOtherSubscriptionExists();
+        void Untested_spec315_blackbox_cancelMustNotThrowExceptionAndMustSignalOnError();
+        void Untested_spec316_blackbox_requestMustNotThrowExceptionAndMustOnErrorTheSubscriber();
     }
 }

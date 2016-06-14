@@ -12,61 +12,61 @@ namespace Reactive.Streams.TCK.Tests
     public class SubscriberBlackboxVerificationTest : TCKVerificationSupport
     {
         [Test]
-        public void required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest_shouldFailBy_notGettingRequestCall()
+        public void Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest_shouldFailBy_notGettingRequestCall()
             => RequireTestFailure(
-                () => NoopSubscriberVerification().required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest(),
+                () => NoopSubscriberVerification().Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest(),
                 "Did not receive expected `Request` call within");
 
         [Test]
-        public void required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest_shouldPass()
-            => SimpleSubscriberVerification().required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest();
+        public void Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest_shouldPass()
+            => SimpleSubscriberVerification().Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest();
 
         [Test]
-        public void required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingRequest()
+        public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingRequest()
         {
             ISubscription subscription = null;
             var subscriber = new LamdaSubscriber<int?>(onSubscribe: sub => subscription = sub,
                 onComplete: () => subscription.Request(1));
             var verification = CustomSubscriberVerification(subscriber);
-            RequireTestFailure(() => verification.required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete(),
+            RequireTestFailure(() => verification.Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete(),
                 "Subscription.Request MUST NOT be called from Subscriber.OnComplete (Rule 2.3)!");
         }
 
         [Test]
-        public void required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingCancel()
+        public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingCancel()
         {
             ISubscription subscription = null;
             var subscriber = new LamdaSubscriber<int?>(onSubscribe: sub => subscription = sub,
                 onComplete: () => subscription.Cancel());
             var verification = CustomSubscriberVerification(subscriber);
-            RequireTestFailure(() => verification.required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete(),
+            RequireTestFailure(() => verification.Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete(),
                 "Subscription.Cancel MUST NOT be called from Subscriber.OnComplete (Rule 2.3)!");
         }
 
         [Test]
-        public void required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingRequest()
+        public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingRequest()
         {
             ISubscription subscription = null;
             var subscriber = new LamdaSubscriber<int?>(onSubscribe: sub => subscription = sub,
                 onError: _ => subscription.Request(1));
             var verification = CustomSubscriberVerification(subscriber);
-            RequireTestFailure(() => verification.required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError(),
+            RequireTestFailure(() => verification.Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError(),
                 "Subscription.Request MUST NOT be called from Subscriber.OnError (Rule 2.3)!");
         }
 
         [Test]
-        public void required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingCancel()
+        public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingCancel()
         {
             ISubscription subscription = null;
             var subscriber = new LamdaSubscriber<int?>(onSubscribe: sub => subscription = sub,
                 onError: _ => subscription.Cancel());
             var verification = CustomSubscriberVerification(subscriber);
-            RequireTestFailure(() => verification.required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError(),
+            RequireTestFailure(() => verification.Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError(),
                 "Subscription.Cancel MUST NOT be called from Subscriber.OnError (Rule 2.3)!");
         }
 
         [Test]
-        public void required_spec205_blackbox_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal_shouldFail()
+        public void Required_spec205_blackbox_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal_shouldFail()
         {
             ISubscription subscription = null;
             var subscriber = new LamdaSubscriber<int?>(onSubscribe: sub =>
@@ -75,23 +75,23 @@ namespace Reactive.Streams.TCK.Tests
                 sub.Request(1); // this is wrong, as one should always check if should accept or reject the subscription
             });
             var verification = CustomSubscriberVerification(subscriber);
-            RequireTestFailure(() => verification.required_spec205_blackbox_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal(),
+            RequireTestFailure(() => verification.Required_spec205_blackbox_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal(),
                 "illegally called `Subscription.Request(1)`");
         }
 
         [Test]
-        public void required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall_shouldFail()
+        public void Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall_shouldFail()
             => RequireTestFailure(
-                () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall(),
+                () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall(),
                 "did not call `RegisterOnComplete()`");
 
         [Test]
-        public void required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall_shouldPass_withNoopSubscriber() 
+        public void Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall_shouldPass_withNoopSubscriber() 
             => CustomSubscriberVerification(new LamdaSubscriber<int?>())
-                    .required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall();
+                    .Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall();
 
         [Test]
-        public void required_spec210_blackbox_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall_shouldFail()
+        public void Required_spec210_blackbox_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall_shouldFail()
         {
             var subscriber = new LamdaSubscriber<int?>(onError: cause =>
             {
@@ -99,26 +99,26 @@ namespace Reactive.Streams.TCK.Tests
                 throw new Exception("Wrong, don't do this!", cause); // don't do this
             });
             var verification = CustomSubscriberVerification(subscriber);
-            RequireTestFailure(() => verification.required_spec210_blackbox_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall(),
+            RequireTestFailure(() => verification.Required_spec210_blackbox_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall(),
                 "Test Exception: Boom!"); // checks that the expected exception was delivered to onError, we don't expect anyone to implement onError so weirdly
         }
 
         [Test]
-        public void required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onSubscribe()
+        public void Required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onSubscribe()
             => RequireTestFailure(
-                () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).required_spec213_blackbox_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull(),
+                () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).Required_spec213_blackbox_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull(),
                 "OnSubscribe(null) did not throw ArgumentNullException");
 
         [Test]
-        public void required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onNext()
+        public void Required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onNext()
             => RequireTestFailure(
-                () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).required_spec213_blackbox_onNext_mustThrowNullPointerExceptionWhenParametersAreNull(),
+                () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).Required_spec213_blackbox_onNext_mustThrowNullPointerExceptionWhenParametersAreNull(),
                 "OnNext(null) did not throw ArgumentNullException");
 
         [Test]
-        public void required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onError()
+        public void Required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onError()
             => RequireTestFailure(
-                () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).required_spec213_blackbox_onError_mustThrowNullPointerExceptionWhenParametersAreNull(),
+                () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).Required_spec213_blackbox_onError_mustThrowNullPointerExceptionWhenParametersAreNull(),
                 "OnError(null) did not throw ArgumentNullException");
 
 

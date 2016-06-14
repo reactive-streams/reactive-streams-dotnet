@@ -14,25 +14,25 @@ namespace Reactive.Streams.TCK.Tests
     public class PublisherVerificationTest : TCKVerificationSupport
     {
         [Test]
-        public void required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements_shouldFailBy_ExpectingOnError()
-            => RequireTestFailure(() => NoopPublisherVerification().required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements(),
+        public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements_shouldFailBy_ExpectingOnError()
+            => RequireTestFailure(() => NoopPublisherVerification().Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements(),
                     "produced no element after first");
 
         [Test]
-        public void required_spec102_maySignalLessThanRequestedAndTerminateSubscription_shouldFailBy_notReceivingAnyElement()
-            => RequireTestFailure(() => NoopPublisherVerification().required_spec102_maySignalLessThanRequestedAndTerminateSubscription(),
+        public void Required_spec102_maySignalLessThanRequestedAndTerminateSubscription_shouldFailBy_notReceivingAnyElement()
+            => RequireTestFailure(() => NoopPublisherVerification().Required_spec102_maySignalLessThanRequestedAndTerminateSubscription(),
                     "Did not receive expected element");
 
         [Test]
-        public void required_spec102_maySignalLessThanRequestedAndTerminateSubscription_shouldFailBy_receivingTooManyElements()
-            => RequireTestFailure(() => DemandIgnoringSynchronousPublisherVerification().required_spec102_maySignalLessThanRequestedAndTerminateSubscription(),
+        public void Required_spec102_maySignalLessThanRequestedAndTerminateSubscription_shouldFailBy_receivingTooManyElements()
+            => RequireTestFailure(() => DemandIgnoringSynchronousPublisherVerification().Required_spec102_maySignalLessThanRequestedAndTerminateSubscription(),
                     "Expected end-of-stream but got element [3]");
 
         [Test]
-        public void stochastic_spec103_mustSignalOnMethodsSequentially_shouldFailBy_concurrentlyAccessingOnNext()
+        public void Stochastic_spec103_mustSignalOnMethodsSequentially_shouldFailBy_concurrentlyAccessingOnNext()
         {
             var verification = CustomPublisherVerification(new ConcurrentAccessPublisher());
-            RequireTestFailure(() => verification.stochastic_spec103_mustSignalOnMethodsSequentially(),
+            RequireTestFailure(() => verification.Stochastic_spec103_mustSignalOnMethodsSequentially(),
                 "Illegal concurrent access detected");
         }
 
@@ -95,7 +95,7 @@ namespace Reactive.Streams.TCK.Tests
         }
         
         [Test]
-        public void stochastic_spec103_mustSignalOnMethodsSequentially_shouldPass_forSynchronousPublisher()
+        public void Stochastic_spec103_mustSignalOnMethodsSequentially_shouldPass_forSynchronousPublisher()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
             {
@@ -109,28 +109,28 @@ namespace Reactive.Streams.TCK.Tests
                     subscriber.OnComplete();
                 }));
             });
-            CustomPublisherVerification(publisher).stochastic_spec103_mustSignalOnMethodsSequentially();
+            CustomPublisherVerification(publisher).Stochastic_spec103_mustSignalOnMethodsSequentially();
         }
 
         [Test]
-        public void optional_spec104_mustSignalOnErrorWhenFails_shouldFail()
+        public void Optional_spec104_mustSignalOnErrorWhenFails_shouldFail()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
             {
                 throw new Exception("It is not valid to throw here!");
             });
             var verification = CustomPublisherVerification(null, publisher);
-            RequireTestFailure(() => verification.optional_spec104_mustSignalOnErrorWhenFails(),
+            RequireTestFailure(() => verification.Optional_spec104_mustSignalOnErrorWhenFails(),
                 "Publisher threw exception (It is not valid to throw here!) instead of signalling error via onError!");
         }
 
         [Test]
-        public void optional_spec104_mustSignalOnErrorWhenFails_shouldBeSkippedWhenNoErrorPublisherGiven()
-            => RequireTestSkip(() => NoopPublisherVerification().optional_spec104_mustSignalOnErrorWhenFails(),
+        public void Optional_spec104_mustSignalOnErrorWhenFails_shouldBeSkippedWhenNoErrorPublisherGiven()
+            => RequireTestSkip(() => NoopPublisherVerification().Optional_spec104_mustSignalOnErrorWhenFails(),
                     PublisherVerification<int>.SkippingNoErrorPublisherAvailable);
 
         [Test]
-        public void required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates_shouldFail()
+        public void Required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates_shouldFail()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
             {
@@ -146,16 +146,16 @@ namespace Reactive.Streams.TCK.Tests
             });
             var verification = CustomPublisherVerification(publisher);
 
-            RequireTestFailure(() => verification.required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates(),
+            RequireTestFailure(() => verification.Required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates(),
                 messagePart: "Expected end-of-stream but got element [3]");
         }
 
         [Test]
-        public void optional_spec105_emptyStreamMustTerminateBySignallingOnComplete_shouldNotAllowEagerOnComplete()
+        public void Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete_shouldNotAllowEagerOnComplete()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnComplete());
             var verification = new Spec105Verification(NewTestEnvironment(), publisher);
-            RequireTestFailure(() => verification.optional_spec105_emptyStreamMustTerminateBySignallingOnComplete(),
+            RequireTestFailure(() => verification.Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete(),
                 "Subscriber.OnComplete() called before Subscriber.OnSubscribe");
         }
 
@@ -185,12 +185,12 @@ namespace Reactive.Streams.TCK.Tests
         }
 
         [Test]
-        public void required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled_shouldFailForNotCompletingPublisher()
-            => RequireTestFailure(() => DemandIgnoringAsynchronousPublisherVerification().required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled(),
+        public void Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled_shouldFailForNotCompletingPublisher()
+            => RequireTestFailure(() => DemandIgnoringAsynchronousPublisherVerification().Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled(),
                 "Expected end-of-stream but got element ["/* element which should not have been signalled */);
 
         [Test]
-        public void required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled_shouldFailForPublisherWhichCompletesButKeepsServingData()
+        public void Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled_shouldFailForPublisherWhichCompletesButKeepsServingData()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
             {
@@ -211,21 +211,21 @@ namespace Reactive.Streams.TCK.Tests
                 }));
             });
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled(),
+            RequireTestFailure(() => verification.Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled(),
                 "Unexpected element 0 received after stream completed");
         }
 
         [Test]
-        public void required_spec109_subscribeThrowNPEOnNullSubscriber_shouldFailIfDoesntThrowNPE()
+        public void Required_spec109_subscribeThrowNPEOnNullSubscriber_shouldFailIfDoesntThrowNPE()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => { });
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec109_subscribeThrowNPEOnNullSubscriber(),
+            RequireTestFailure(() => verification.Required_spec109_subscribeThrowNPEOnNullSubscriber(),
                 "Publisher did not throw a ArgumentNullException when given a null Subscribe in subscribe");
         }
 
         [Test]
-        public void required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_actuallyPass()
+        public void Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_actuallyPass()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
             {
@@ -233,65 +233,65 @@ namespace Reactive.Streams.TCK.Tests
                 subscriber.OnError(new Exception("Sorry, I'm busy now. Call me later."));
             });
             CustomPublisherVerification(null, publisher)
-                .required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe();
+                .Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe();
         }
 
         [Test]
-        public void required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnCompleteHappensFirst()
+        public void Required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnCompleteHappensFirst()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnComplete());
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec109_mustIssueOnSubscribeForNonNullSubscriber(),
+            RequireTestFailure(() => verification.Required_spec109_mustIssueOnSubscribeForNonNullSubscriber(),
                 "OnSubscribe should be called prior to OnComplete always");
         }
 
         [Test]
-        public void required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnNextHappensFirst()
+        public void Required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnNextHappensFirst()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnNext(1337));
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec109_mustIssueOnSubscribeForNonNullSubscriber(),
+            RequireTestFailure(() => verification.Required_spec109_mustIssueOnSubscribeForNonNullSubscriber(),
                 "OnSubscribe should be called prior to OnNext always");
         }
 
         [Test]
-        public void required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnErrorHappensFirst()
+        public void Required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnErrorHappensFirst()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnError(new TestException()));
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec109_mustIssueOnSubscribeForNonNullSubscriber(),
+            RequireTestFailure(() => verification.Required_spec109_mustIssueOnSubscribeForNonNullSubscriber(),
                 "OnSubscribe should be called prior to OnError always");
         }
 
         [Test]
-        public void required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_shouldFail()
+        public void Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_shouldFail()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnSubscribe(new LamdaSubscription()));
             var verification = CustomPublisherVerification(null, publisher);
-            RequireTestFailure(() => verification.required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe(),
+            RequireTestFailure(() => verification.Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe(),
                 "Should have received OnError");
         }
 
         [Test]
-        public void required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_beSkippedForNoGivenErrorPublisher()
+        public void Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_beSkippedForNoGivenErrorPublisher()
         {
-            RequireTestSkip(() => NoopPublisherVerification().required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe(),
+            RequireTestSkip(() => NoopPublisherVerification().Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe(),
                 PublisherVerification<int>.SkippingNoErrorPublisherAvailable);
         }
 
         [Test]
-        public void untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice_shouldFailBy_skippingSinceOptional()
+        public void Untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice_shouldFailBy_skippingSinceOptional()
         {
-            RequireTestFailure(() => NoopPublisherVerification().untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice(),
+            RequireTestFailure(() => NoopPublisherVerification().Untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice(),
                 "Not verified by this TCK.");
         }
 
         [Test]
-        public void optional_spec111_maySupportMultiSubscribe_shouldFailBy_actuallyPass()
-            => NoopPublisherVerification().optional_spec111_maySupportMultiSubscribe();
+        public void Optional_spec111_maySupportMultiSubscribe_shouldFailBy_actuallyPass()
+            => NoopPublisherVerification().Optional_spec111_maySupportMultiSubscribe();
         
         [Test]
-        public void optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront_shouldFailBy_expectingOnError()
+        public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront_shouldFailBy_expectingOnError()
         {
             var random = new Random();
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -303,17 +303,17 @@ namespace Reactive.Streams.TCK.Tests
                 }));
             });
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront(),
+            RequireTestFailure(() => verification.Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront(),
                 "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
         }
 
         [Test]
-        public void required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe_shouldFailBy_reportingAsyncError()
-            => RequireTestFailure(() => OnErroringPublisherVerification().required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe(),
+        public void Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe_shouldFailBy_reportingAsyncError()
+            => RequireTestFailure(() => OnErroringPublisherVerification().Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe(),
                 "Async error during test execution: Test Exception: Boom!");
         
         [Test]
-        public void required_spec303_mustNotAllowUnboundedRecursion_shouldFailBy_informingAboutTooDeepStack()
+        public void Required_spec303_mustNotAllowUnboundedRecursion_shouldFailBy_informingAboutTooDeepStack()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
             {
@@ -323,21 +323,21 @@ namespace Reactive.Streams.TCK.Tests
                 }));
             });
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec303_mustNotAllowUnboundedRecursion(),
+            RequireTestFailure(() => verification.Required_spec303_mustNotAllowUnboundedRecursion(),
               /*Got 2 onNext calls within thread: ... */ "yet expected recursive bound was 1");
         }
 
         [Test]
-        public void required_spec306_afterSubscriptionIsCancelledRequestMustBeNops_shouldFailBy_unexpectedElement()
-            => RequireTestFailure(() => DemandIgnoringSynchronousPublisherVerification().required_spec306_afterSubscriptionIsCancelledRequestMustBeNops(),
+        public void Required_spec306_afterSubscriptionIsCancelledRequestMustBeNops_shouldFailBy_unexpectedElement()
+            => RequireTestFailure(() => DemandIgnoringSynchronousPublisherVerification().Required_spec306_afterSubscriptionIsCancelledRequestMustBeNops(),
                 "Did not expect an element but got element [0]");
 
         [Test]
-        public void required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops_shouldPass()
-            => DemandIgnoringSynchronousPublisherVerification().required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops();
+        public void Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops_shouldPass()
+            => DemandIgnoringSynchronousPublisherVerification().Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops();
 
         [Test]
-        public void required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops_shouldFailBy_unexpectedErrorInCancelling()
+        public void Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops_shouldFailBy_unexpectedErrorInCancelling()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
             {
@@ -347,27 +347,27 @@ namespace Reactive.Streams.TCK.Tests
                 }));
             });
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops(),
+            RequireTestFailure(() => verification.Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops(),
                "Async error during test execution: Test Exception: Boom!");
         }
 
         [Test]
-        public void required_spec309_requestZeroMustSignalIllegalArgumentException_shouldFailBy_expectingOnError()
-            => RequireTestFailure(() => NoopPublisherVerification().required_spec309_requestZeroMustSignalIllegalArgumentException(),
+        public void Required_spec309_requestZeroMustSignalIllegalArgumentException_shouldFailBy_expectingOnError()
+            => RequireTestFailure(() => NoopPublisherVerification().Required_spec309_requestZeroMustSignalIllegalArgumentException(),
                 "Expected OnError");
 
         [Test]
-        public void required_spec309_requestNegativeNumberMustSignalIllegalArgumentException_shouldFailBy_expectingOnError()
-            => RequireTestFailure(() => NoopPublisherVerification().required_spec309_requestNegativeNumberMustSignalIllegalArgumentException(),
+        public void Required_spec309_requestNegativeNumberMustSignalIllegalArgumentException_shouldFailBy_expectingOnError()
+            => RequireTestFailure(() => NoopPublisherVerification().Required_spec309_requestNegativeNumberMustSignalIllegalArgumentException(),
                 "Expected OnError");
 
         [Test]
-        public void required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling_shouldFailBy_havingEmitedMoreThanRequested()
-            => RequireTestFailure(() => DemandIgnoringAsynchronousPublisherVerification().required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling(),
+        public void Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling_shouldFailBy_havingEmitedMoreThanRequested()
+            => RequireTestFailure(() => DemandIgnoringAsynchronousPublisherVerification().Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling(),
                 /*Publisher signalled [...] */ ", which is more than the signalled demand: ");
         
         [Test]
-        public void required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber_shouldFailBy_keepingTheReferenceLongerThanNeeded()
+        public void Required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber_shouldFailBy_keepingTheReferenceLongerThanNeeded()
         {
             ISubscriber<int> sub;
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -384,22 +384,22 @@ namespace Reactive.Streams.TCK.Tests
                 }));
             });
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber(),
+            RequireTestFailure(() => verification.Required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber(),
                "did not drop reference to test subscriber after subscription cancellation");
         }
         
         [Test]
-        public void required_spec317_mustSupportAPendingElementCountUpToLongMaxValue_shouldFail_onAsynchDemandIgnoringPublisher()
-            => RequireTestFailure(() => DemandIgnoringAsynchronousPublisherVerification().required_spec317_mustSupportAPendingElementCountUpToLongMaxValue(),
+        public void Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue_shouldFail_onAsynchDemandIgnoringPublisher()
+            => RequireTestFailure(() => DemandIgnoringAsynchronousPublisherVerification().Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue(),
                 "Expected end-of-stream but got");
 
         [Test]
-        public void required_spec317_mustSupportAPendingElementCountUpToLongMaxValue_shouldFail_onSynchDemandIgnoringPublisher()
-            => RequireTestFailure(() => DemandIgnoringSynchronousPublisherVerification().required_spec317_mustSupportAPendingElementCountUpToLongMaxValue(),
+        public void Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue_shouldFail_onSynchDemandIgnoringPublisher()
+            => RequireTestFailure(() => DemandIgnoringSynchronousPublisherVerification().Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue(),
                 "Received more than bufferSize (32) OnNext signals. The Publisher probably emited more signals than expected!");
 
         [Test]
-        public void required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue_shouldFail_onSynchOverflowingPublisher()
+        public void Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue_shouldFail_onSynchOverflowingPublisher()
         {
             var demand = 0L;
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -416,12 +416,12 @@ namespace Reactive.Streams.TCK.Tests
                 }));
             });
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue(),
+            RequireTestFailure(() => verification.Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue(),
                "Async error during test execution: Illegally signalling OnError (violates rule 3.17)");
         }
 
         [Test]
-        public void required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue_shouldFailWhenErrorSignalledOnceMaxValueReached()
+        public void Required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue_shouldFailWhenErrorSignalledOnceMaxValueReached()
         {
             var demand = 0L;
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -438,12 +438,12 @@ namespace Reactive.Streams.TCK.Tests
                 }));
             });
             var verification = CustomPublisherVerification(publisher);
-            RequireTestFailure(() => verification.required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue(),
+            RequireTestFailure(() => verification.Required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue(),
                "Async error during test execution: Illegally signalling onError too soon!");
         }
 
         [Test]
-        public void required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue_forSynchronousPublisher()
+        public void Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue_forSynchronousPublisher()
         {
             var sent = new AtomicCounter(0);
 
@@ -463,7 +463,7 @@ namespace Reactive.Streams.TCK.Tests
                 }, onCancel: () => cancelled = true));
             });
             var verification = CustomPublisherVerification(publisher);
-            verification.required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue();
+            verification.Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue();
 
             // 11 due to the implementation of this particular TCK test (see impl)
             Assert.AreEqual(11, sent.Current);

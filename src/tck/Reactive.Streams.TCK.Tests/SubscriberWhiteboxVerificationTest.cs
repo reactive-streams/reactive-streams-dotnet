@@ -14,7 +14,7 @@ namespace Reactive.Streams.TCK.Tests
     public class SubscriberWhiteboxVerificationTest : TCKVerificationSupport
     {
         [Test]
-        public void required_spec201_mustSignalDemandViaSubscriptionRequest_shouldFailBy_notGettingRequestCall()
+        public void Required_spec201_mustSignalDemandViaSubscriptionRequest_shouldFailBy_notGettingRequestCall()
         {
             // this mostly verifies the probe is injected correctly
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -30,16 +30,16 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec201_mustSignalDemandViaSubscriptionRequest(),
+            RequireTestFailure(() => verification.Required_spec201_mustSignalDemandViaSubscriptionRequest(),
                 "Did not receive expected `Request` call within");
         }
 
         [Test]
-        public void required_spec201_mustSignalDemandViaSubscriptionRequest_shouldPass()
-            => SimpleSubscriberVerification().required_spec201_mustSignalDemandViaSubscriptionRequest();
+        public void Required_spec201_mustSignalDemandViaSubscriptionRequest_shouldPass()
+            => SimpleSubscriberVerification().Required_spec201_mustSignalDemandViaSubscriptionRequest();
 
         [Test]
-        public void required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingRequest()
+        public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingRequest()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -55,12 +55,12 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete(),
+            RequireTestFailure(() => verification.Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete(),
                 "Subscription.Request MUST NOT be called from Subscriber.OnComplete (Rule 2.3)!");
         }
 
         [Test]
-        public void required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingCancel()
+        public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingCancel()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -76,13 +76,13 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete(),
+            RequireTestFailure(() => verification.Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete(),
                 "Subscription.Cancel MUST NOT be called from Subscriber.OnComplete (Rule 2.3)!");
 
         }
 
         [Test]
-        public void required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingRequest()
+        public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingRequest()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -97,12 +97,12 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError(),
+            RequireTestFailure(() => verification.Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError(),
                 "Subscription.Request MUST NOT be called from Subscriber.OnError (Rule 2.3)!");
         }
 
         [Test]
-        public void required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingCancel()
+        public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingCancel()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -117,12 +117,12 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError(),
+            RequireTestFailure(() => verification.Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError(),
                 "Subscription.Cancel MUST NOT be called from Subscriber.OnError (Rule 2.3)!");
         }
 
         [Test]
-        public void required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal_shouldFail()
+        public void Required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -133,12 +133,12 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal(),
+            RequireTestFailure(() => verification.Required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal(),
                 "Expected 2nd Subscription given to subscriber to be cancelled");
         }
 
         [Test]
-        public void required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel_shouldFail()
+        public void Required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -169,12 +169,12 @@ namespace Reactive.Streams.TCK.Tests
                     });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel(),
+            RequireTestFailure(() => verification.Required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel(),
                 "But I thought it's cancelled!");
         }
 
         [Test]
-        public void required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall_shouldFail()
+        public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -184,12 +184,12 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall(),
+            RequireTestFailure(() => verification.Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall(),
                 "did not call `RegisterOnComplete()`");
         }
 
         [Test]
-        public void required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall_shouldPass_withNoopSubscriber()
+        public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall_shouldPass_withNoopSubscriber()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -199,12 +199,12 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall(),
+            RequireTestFailure(() => verification.Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall(),
                 "did not call `RegisterOnSubscribe`");
         }
 
         [Test]
-        public void required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall_shouldFail()
+        public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -215,12 +215,12 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall(),
+            RequireTestFailure(() => verification.Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall(),
                 "Test Exception: Boom!");
         }
 
         [Test]
-        public void required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall_shouldFail()
+        public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
             {
@@ -231,16 +231,16 @@ namespace Reactive.Streams.TCK.Tests
                 });
             };
             var verification = CustomSubscriberVerification(createSubscriber);
-            RequireTestFailure(() => verification.required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall(),
+            RequireTestFailure(() => verification.Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall(),
                 "Test Exception: Boom!");
         }
 
         [Test]
-        public void required_spec308_requestMustRegisterGivenNumberElementsToBeProduced_shouldFail()
+        public void Required_spec308_requestMustRegisterGivenNumberElementsToBeProduced_shouldFail()
         {
             // sanity checks the "happy path", that triggerRequest() propagates the right demand
             CustomSubscriberVerification(probe => new SimpleSubscriberWithProbe(probe))
-                .required_spec308_requestMustRegisterGivenNumberElementsToBeProduced();
+                .Required_spec308_requestMustRegisterGivenNumberElementsToBeProduced();
         }
 
 

@@ -107,7 +107,7 @@ namespace Reactive.Streams.TCK
         /// recursive calls to exceed the number returned by this property.
         /// 
         /// See https://github.com/reactive-streams/reactive-streams-jvm#3.3
-        /// <see cref="required_spec303_mustNotAllowUnboundedRecursion"/>
+        /// <see cref="Required_spec303_mustNotAllowUnboundedRecursion"/>
         /// </summary>
         public virtual long BoundedDepthOfOnNextAndRequestRecursion { get; } = 1;
 
@@ -119,7 +119,7 @@ namespace Reactive.Streams.TCK
         ////////////////////// TEST SETUP VERIFICATION //////////////////////////////
 
         [Test]
-        public void required_createPublisher1MustProduceAStreamOfExactly1Element()
+        public void Required_createPublisher1MustProduceAStreamOfExactly1Element()
         {
             Func<IPublisher<T>, ManualSubscriber<T>, Option<T>> requestNextElementOrEndOfStream =
                 (publisher, subscriber) =>
@@ -135,7 +135,7 @@ namespace Reactive.Streams.TCK
         }
 
         [Test]
-        public void required_createPublisher3MustProduceAStreamOfExactly3Elements()
+        public void Required_createPublisher3MustProduceAStreamOfExactly3Elements()
         {
             Func<IPublisher<T>, ManualSubscriber<T>, Option<T>> requestNextElementOrEndOfStream =
                 (publisher, subscriber) =>
@@ -153,11 +153,11 @@ namespace Reactive.Streams.TCK
         }
 
         [Test]
-        public void required_validate_maxElementsFromPublisher()
+        public void Required_validate_maxElementsFromPublisher()
             => Assert.True(MaxElementsFromPublisher >= 0, "maxElementsFromPublisher MUST return a number >= 0");
 
         [Test]
-        public void required_validate_boundedDepthOfOnNextAndRequestRecursion()
+        public void Required_validate_boundedDepthOfOnNextAndRequestRecursion()
             => Assert.True(BoundedDepthOfOnNextAndRequestRecursion >= 1, "boundedDepthOfOnNextAndRequestRecursion must return a number >= 1");
 
 
@@ -165,7 +165,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.1
         [Test]
-        public void required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements()
+        public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements()
             => ActivePublisherTest(5, false, publisher =>
             {
                 var subscriber = _environment.NewManualSubscriber(publisher);
@@ -185,7 +185,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.2
         [Test]
-        public void required_spec102_maySignalLessThanRequestedAndTerminateSubscription()
+        public void Required_spec102_maySignalLessThanRequestedAndTerminateSubscription()
         {
             const int elements = 3;
             const int requested = 10;
@@ -201,7 +201,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.3
         [Test]
-        public void stochastic_spec103_mustSignalOnMethodsSequentially()
+        public void Stochastic_spec103_mustSignalOnMethodsSequentially()
         {
             const int iterations = 100;
             const int elements = 10;
@@ -327,7 +327,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.4
         [Test]
-        public void optional_spec104_mustSignalOnErrorWhenFails()
+        public void Optional_spec104_mustSignalOnErrorWhenFails()
         {
             try
             {
@@ -387,7 +387,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.5
         [Test]
-        public void required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates()
+        public void Required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates()
             => ActivePublisherTest(3, true, publisher =>
             {
                 var sub = _environment.NewManualSubscriber(publisher);
@@ -400,7 +400,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.5
         [Test]
-        public void optional_spec105_emptyStreamMustTerminateBySignallingOnComplete()
+        public void Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete()
             => OptionalActivePublisherTest(0, true, publisher =>
             {
                 var subscriber = _environment.NewManualSubscriber(publisher);
@@ -411,12 +411,12 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.6
         [Test]
-        public void untested_spec106_mustConsiderSubscriptionCancelledAfterOnErrorOrOnCompleteHasBeenCalled()
+        public void Untested_spec106_mustConsiderSubscriptionCancelledAfterOnErrorOrOnCompleteHasBeenCalled()
             => NotVerified(); // not really testable without more control over the Publisher
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.7
         [Test]
-        public void required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled()
+        public void Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled()
             => ActivePublisherTest(1, true, publisher =>
             {
                 var subscriber = _environment.NewManualSubscriber(publisher);
@@ -430,22 +430,22 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.7
         [Test]
-        public void untested_spec107_mustNotEmitFurtherSignalsOnceOnErrorHasBeenSignalled() 
+        public void Untested_spec107_mustNotEmitFurtherSignalsOnceOnErrorHasBeenSignalled() 
             => NotVerified(); // can we meaningfully test this, without more control over the publisher?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.8
         [Test]
-        public void untested_spec108_possiblyCanceledSubscriptionShouldNotReceiveOnErrorOrOnCompleteSignals()
+        public void Untested_spec108_possiblyCanceledSubscriptionShouldNotReceiveOnErrorOrOnCompleteSignals()
             => NotVerified(); // can we meaningfully test this?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.9
         [Test]
-        public void untested_spec109_subscribeShouldNotThrowNonFatalThrowable()
+        public void Untested_spec109_subscribeShouldNotThrowNonFatalThrowable()
             => NotVerified(); // can we meaningfully test this?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.9
         [Test]
-        public void required_spec109_subscribeThrowNPEOnNullSubscriber()
+        public void Required_spec109_subscribeThrowNPEOnNullSubscriber()
             => ActivePublisherTest(0, false, publisher =>
             {
                 try
@@ -464,7 +464,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.9
         [Test]
-        public void required_spec109_mustIssueOnSubscribeForNonNullSubscriber()
+        public void Required_spec109_mustIssueOnSubscribeForNonNullSubscriber()
             => ActivePublisherTest(0, false, publisher =>
             {
                 var onSubscriberLatch = new Latch(_environment);
@@ -500,7 +500,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.9
         [Test]
-        public void required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe ()
+        public void Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe ()
             => WhenHasErrorPublisherTest(publisher =>
             {
                 var onErrorLatch = new Latch(_environment);
@@ -542,12 +542,12 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.10
         [Test]
-        public void untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice() 
+        public void Untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice() 
             => NotVerified(); // can we meaningfully test this?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
         [Test]
-        public void optional_spec111_maySupportMultiSubscribe()
+        public void Optional_spec111_maySupportMultiSubscribe()
             => OptionalActivePublisherTest(1, false, publisher =>
             {
                 var sub1 = _environment.NewManualSubscriber(publisher);
@@ -558,7 +558,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
         [Test]
-        public void optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingOneByOne ()
+        public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingOneByOne ()
             => OptionalActivePublisherTest(5, true, publisher =>
             {
                 var sub1 = _environment.NewManualSubscriber(publisher);
@@ -614,7 +614,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
         [Test]
-        public void optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront ()
+        public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront ()
             => OptionalActivePublisherTest(3, false, publisher =>
             {
                 var sub1 = _environment.NewManualSubscriber(publisher);
@@ -641,7 +641,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
         [Test]
-        public void optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfrontAndCompleteAsExpected()
+        public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfrontAndCompleteAsExpected()
             => OptionalActivePublisherTest(3, true, publisher =>
             {
                 var sub1 = _environment.NewManualSubscriber(publisher);
@@ -670,7 +670,7 @@ namespace Reactive.Streams.TCK
         
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.2
         [Test]
-        public void required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe()
+        public void Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe()
             => ActivePublisherTest(6, false, publisher =>
             {
                 _environment.Subscribe(publisher, new Spec302Subscriber(_environment));
@@ -701,7 +701,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.3
         [Test]
-        public void required_spec303_mustNotAllowUnboundedRecursion()
+        public void Required_spec303_mustNotAllowUnboundedRecursion()
         {
             var oneMoreThanBoundedLimit = BoundedDepthOfOnNextAndRequestRecursion + 1;
 
@@ -798,17 +798,17 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.4
         [Test]
-        public void untested_spec304_requestShouldNotPerformHeavyComputations()
+        public void Untested_spec304_requestShouldNotPerformHeavyComputations()
             => NotVerified();  // cannot be meaningfully tested, or can it?
         
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.5
         [Test]
-        public void untested_spec305_cancelMustNotSynchronouslyPerformHeavyCompuatation()
+        public void Untested_spec305_cancelMustNotSynchronouslyPerformHeavyCompuatation()
             => NotVerified();  // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.6
         [Test]
-        public void required_spec306_afterSubscriptionIsCancelledRequestMustBeNops()
+        public void Required_spec306_afterSubscriptionIsCancelledRequestMustBeNops()
             => ActivePublisherTest(3, false, publisher =>
             {
                 var subscriber = new Spec306Subscriber(_environment);
@@ -843,7 +843,7 @@ namespace Reactive.Streams.TCK
         
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.7
         [Test]
-        public void required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops()
+        public void Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops()
             => ActivePublisherTest(1, false, publisher =>
             {
                 var subscriber = _environment.NewManualSubscriber(publisher);
@@ -861,7 +861,7 @@ namespace Reactive.Streams.TCK
         
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.9
         [Test]
-        public void required_spec309_requestZeroMustSignalIllegalArgumentException()
+        public void Required_spec309_requestZeroMustSignalIllegalArgumentException()
             => ActivePublisherTest(10, false, publisher =>
             {
                 var subscriber = _environment.NewManualSubscriber(publisher);
@@ -871,7 +871,7 @@ namespace Reactive.Streams.TCK
         
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.9
         [Test]
-        public void required_spec309_requestNegativeNumberMustSignalIllegalArgumentException()
+        public void Required_spec309_requestNegativeNumberMustSignalIllegalArgumentException()
             => ActivePublisherTest(10, false, publisher =>
             {
                 var subscriber = _environment.NewManualSubscriber(publisher);
@@ -882,7 +882,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.12
         [Test]
-        public void required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling()
+        public void Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling()
         {
             // the publisher is able to signal more elements than the subscriber will be requesting in total
             const int publisherElements = 20;
@@ -940,7 +940,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.13
         [Test]
-        public void required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber()
+        public void Required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber()
         {
             Func<IPublisher<T>, WeakReference<ManualSubscriber<T>>> run = publisher =>
             {
@@ -973,7 +973,7 @@ namespace Reactive.Streams.TCK
         
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.17
         [Test]
-        public void required_spec317_mustSupportAPendingElementCountUpToLongMaxValue()
+        public void Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue()
         {
             const int totalElements = 3;
 
@@ -991,7 +991,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.17
         [Test]
-        public void required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue()
+        public void Required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue()
         {
             const int totalElements = 3;
 
@@ -1018,7 +1018,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.17
         [Test]
-        public void required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue()
+        public void Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue()
             => ActivePublisherTest(int.MaxValue, false, publisher =>
             {
                 var subscriber = new Spec317Subscriber(_environment);

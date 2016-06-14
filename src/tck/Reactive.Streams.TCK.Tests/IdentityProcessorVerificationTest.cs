@@ -12,12 +12,12 @@ namespace Reactive.Streams.TCK.Tests
             TestEnvironment.EnvironmentDefaultNoSignalsTimeoutMilliseconds();
 
         [Test]
-        public void required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError_shouldBeIgnored()
+        public void Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError_shouldBeIgnored()
         {
             RequireTestSkip(() =>
             {
                 new Spec104IgnoreVerification(NewTestEnvironment())
-                    .required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError();
+                    .Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError();
             }, "The Publisher under test only supports 1 subscribers, while this test requires at least 2 to run");
         }
 
@@ -99,12 +99,12 @@ namespace Reactive.Streams.TCK.Tests
         }
 
         [Test]
-        public void required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError_shouldFailWhileWaitingForOnError()
+        public void Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError_shouldFailWhileWaitingForOnError()
         {
             RequireTestFailure(() =>
             {
                 new Spec104WaitingVerification(NewTestEnvironment(), DefaultTimeoutMilliseconds)
-                    .required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError();
+                    .Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError();
             }, "Did not receive expected error on downstream within " + DefaultTimeoutMilliseconds);
         }
 

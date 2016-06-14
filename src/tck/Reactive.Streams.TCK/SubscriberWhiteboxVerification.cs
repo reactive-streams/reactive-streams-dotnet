@@ -39,7 +39,7 @@ namespace Reactive.Streams.TCK
         ////////////////////// TEST SETUP VERIFICATION //////////////////////////////
         
         [Test]
-        public void required_exerciseWhiteboxHappyPath()
+        public void Required_exerciseWhiteboxHappyPath()
             => SubscriberTest(stage =>
             {
                 stage.Puppet.TriggerRequest(1);
@@ -67,7 +67,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.1
         [Test]
-        public void required_spec201_mustSignalDemandViaSubscriptionRequest()
+        public void Required_spec201_mustSignalDemandViaSubscriptionRequest()
             => SubscriberTest(stage =>
             {
                 stage.Puppet.TriggerRequest(1);
@@ -78,12 +78,12 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.2
         [Test]
-        public void untested_spec202_shouldAsynchronouslyDispatch()
+        public void Untested_spec202_shouldAsynchronouslyDispatch()
             => NotVerified();  // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.3
         [Test]
-        public void required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete()
+        public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete()
             => SubscriberTestWithoutSetup(stage =>
             {
                 var subscription = new Spec203OnCompleteSubscription(this);
@@ -129,7 +129,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.3
         [Test]
-        public void required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError()
+        public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError()
             => SubscriberTestWithoutSetup(stage =>
             {
                 var subscription = new Spec203OnErrorSubscription(this);
@@ -174,12 +174,12 @@ namespace Reactive.Streams.TCK
         
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.4
         [Test]
-        public void untested_spec204_mustConsiderTheSubscriptionAsCancelledInAfterRecievingOnCompleteOrOnError()
+        public void Untested_spec204_mustConsiderTheSubscriptionAsCancelledInAfterRecievingOnCompleteOrOnError()
             => NotVerified();  // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.5
         [Test]
-        public void required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal()
+        public void Required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal()
             => SubscriberTest(stage =>
             {
                 // try to subscribe another time, if the subscriber calls `probe.RegisterOnSubscribe` the test will fail
@@ -215,18 +215,18 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.6
         [Test]
-        public void untested_spec206_mustCallSubscriptionCancelIfItIsNoLongerValid()
+        public void Untested_spec206_mustCallSubscriptionCancelIfItIsNoLongerValid()
             => NotVerified();  // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.7
         [Test]
-        public void untested_spec207_mustEnsureAllCallsOnItsSubscriptionTakePlaceFromTheSameThreadOrTakeCareOfSynchronization()
+        public void Untested_spec207_mustEnsureAllCallsOnItsSubscriptionTakePlaceFromTheSameThreadOrTakeCareOfSynchronization()
             => NotVerified();  // cannot be meaningfully tested, or can it?
                                // the same thread part of the clause can be verified but that is not very useful, or is it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.8
         [Test]
-        public void required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel()
+        public void Required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel()
             => SubscriberTest(stage =>
             {
                 stage.Puppet.TriggerRequest(1);
@@ -241,7 +241,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.9
         [Test]
-        public void required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall()
+        public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall()
             => SubscriberTest(stage =>
             {
                 stage.Puppet.TriggerRequest(1);
@@ -253,7 +253,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.9
         [Test]
-        public void required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall()
+        public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall()
             => SubscriberTest(stage =>
             {
                 stage.SendCompletion();
@@ -264,7 +264,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.10
         [Test]
-        public void required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall()
+        public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall()
             => SubscriberTest(stage =>
             {
                 stage.Puppet.TriggerRequest(1);
@@ -279,7 +279,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.10
         [Test]
-        public void required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall()
+        public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall()
             => SubscriberTest(stage =>
             {
                 var ex = new TestException();
@@ -291,22 +291,22 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.11
         [Test]
-        public void untested_spec211_mustMakeSureThatAllCallsOnItsMethodsHappenBeforeTheProcessingOfTheRespectiveEvents()
+        public void Untested_spec211_mustMakeSureThatAllCallsOnItsMethodsHappenBeforeTheProcessingOfTheRespectiveEvents()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.12
         [Test]
-        public void untested_spec212_mustNotCallOnSubscribeMoreThanOnceBasedOnObjectEquality_specViolation()
+        public void Untested_spec212_mustNotCallOnSubscribeMoreThanOnceBasedOnObjectEquality_specViolation()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
         [Test]
-        public void untested_spec213_failingOnSignalInvocation()
+        public void Untested_spec213_failingOnSignalInvocation()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
         [Test]
-        public void required_spec213_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull()
+        public void Required_spec213_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull()
             => SubscriberTest(stage =>
             {
                 var subscriber = stage.Sub;
@@ -326,7 +326,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
         [Test]
-        public void required_spec213_onNext_mustThrowNullPointerExceptionWhenParametersAreNull()
+        public void Required_spec213_onNext_mustThrowNullPointerExceptionWhenParametersAreNull()
             => SubscriberTest(stage =>
             {
                 var subscriber = stage.Sub;
@@ -348,7 +348,7 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
         [Test]
-        public void required_spec213_onError_mustThrowNullPointerExceptionWhenParametersAreNull()
+        public void Required_spec213_onError_mustThrowNullPointerExceptionWhenParametersAreNull()
             => SubscriberTest(stage =>
             {
                 var subscriber = stage.Sub;
@@ -370,12 +370,12 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.1
         [Test]
-        public void untested_spec301_mustNotBeCalledOutsideSubscriberContext()
+        public void Untested_spec301_mustNotBeCalledOutsideSubscriberContext()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.8
         [Test]
-        public void required_spec308_requestMustRegisterGivenNumberElementsToBeProduced()
+        public void Required_spec308_requestMustRegisterGivenNumberElementsToBeProduced()
             => SubscriberTest(stage =>
             {
                 stage.Puppet.TriggerRequest(2);
@@ -390,27 +390,27 @@ namespace Reactive.Streams.TCK
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.10
         [Test]
-        public void untested_spec310_requestMaySynchronouslyCallOnNextOnSubscriber()
+        public void Untested_spec310_requestMaySynchronouslyCallOnNextOnSubscriber()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.11
         [Test]
-        public void untested_spec311_requestMaySynchronouslyCallOnCompleteOrOnError()
+        public void Untested_spec311_requestMaySynchronouslyCallOnCompleteOrOnError()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.14
         [Test]
-        public void untested_spec314_cancelMayCauseThePublisherToShutdownIfNoOtherSubscriptionExists()
+        public void Untested_spec314_cancelMayCauseThePublisherToShutdownIfNoOtherSubscriptionExists()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.15
         [Test]
-        public void untested_spec315_cancelMustNotThrowExceptionAndMustSignalOnError()
+        public void Untested_spec315_cancelMustNotThrowExceptionAndMustSignalOnError()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.16
         [Test]
-        public void untested_spec316_requestMustNotThrowExceptionAndMustOnErrorTheSubscriber()
+        public void Untested_spec316_requestMustNotThrowExceptionAndMustOnErrorTheSubscriber()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         /////////////////////// ADDITIONAL "COROLLARY" TESTS ////////////////////////
