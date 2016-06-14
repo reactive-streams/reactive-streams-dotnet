@@ -105,8 +105,7 @@ Target "CopyOutput" <| fun _ ->
         let src = "src" @@ project @@ @"bin/Release/"
         let dst = binDir @@ project
         CopyDir dst src allFiles
-    [ "Reactive.Streams"
-      ]
+    [ "api/Reactive.Streams"; "tck/Reactive.Streams.TCK" ]
     |> List.iter copyOutput
 
 Target "BuildRelease" DoNothing
@@ -239,7 +238,6 @@ let createNugetPackages _ =
                         Dependencies = dependencies })
                 nuspec
 
-        
         // Copy dll, pdb and xml to libdir = workingDir/lib/net4x/
         let libDir = if project.Contains ".TCK" then libDir45 else libDir40
         ensureDirectory libDir

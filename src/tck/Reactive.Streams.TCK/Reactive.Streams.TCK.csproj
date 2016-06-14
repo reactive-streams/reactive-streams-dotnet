@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{01737D0D-ED40-499B-A706-12BE9847491B}</ProjectGuid>
+    <ProjectGuid>{7DBE1261-04EB-4DA7-9953-C8E8CCC49010}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Reactive.Streams.Example.Unicast</RootNamespace>
-    <AssemblyName>Reactive.Streams.Example.Unicast</AssemblyName>
+    <RootNamespace>Reactive.Streams.TCK</RootNamespace>
+    <AssemblyName>Reactive.Streams.TCK</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,32 +30,59 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncIterablePublisher.cs" />
-    <Compile Include="AsyncSubscriber.cs" />
-    <Compile Include="AtomicBoolean.cs" />
-    <Compile Include="IllegalStateException.cs" />
-    <Compile Include="InfiniteIncrementNumberPublisher.cs" />
-    <Compile Include="NumberIterablePublisher.cs" />
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="IdentityProcessorVerification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SyncSubscriber.cs" />
+    <Compile Include="PublisherVerification.cs" />
+    <Compile Include="SubscriberBlackboxVerification.cs" />
+    <Compile Include="SubscriberWhiteboxVerification.cs" />
+    <Compile Include="Support\AtomicBoolean.cs" />
+    <Compile Include="Support\AtomicCounter.cs" />
+    <Compile Include="Support\AtomicCounterLong.cs" />
+    <Compile Include="Support\AtomicReference.cs" />
+    <Compile Include="Support\HelperPublisher.cs" />
+    <Compile Include="Support\IllegalStateException.cs" />
+    <Compile Include="Support\InfiniteHelperPublisher.cs" />
+    <Compile Include="Support\IPublisherVerificationRules .cs" />
+    <Compile Include="Support\ISubscriberWhiteboxVerificationRules.cs" />
+    <Compile Include="Support\ISubscriberBlackboxVerificationRules.cs" />
+    <Compile Include="Support\Option.cs" />
+    <Compile Include="Support\SubscriberBufferOverflowException.cs" />
+    <Compile Include="Support\TestException.cs" />
+    <Compile Include="TestEnvironment.cs" />
+    <Compile Include="WithHelperPublisher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Reactive.Streams\Reactive.Streams.csproj">
+    <ProjectReference Include="..\..\api\Reactive.Streams\Reactive.Streams.csproj">
       <Project>{68fbb4df-6d83-4cf1-8105-a1d41912852f}</Project>
       <Name>Reactive.Streams</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\examples\Reactive.Streams.Example.Unicast\Reactive.Streams.Example.Unicast.csproj">
+      <Project>{01737d0d-ed40-499b-a706-12be9847491b}</Project>
+      <Name>Reactive.Streams.Example.Unicast</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Reactive.Streams.TCK.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
