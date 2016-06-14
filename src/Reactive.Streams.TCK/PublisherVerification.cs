@@ -89,7 +89,7 @@ namespace Reactive.Streams.TCK
         /// 
         /// Defaults to <see cref="long.MaxValue"/> - 1, meaning that the Publisher can be produce a huge but NOT an unbounded number of eleme
         /// 
-        /// To mark your Publisher will *never* signal an <see cref="ISubscriber.OnComplete"/> override this method and return <see cref="long.MaxValue"/>,
+        /// To mark your Publisher will *never* signal an <see cref="ISubscriber{T}.OnComplete"/> override this method and return <see cref="long.MaxValue"/>,
         /// which will result in *skipping all tests which require an onComplete to be triggered* (!).
         /// </summary>
         public virtual long MaxElementsFromPublisher { get; } = long.MaxValue - 1;
@@ -575,8 +575,10 @@ namespace Reactive.Streams.TCK
 
                 sub3.Request(3);
                 var z1 = sub3.NextElements(3, $"Publisher {publisher} did not produce the requested 3 elements on 3nd subscriber");
+
                 sub3.Request(1);
-                var z2 = sub3.NextElement($"Publisher {publisher} did not produce the requested 3 element on 3nd subscriber");
+                var z2 = sub3.NextElement($"Publisher {publisher} did not produce the requested 1 element on 3nd subscriber");
+
                 sub3.Request(1);
                 var z3 = sub3.NextElement($"Publisher {publisher} did not produce the requested 3 element on 3nd subscriber");
                 sub3.RequestEndOfStream($"Publisher {publisher} did not complete the stream as expected on 3rd subscriber");
@@ -586,7 +588,8 @@ namespace Reactive.Streams.TCK
                 sub2.RequestEndOfStream($"Publisher {publisher} did not complete the stream as expected on 2nd subscriber");
 
                 sub1.Request(2);
-                var x3 = sub2.NextElements(2, $"Publisher {publisher} did not produce the requested 2 elements on 1nd subscriber");
+                var x3 = sub1.NextElements(2, $"Publisher {publisher} did not produce the requested 2 elements on 1st subscriber");
+
                 sub1.Request(1);
                 var x4 = sub1.NextElement($"Publisher {publisher} did not produce the requested 1 element on 1st subscriber");
                 sub1.RequestEndOfStream($"Publisher {publisher} did not complete the stream as expected on 1st subscriber");
