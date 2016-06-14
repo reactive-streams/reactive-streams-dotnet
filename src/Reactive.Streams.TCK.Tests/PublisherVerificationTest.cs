@@ -256,6 +256,15 @@ namespace Reactive.Streams.TCK.Tests
         }
 
         [Test]
+        public void required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnErrorHappensFirst()
+        {
+            var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnError(new TestException()));
+            var verification = CustomPublisherVerification(publisher);
+            RequireTestFailure(() => verification.required_spec109_mustIssueOnSubscribeForNonNullSubscriber(),
+                "OnSubscribe should be called prior to OnError always");
+        }
+
+        [Test]
         public void required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_shouldFail()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnSubscribe(new LamdaSubscription()));
