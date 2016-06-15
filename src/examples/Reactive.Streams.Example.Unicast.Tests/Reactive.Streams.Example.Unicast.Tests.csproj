@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -52,9 +52,6 @@
     <Compile Include="UnboundedIntegerIncrementPublisherTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Reactive.Streams.Example.Unicast\Reactive.Streams.Example.Unicast.csproj">
       <Project>{01737d0d-ed40-499b-a706-12be9847491b}</Project>
       <Name>Reactive.Streams.Example.Unicast</Name>
@@ -67,6 +64,9 @@
       <Project>{68FBB4DF-6D83-4CF1-8105-A1D41912852F}</Project>
       <Name>Reactive.Streams</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
