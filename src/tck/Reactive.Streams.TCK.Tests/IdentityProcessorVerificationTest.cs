@@ -93,7 +93,7 @@ namespace Reactive.Streams.TCK.Tests
 
             public override IProcessor<int, int> CreateIdentityProcessor(int bufferSize) => new Processor();
 
-            public override IPublisher<int> CreateHelpPublisher(long elements) => new Publisher();
+            public override IPublisher<int> CreateHelperPublisher(long elements) => new Publisher();
 
             public override IPublisher<int> CreateFailedPublisher() => null;
         }
@@ -129,7 +129,7 @@ namespace Reactive.Streams.TCK.Tests
 
             public override IPublisher<int> CreateFailedPublisher() => null;
 
-            public override IPublisher<int> CreateHelpPublisher(long elements) => null;
+            public override IPublisher<int> CreateHelperPublisher(long elements) => null;
 
             // can only support 1 subscribe => unable to run this test
             public override long MaxSupportedSubscribers { get; } = 1;

@@ -487,7 +487,7 @@ namespace Reactive.Streams.TCK
 
         public ISubscriberPuppet Puppet => Probe.SubscriberPuppet;
 
-        public IPublisher<T> CreateHelperPublisher(long elements) => _verification.CreateHelpPublisher(elements);
+        public IPublisher<T> CreateHelperPublisher(long elements) => _verification.CreateHelperPublisher(elements);
 
         public WhiteboxSubscriberProbe<T> CreateWhiteboxSubscriberProbe(TestEnvironment environment)
             => new WhiteboxSubscriberProbe<T>(environment, Subscriber);

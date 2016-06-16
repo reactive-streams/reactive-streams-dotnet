@@ -445,7 +445,7 @@ namespace Reactive.Streams.TCK
 
         public ISubscriber<T> Sub => Subscriber.Value;
 
-        public IPublisher<T> CreateHelperPublisher(long elements) => _verification.CreateHelpPublisher(elements);
+        public IPublisher<T> CreateHelperPublisher(long elements) => _verification.CreateHelperPublisher(elements);
 
         public BlackboxSubscriberProxy<T> CreateBlackboxSubscriberProxy(TestEnvironment environment, ISubscriber<T> subscriber)
             => new BlackboxSubscriberProxy<T>(environment, subscriber);

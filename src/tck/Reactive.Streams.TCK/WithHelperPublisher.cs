@@ -46,7 +46,7 @@ namespace Reactive.Streams.TCK
         /// </summary>
         /// <param name="elements"></param>
         /// <returns></returns>
-        public virtual IPublisher<T> CreateHelpPublisher(long elements)
+        public virtual IPublisher<T> CreateHelperPublisher(long elements)
             => elements > int.MaxValue
                 ? (IPublisher<T>) new InfiniteHelperPublisher<T>(CreateElement)
                 : new HelperPublisher<T>(0, (int) elements, CreateElement);

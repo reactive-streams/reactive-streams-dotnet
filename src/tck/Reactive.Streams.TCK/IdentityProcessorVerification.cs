@@ -93,7 +93,7 @@ namespace Reactive.Streams.TCK
             public override ISubscriber<T> CreateSubscriber(WhiteboxSubscriberProbe<T> probe)
                 => _processor.CreateSubscriber(probe);
 
-            public override IPublisher<T> CreateHelpPublisher(long elements) => _processor.CreateHelpPublisher(elements);
+            public override IPublisher<T> CreateHelperPublisher(long elements) => _processor.CreateHelperPublisher(elements);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Reactive.Streams.TCK
         public IPublisher<T> CreatePublisher(long elements)
         {
             var processor = CreateIdentityProcessor(_processorBufferSize);
-            var publisher = CreateHelpPublisher(elements);
+            var publisher = CreateHelperPublisher(elements);
             publisher.Subscribe(processor);
             return processor; // we run the PublisherVerification against this
         }
@@ -595,7 +595,7 @@ namespace Reactive.Streams.TCK
                 TestBufferSize = testBufferSize;
                 RequiredSubscribersSupport = requiredSubscribersSupport;
 
-                Tees = Environment.NewManualSubscriber(verification.CreateHelpPublisher(long.MaxValue));
+                Tees = Environment.NewManualSubscriber(verification.CreateHelperPublisher(long.MaxValue));
                 Processor = verification.CreateIdentityProcessor(testBufferSize);
                 Subscribe(Processor);
             }
