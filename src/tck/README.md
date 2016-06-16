@@ -26,7 +26,6 @@ The TCK is provided as binary artifact on [Nuget](https://www.nuget.org/packages
 ```
 PM> Install-Package Reactive.Streams.TCK
 ```
-```
 
 Please refer to the [Reactive Streams Specification](https://github.com/reactive-streams/reactive-streams-dotnet) for the current latest version number. Make sure that your Reactive Streams API and TCK dependency versions match.
 
@@ -44,12 +43,12 @@ Specification rule abides the following naming convention: `TYPE_spec###_DESC` w
 Here is an example test method signature:
 
 ```C#
-    // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.1
-    [Test]
-    public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements()
-    {
-        // ...
-    }
+// Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.1
+[Test]
+public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements()
+{
+    // ...
+}
 ```
 
 #### Test types explained:
