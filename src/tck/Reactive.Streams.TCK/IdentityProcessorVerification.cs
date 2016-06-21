@@ -650,8 +650,8 @@ namespace Reactive.Streams.TCK
             public void ExpectError(Exception cause, long timeoutMilliseconds)
             {
                 _error.ExpectCompletion(timeoutMilliseconds, "Did not receive expected error on downstream");
-                if (cause.Equals(_error.Value))
-                    Environment.Flop($"Expected error {cause} but got {_error}");
+                if (!cause.Equals(_error.Value))
+                    Environment.Flop($"Expected error {cause} but got {_error.Value}");
             }
         }
     }
