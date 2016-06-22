@@ -37,6 +37,10 @@
       <HintPath>..\..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Reactive.Streams, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Reactive.Streams.1.0.1\lib\net40\Reactive.Streams.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,10 +75,6 @@
     <Compile Include="WithHelperPublisher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\api\Reactive.Streams\Reactive.Streams.csproj">
-      <Project>{68fbb4df-6d83-4cf1-8105-a1d41912852f}</Project>
-      <Name>Reactive.Streams</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\examples\Reactive.Streams.Example.Unicast\Reactive.Streams.Example.Unicast.csproj">
       <Project>{01737d0d-ed40-499b-a706-12be9847491b}</Project>
       <Name>Reactive.Streams.Example.Unicast</Name>

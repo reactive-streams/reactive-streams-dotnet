@@ -245,6 +245,8 @@ let createNugetPackages _ =
         ++ (releaseDir @@ project + ".pdb")
         ++ (releaseDir @@ project + ".xml")
         ++ (releaseDir @@ project + ".ExternalAnnotations.xml")
+        ++ (releaseDir @@ "Reactive.Streams.Example.Unicast.dll")
+        ++ (releaseDir @@ "Reactive.Streams.Example.Unicast.pdb")
         |> CopyFiles libDir
 
         // Copy all src-files (.cs and .fs files) to workingDir/src
