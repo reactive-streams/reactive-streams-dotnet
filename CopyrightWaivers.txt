@@ -1,4 +1,4 @@
-Copyright Statement for Contributions to the Reactive Streams Project
+﻿Copyright Statement for Contributions to the Reactive Streams Project
 =====================================================================
 
 I hereby represent that all present, past and future contributions I make to
@@ -20,3 +20,4 @@ github name    | Real Name, Email Address used for git commits, Company
 ---------------+----------------------------------------------------------------------------
 cconstantin    | Chris Constantin, chris.constantin@aligned.io, Aligned Software Solutions, Inc.
 viktorklang    | Viktor Klang, viktor.klang@gmail.com, Lightbend, Inc.
+Silv3rcircl3   | Marc Piechura, piechura@gmx.net, Pulmokard GmbH
