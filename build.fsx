@@ -50,7 +50,7 @@ let testOutput = "TestResults"
 
 let nugetDir = binDir @@ "nuget"
 let workingDir = binDir @@ "build"
-let libDir40 = workingDir @@ @"lib\net40\"
+let libDirPortable = workingDir @@ @"lib\portable-net45+netcore45\"
 let libDir45 = workingDir @@ @"lib\net45\"
 let nugetExe = FullName @"src\.nuget\NuGet.exe"
 let slnFile = "./src/Reactive.Streams.sln"
@@ -239,7 +239,7 @@ let createNugetPackages _ =
                 nuspec
 
         // Copy dll, pdb and xml to libdir = workingDir/lib/net4x/
-        let libDir = if project.Contains ".TCK" then libDir45 else libDir40
+        let libDir = if project.Contains ".TCK" then libDir45 else libDirPortable
         ensureDirectory libDir
         !! (releaseDir @@ project + ".dll")
         ++ (releaseDir @@ project + ".pdb")
