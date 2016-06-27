@@ -50,7 +50,8 @@ let testOutput = "TestResults"
 
 let nugetDir = binDir @@ "nuget"
 let workingDir = binDir @@ "build"
-let libDir = workingDir @@ @"lib\net40\"
+let libDirPortable = workingDir @@ @"lib\portable-net45+netcore45\"
+let libDir45 = workingDir @@ @"lib\net45\"
 let nugetExe = FullName @"src\.nuget\NuGet.exe"
 let slnFile = "./src/Reactive.Streams.sln"
 
@@ -104,8 +105,7 @@ Target "CopyOutput" <| fun _ ->
         let src = "src" @@ project @@ @"bin/Release/"
         let dst = binDir @@ project
         CopyDir dst src allFiles
-    [ "Reactive.Streams"
-      ]
+    [ "api/Reactive.Streams"; "tck/Reactive.Streams.TCK" ]
     |> List.iter copyOutput
 
 Target "BuildRelease" DoNothing
@@ -123,18 +123,18 @@ Target "CleanTests" <| fun _ ->
     DeleteDir testOutput
 //--------------------------------------------------------------------------------
 // Run tests
+open Fake.Testing
 
-open XUnit2Helper
 Target "RunTests" <| fun _ ->  
-    let xunitTestAssemblies = !! "src/**/bin/Release/*.Tests.dll" 
+    let nunitTestAssemblies = !! "src/**/bin/Release/*.Tests.dll" 
 
     mkdir testOutput
 
-    let xunitToolPath = findToolInSubPath "xunit.console.exe" "src/packages/xunit.runner.console*/tools"
-    printfn "Using XUnit runner: %s" xunitToolPath
-    xUnit2
-        (fun p -> { p with OutputDir = testOutput; ToolPath = xunitToolPath })
-        xunitTestAssemblies
+    let nunitToolPath = findToolInSubPath "nunit3-console.exe" "src/packages/FAKE/NUnit.ConsoleRunner/tools"
+    printfn "Using NUnit runner: %s" nunitToolPath
+    NUnit3
+        (fun p -> { p with ToolPath = nunitToolPath; ResultSpecs = [testOutput + "/TestResults.xml"] })
+        nunitTestAssemblies
 
 //--------------------------------------------------------------------------------
 // Nuget targets 
@@ -238,12 +238,15 @@ let createNugetPackages _ =
                         Dependencies = dependencies })
                 nuspec
 
-        // Copy dll, pdb and xml to libdir = workingDir/lib/net45/
+        // Copy dll, pdb and xml to libdir = workingDir/lib/net4x/
+        let libDir = if project.Contains ".TCK" then libDir45 else libDirPortable
         ensureDirectory libDir
         !! (releaseDir @@ project + ".dll")
         ++ (releaseDir @@ project + ".pdb")
         ++ (releaseDir @@ project + ".xml")
         ++ (releaseDir @@ project + ".ExternalAnnotations.xml")
+        ++ (releaseDir @@ "Reactive.Streams.Example.Unicast.dll")
+        ++ (releaseDir @@ "Reactive.Streams.Example.Unicast.pdb")
         |> CopyFiles libDir
 
         // Copy all src-files (.cs and .fs files) to workingDir/src
