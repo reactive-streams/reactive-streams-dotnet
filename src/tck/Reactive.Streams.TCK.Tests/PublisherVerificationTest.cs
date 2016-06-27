@@ -93,7 +93,7 @@ namespace Reactive.Streams.TCK.Tests
                         new Thread(() => signalling()).Start();
                 }));
         }
-        
+
         [Test]
         public void Stochastic_spec103_mustSignalOnMethodsSequentially_shouldPass_forSynchronousPublisher()
         {
@@ -169,7 +169,7 @@ namespace Reactive.Streams.TCK.Tests
             /// </summary>
             public Spec105Verification() : base(NewTestEnvironment())
             {
-                
+
             }
 
             public Spec105Verification(TestEnvironment environment, IPublisher<int> publisher) : base(environment)
@@ -186,8 +186,21 @@ namespace Reactive.Streams.TCK.Tests
 
         [Test]
         public void Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled_shouldFailForNotCompletingPublisher()
-            => RequireTestFailure(() => DemandIgnoringAsynchronousPublisherVerification().Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled(),
-                "Expected end-of-stream but got element ["/* element which should not have been signalled */);
+        {
+            var cancellation = new CancellationTokenSource();
+
+            try
+            {
+                var verification = DemandIgnoringAsynchronousPublisherVerification(cancellation.Token);
+                RequireTestFailure(
+                    () => verification.Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled(),
+                    "Expected end-of-stream but got element [" /* element which should not have been signalled */);
+            }
+            finally
+            {
+                cancellation.Cancel();
+            }
+        }
 
         [Test]
         public void Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled_shouldFailForPublisherWhichCompletesButKeepsServingData()
@@ -289,7 +302,7 @@ namespace Reactive.Streams.TCK.Tests
         [Test]
         public void Optional_spec111_maySupportMultiSubscribe_shouldFailBy_actuallyPass()
             => NoopPublisherVerification().Optional_spec111_maySupportMultiSubscribe();
-        
+
         [Test]
         public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront_shouldFailBy_expectingOnError()
         {
@@ -311,7 +324,7 @@ namespace Reactive.Streams.TCK.Tests
         public void Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe_shouldFailBy_reportingAsyncError()
             => RequireTestFailure(() => OnErroringPublisherVerification().Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe(),
                 "Async error during test execution: Test Exception: Boom!");
-        
+
         [Test]
         public void Required_spec303_mustNotAllowUnboundedRecursion_shouldFailBy_informingAboutTooDeepStack()
         {
@@ -363,9 +376,22 @@ namespace Reactive.Streams.TCK.Tests
 
         [Test]
         public void Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling_shouldFailBy_havingEmitedMoreThanRequested()
-            => RequireTestFailure(() => DemandIgnoringAsynchronousPublisherVerification().Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling(),
-                /*Publisher signalled [...] */ ", which is more than the signalled demand: ");
-        
+        {
+            var cancellation = new CancellationTokenSource();
+
+            try
+            {
+                var verification = DemandIgnoringAsynchronousPublisherVerification(cancellation.Token);
+                RequireTestFailure(
+                    () => verification.Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling(),
+                    /*Publisher signalled [...] */ ", which is more than the signalled demand: ");
+            }
+            finally
+            {
+                cancellation.Cancel();
+            }
+        }
+
         [Test]
         public void Required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber_shouldFailBy_keepingTheReferenceLongerThanNeeded()
         {
@@ -377,7 +403,7 @@ namespace Reactive.Streams.TCK.Tests
                 subscriber.OnSubscribe(new LamdaSubscription(onRequest: n =>
                 {
                     for (var i = 0; i < n; i++)
-                        subscriber.OnNext((int) n);
+                        subscriber.OnNext((int)n);
                 }, onCancel: () =>
                 {
                     // noop, we still keep the reference!
@@ -387,11 +413,24 @@ namespace Reactive.Streams.TCK.Tests
             RequireTestFailure(() => verification.Required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber(),
                "did not drop reference to test subscriber after subscription cancellation");
         }
-        
+
         [Test]
         public void Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue_shouldFail_onAsynchDemandIgnoringPublisher()
-            => RequireTestFailure(() => DemandIgnoringAsynchronousPublisherVerification().Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue(),
-                "Expected end-of-stream but got");
+        {
+            var cancellation = new CancellationTokenSource();
+
+            try
+            {
+                var verification = DemandIgnoringAsynchronousPublisherVerification(cancellation.Token);
+                RequireTestFailure(
+                    () => verification.Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue(),
+                    "Expected end-of-stream but got");
+            }
+            finally
+            {
+                cancellation.Cancel();
+            }
+        }
 
         [Test]
         public void Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue_shouldFail_onSynchDemandIgnoringPublisher()
@@ -432,8 +471,8 @@ namespace Reactive.Streams.TCK.Tests
 
                     // this is a mistake, it should still be able to accumulate such demand
                     if (demand == long.MaxValue)
-                        subscriber.OnError(new IllegalStateException("Illegally signalling onError too soon! Cumulative demand equal to long.MaxValue is legal.")); 
-                    
+                        subscriber.OnError(new IllegalStateException("Illegally signalling onError too soon! Cumulative demand equal to long.MaxValue is legal."));
+
                     subscriber.OnNext(0);
                 }));
             });
@@ -468,7 +507,7 @@ namespace Reactive.Streams.TCK.Tests
             // 11 due to the implementation of this particular TCK test (see impl)
             Assert.AreEqual(11, sent.Current);
         }
-        
+
         // FAILING IMPLEMENTATIONS //
 
         /// <summary>
@@ -513,7 +552,7 @@ namespace Reactive.Streams.TCK.Tests
         private PublisherVerification<int> CustomPublisherVerification(IPublisher<int> publisher,
             IPublisher<int> errorPublisher)
             => new SimpleVerification(new TestEnvironment(), publisher, errorPublisher);
-        
+
         /// <summary>
         /// Verification using a Publisher that publishes elements even with no demand available
         /// </summary>
@@ -537,26 +576,28 @@ namespace Reactive.Streams.TCK.Tests
         /// Please note that exceptions thrown from onNext *will be swallowed* – reason being this verification is used to check
         /// very specific things about error reporting - from the "TCK Tests", we do not have any assertions on thrown exceptions.
         /// </summary>
-        private PublisherVerification<int> DemandIgnoringAsynchronousPublisherVerification()
-            => DemandIgnoringAsynchronousPublisherVerification(true);
+        private PublisherVerification<int> DemandIgnoringAsynchronousPublisherVerification(CancellationToken token)
+            => DemandIgnoringAsynchronousPublisherVerification(true, token);
 
         /// <summary>
         /// Verification using a Publisher that publishes elements even with no demand available, from multiple threads (!).
         /// </summary>
-        private PublisherVerification<int> DemandIgnoringAsynchronousPublisherVerification(bool swallowOnNextExceptions)
-            => new SimpleVerification(new TestEnvironment(), new DemandIgnoringAsyncPublisher(swallowOnNextExceptions));
-        
+        private PublisherVerification<int> DemandIgnoringAsynchronousPublisherVerification(bool swallowOnNextExceptions, CancellationToken token)
+            => new SimpleVerification(new TestEnvironment(), new DemandIgnoringAsyncPublisher(swallowOnNextExceptions, token));
+
         private sealed class DemandIgnoringAsyncPublisher : IPublisher<int>
         {
             private readonly bool _swallowOnNextExceptions;
+            private readonly CancellationToken _token;
             private readonly AtomicCounter _startedSignallingThreads = new AtomicCounter(0);
             private const int MaxSignallingThreads = 2;
 
             private readonly AtomicBoolean _concurrentAccessCaused = new AtomicBoolean();
 
-            public DemandIgnoringAsyncPublisher(bool swallowOnNextExceptions)
+            public DemandIgnoringAsyncPublisher(bool swallowOnNextExceptions, CancellationToken token)
             {
                 _swallowOnNextExceptions = swallowOnNextExceptions;
+                _token = token;
             }
 
             public void Subscribe(ISubscriber<int> subscriber)
@@ -566,8 +607,11 @@ namespace Reactive.Streams.TCK.Tests
                     {
                         for (var i = 0L; i <= n; i++)
                         {
-                                // one signal too much
-                                try
+                            if (_token.IsCancellationRequested)
+                                break;
+
+                            // one signal too much
+                            try
                             {
                                 var signal = i;
                                 Task.Run(() =>
@@ -582,9 +626,9 @@ namespace Reactive.Streams.TCK.Tests
                                             throw new Exception("onNext threw an exception!", ex);
                                         else
                                         {
-                                                // yes, swallow the exception, we're not asserting and they'd just end up being logged (stdout),
-                                                // which we do not need in this specific PublisherVerificationTest
-                                            }
+                                            // yes, swallow the exception, we're not asserting and they'd just end up being logged (stdout),
+                                            // which we do not need in this specific PublisherVerificationTest
+                                        }
                                     }
                                 });
                             }
@@ -604,9 +648,9 @@ namespace Reactive.Streams.TCK.Tests
                         }
                     };
 
-                        // must be guarded like this in case a Subscriber triggers request() synchronously from it's onNext()
-                        while (_startedSignallingThreads.GetAndAdd(1) < MaxSignallingThreads)
-                        Task.Run(signalling);
+                    // must be guarded like this in case a Subscriber triggers request() synchronously from it's onNext()
+                    while (_startedSignallingThreads.GetAndAdd(1) < MaxSignallingThreads)
+                        Task.Run(signalling, _token);
                 }));
         }
 
