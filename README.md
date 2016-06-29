@@ -1,4 +1,4 @@
-# Reactive Streams .NET#
+﻿# Reactive Streams .NET#
 
 The purpose of Reactive Streams is to provide a standard for asynchronous stream processing with non-blocking backpressure.
 
