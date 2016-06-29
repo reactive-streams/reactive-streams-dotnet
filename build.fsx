@@ -50,8 +50,6 @@ let testOutput = "TestResults"
 
 let nugetDir = binDir @@ "nuget"
 let workingDir = binDir @@ "build"
-let libDirPortable = workingDir @@ @"lib\portable-net45+netcore45\"
-let libDir45 = workingDir @@ @"lib\net45\"
 let nugetExe = FullName @"src\.nuget\NuGet.exe"
 let slnFile = "./src/Reactive.Streams.sln"
 
@@ -133,7 +131,7 @@ Target "RunTests" <| fun _ ->
     let nunitToolPath = findToolInSubPath "nunit3-console.exe" "src/packages/FAKE/NUnit.ConsoleRunner/tools"
     printfn "Using NUnit runner: %s" nunitToolPath
     NUnit3
-        (fun p -> { p with ToolPath = nunitToolPath; ResultSpecs = [testOutput + "/TestResults.xml"] })
+        (fun p -> { p with ToolPath = nunitToolPath; ResultSpecs = [testOutput + "/TestResults.xml"]; Workers = Some(1) })
         nunitTestAssemblies
 
 //--------------------------------------------------------------------------------
@@ -169,22 +167,27 @@ let createNugetPackages _ =
             DeleteDir dir
             not (directoryExists dir)
         runWithRetries del 3 |> ignore
-
+    
+    let mutable dirId = 1
+     
     ensureDirectory nugetDir
     for nuspec in !! "src/**/*.nuspec" do
         printfn "Creating nuget packages for %s" nuspec
         
-        CleanDir workingDir
-
+        let tempBuildDir = workingDir + dirId.ToString()
+        ensureDirectory tempBuildDir
+        //clean it in case this target gets run multiple times. Which if it does is a bug. But hey since TC throws an exception when the dir is actually not empty. Its a nice circuitbreaker
+        CleanDir tempBuildDir
+        
+        let libDirPortable = tempBuildDir @@ @"lib\portable-net45+netcore45\"
+        let libDir45 = tempBuildDir @@ @"lib\net45\"
         let project = Path.GetFileNameWithoutExtension nuspec 
         let projectDir = Path.GetDirectoryName nuspec
         let projectFile = (!! (projectDir @@ project + ".*sproj")) |> Seq.head
         let releaseDir = projectDir @@ @"bin\Release"
         let packages = projectDir @@ "packages.config"
         let packageDependencies = if (fileExists packages) then (getDependencies packages) else []
-        let dependencies = packageDependencies @ getDependency project
-        let releaseVersion = getProjectVersion project
-
+               
         let pack outputDir symbolPackage =
             NuGetHelper.NuGet
                 (fun p ->
@@ -195,14 +198,14 @@ let createNugetPackages _ =
                         Project =  project
                         Properties = ["Configuration", "Release"]
                         ReleaseNotes = release.Notes |> String.concat "\n"
-                        Version = releaseVersion
+                        Version = release.NugetVersion
                         Tags = tags |> String.concat " "
                         OutputPath = outputDir
-                        WorkingDir = workingDir
+                        WorkingDir = tempBuildDir
                         SymbolPackage = symbolPackage
-                        Dependencies = dependencies })
+                        Dependencies = packageDependencies })
                 nuspec
-
+                        
         // Copy dll, pdb and xml to libdir = workingDir/lib/net4x/
         let libDir = if project.Contains ".TCK" then libDir45 else libDirPortable
         ensureDirectory libDir
@@ -215,7 +218,7 @@ let createNugetPackages _ =
         |> CopyFiles libDir
 
         // Copy all src-files (.cs and .fs files) to workingDir/src
-        let nugetSrcDir = workingDir @@ @"src/"
+        let nugetSrcDir = tempBuildDir @@ @"src/"
         // CreateDir nugetSrcDir
 
         let isCs = hasExt ".cs"
@@ -232,6 +235,7 @@ let createNugetPackages _ =
         // Uses the files we copied to workingDir and outputs to nugetdir
         pack nugetDir NugetSymbolPackage.Nuspec
 
+        dirId <- dirId + 1
 
 let publishNugetPackages _ = 
     let rec publishPackage url accessKey trialsLeft packageFile =
