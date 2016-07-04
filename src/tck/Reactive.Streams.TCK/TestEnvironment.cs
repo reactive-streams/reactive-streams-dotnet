@@ -11,7 +11,7 @@ namespace Reactive.Streams.TCK
     {
         public const int TestBufferSize = 16;
         private const string DefaultTimeoutMillisEnv = "DEFAULT_TIMEOUT_MILLIS";
-        private const long DefaultTimeoutMillis = 100;
+        private const long DefaultTimeoutMillis = 500;
         private const string DefaultNoSignalsTimeoutMillisEnv = "DEFAULT_NO_SIGNALS_TIMEOUT_MILLIS";
         
 
