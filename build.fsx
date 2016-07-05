@@ -87,7 +87,6 @@ Target "AssemblyInfo" <| fun _ ->
 // Build the solution
 
 Target "Build" <| fun _ ->
-
     !! slnFile
     |> MSBuildRelease "" "Rebuild"
     |> ignore
@@ -97,8 +96,7 @@ Target "Build" <| fun _ ->
 // Copy the build output to bin directory
 //--------------------------------------------------------------------------------
 
-Target "CopyOutput" <| fun _ ->
-    
+Target "CopyOutput" <| fun _ ->    
     let copyOutput project =
         let src = "src" @@ project @@ @"bin/Release/"
         let dst = binDir @@ project
@@ -142,6 +140,7 @@ module Nuget =
     // add dependency for other projects
     let getDependency project =
         match project with
+        | "Reactive.Streams.TCK" -> ["Reactive.Streams", release.NugetVersion]
         | _ -> []
 
     // used to add -pre suffix to pre-release packages
@@ -186,7 +185,7 @@ let createNugetPackages _ =
         let projectFile = (!! (projectDir @@ project + ".*sproj")) |> Seq.head
         let releaseDir = projectDir @@ @"bin\Release"
         let packages = projectDir @@ "packages.config"
-        let packageDependencies = if (fileExists packages) then (getDependencies packages) else []
+        let packageDependencies = (if (fileExists packages) then (getDependencies packages) else []) @ getDependency project
                
         let pack outputDir symbolPackage =
             NuGetHelper.NuGet
@@ -215,6 +214,7 @@ let createNugetPackages _ =
         ++ (releaseDir @@ project + ".ExternalAnnotations.xml")
         ++ (releaseDir @@ "Reactive.Streams.Example.Unicast.dll")
         ++ (releaseDir @@ "Reactive.Streams.Example.Unicast.pdb")
+        ++ (releaseDir @@ "Reactive.Streams.Example.Unicast.xml")
         |> CopyFiles libDir
 
         // Copy all src-files (.cs and .fs files) to workingDir/src
