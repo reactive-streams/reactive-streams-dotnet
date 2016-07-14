@@ -64,7 +64,7 @@ followed by a possibly unbounded number of `onNext` signals (as requested by `Su
 
 ### SPECIFICATION
 
-#### 1. Publisher ([Code](https://github.com/reactive-streams/reactive-streams-dotnet/blob/master/src/Reactive.Streams/IPublisher.cs))
+#### 1. Publisher ([Code](https://github.com/reactive-streams/reactive-streams-dotnet/blob/master/src/api/Reactive.Streams/IPublisher.cs))
 
 ```c#
 public interface IPublisher<out T> {
@@ -88,7 +88,7 @@ public interface IPublisher<out T> {
 
 [<a name="footnote-1-1">1</a>] :  A stateful Publisher can be overwhelmed, bounded by a finite number of underlying resources, exhausted, shut-down or in a failed state.
 
-#### 2. Subscriber ([Code](https://github.com/reactive-streams/reactive-streams-dotnet/blob/master/src/Reactive.Streams/ISubscriber.cs))
+#### 2. Subscriber ([Code](https://github.com/reactive-streams/reactive-streams-dotnet/blob/master/src/api/Reactive.Streams/ISubscriber.cs))
 
 ```c#
 public interface ISubscriber<in T> {
@@ -117,7 +117,7 @@ public interface ISubscriber<in T> {
 
 [<a name="footnote-2-1">1</a>] : See JMM definition of Happen-Before in section 17.4.5. on http://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html
 
-#### 3. Subscription ([Code](https://github.com/reactive-streams/reactive-streams-dotnet/blob/master/src/Reactive.Streams/ISubscription.cs))
+#### 3. Subscription ([Code](https://github.com/reactive-streams/reactive-streams-dotnet/blob/master/src/api/Reactive.Streams/ISubscription.cs))
 
 ```c#
 public interface ISubscription {
@@ -154,7 +154,7 @@ public interface ISubscription {
 
 A `Subscription` is shared by exactly one `Publisher` and one `Subscriber` for the purpose of mediating the data exchange between this pair. This is the reason why the `Subscribe()` method does not return the created `Subscription`, but instead returns `void`; the `Subscription` is only passed to the `Subscriber` via the `OnSubscribe` callback.
 
-#### 4.Processor ([Code](https://github.com/reactive-streams/reactive-streams-dotnet/blob/master/src/Reactive.Streams/IProcessor.cs))
+#### 4.Processor ([Code](https://github.com/reactive-streams/reactive-streams-dotnet/blob/master/src/api/Reactive.Streams/IProcessor.cs))
 
 ```c#
 public interface IProcessor<in T1, out T2> : ISubscriber<T1>, IPublisher<T2> {
