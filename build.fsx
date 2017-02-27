@@ -62,22 +62,14 @@ Target "Build" (fun _ ->
 )
 
 Target "RunTests" (fun _ ->
-    let nunitToolPath = findToolInSubPath "nunit3-console.exe" "./tools/NUnit.ConsoleRunner/tools"
+    let nunitAssemblies = !! "./src/tck/Reactive.Streams.TCK.Tests/bin/Release/net45/Reactive.Streams.TCK.Tests.dll"
 
-    let nunitAssemblies = !! "./src/**/Reactive.Streams.TCK.Tests/**/net45/Reactive.Streams.TCK.Tests.dll"
-
-    let runNunitSingleAssembly assembly = 
-        let assemblyName = Path.GetFileNameWithoutExtension(assembly)
-        NUnit3
-            (fun p -> 
-                { p with
-                    ToolPath = nunitToolPath;
-                    WorkingDir = outputTests;
-                    TeamCity = true;})
-             (Seq.singleton assembly)
-        
-    printfn "Using NUnit runner: %s" nunitToolPath
-    nunitAssemblies |> Seq.iter (runNunitSingleAssembly)
+    NUnit3
+        (fun p -> 
+            { p with
+                WorkingDir = outputTests;
+                TeamCity = true;})
+            (nunitAssemblies)
 )
 
 //--------------------------------------------------------------------------------
