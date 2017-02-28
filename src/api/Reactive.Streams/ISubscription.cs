@@ -42,7 +42,7 @@ namespace Reactive.Streams
         /// Request the <see cref="IPublisher{T}"/> to stop sending data and clean up resources.
         /// </para>
         /// <para>
-        /// Data may still be sent to meet previously signalled demand after calling cancel as this request is asynchronous.
+        /// Data may still be sent to meet previously signalled demand after calling cancel.
         /// </para>
         /// </summary>
         void Cancel();
