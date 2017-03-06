@@ -88,6 +88,15 @@ Target "CreateNuget" (fun _ ->
                 AdditionalArgs = ["--include-symbols"]
                 VersionSuffix = versionSuffix
                 OutputPath = outputNuGet })
+
+    DotNetCli.Pack
+        (fun p -> 
+            { p with
+                Project = "./src/TCK/Reactive.Streams.TCK/Reactive.Streams.TCK.csproj"
+                Configuration = configuration
+                AdditionalArgs = ["--include-symbols /p:NuspecFile=Reactive.Streams.TCK.nuspec"]
+                VersionSuffix = versionSuffix
+                OutputPath = outputNuGet })
 )
 
 Target "PublishNuget" (fun _ ->
