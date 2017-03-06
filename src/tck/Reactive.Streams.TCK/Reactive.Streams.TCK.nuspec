@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Reactive.Streams.TCK</id>
+    <version>1.0.0</version>
+    <authors>Reactive Streams</authors>
+    <owners>Reactive Streams</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</licenseUrl>
+    <projectUrl>https://github.com/reactive-streams/reactive-streams-dotnet</projectUrl>
+    <description>Reactive Streams Technology Compatibility Kit</description>
+    <copyright>CC0 1.0 Universal</copyright>
+    <tags>reactive stream</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Reactive.Streams" version="1.0.0" />
+        <dependency id="NUnit" version="3.6.1" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\net45\Reactive.Streams.Example.Unicast.dll" target="lib\net45" />
+    <file src="bin\Release\net45\Reactive.Streams.TCK.dll" target="lib\net45" />
+  </files>
+</package>

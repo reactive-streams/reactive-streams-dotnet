@@ -202,3 +202,9 @@ UpgradeLog*.htm
 
 # FAKE
 .fake/
+
+# .Net Core
+.dotnet/
+
+# Tools
+tools/
