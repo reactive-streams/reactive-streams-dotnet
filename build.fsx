@@ -62,7 +62,8 @@ Target "Build" (fun _ ->
 )
 
 Target "RunTests" (fun _ ->
-    let nunitAssemblies = !! "./src/tck/Reactive.Streams.TCK.Tests/bin/Release/net45/Reactive.Streams.TCK.Tests.dll"
+    let nunitAssemblies = !! "./src/tck/Reactive.Streams.TCK.Tests/bin/Release/net45/Reactive.Streams.TCK.Tests.dll" 
+                          ++ "./src/examples/Reactive.Streams.Example.Unicast.Tests/bin/Release/net45/Reactive.Streams.Example.Unicast.Tests.dll"
 
     NUnit3
         (fun p -> 
@@ -85,6 +86,15 @@ Target "CreateNuget" (fun _ ->
                 Project = "./src/api/Reactive.Streams/Reactive.Streams.csproj"
                 Configuration = configuration
                 AdditionalArgs = ["--include-symbols"]
+                VersionSuffix = versionSuffix
+                OutputPath = outputNuGet })
+
+    DotNetCli.Pack
+        (fun p -> 
+            { p with
+                Project = "./src/TCK/Reactive.Streams.TCK/Reactive.Streams.TCK.csproj"
+                Configuration = configuration
+                AdditionalArgs = ["--include-symbols /p:NuspecFile=Reactive.Streams.TCK.nuspec"]
                 VersionSuffix = versionSuffix
                 OutputPath = outputNuGet })
 )
