@@ -21,3 +21,4 @@ github name    | Real Name, Email Address used for git commits, Company
 cconstantin    | Chris Constantin, chris.constantin@aligned.io, Aligned Software Solutions, Inc.
 viktorklang    | Viktor Klang, viktor.klang@gmail.com, Lightbend, Inc.
 Silv3rcircl3   | Marc Piechura, piechura@gmx.net, Pulmokard GmbH
+alexvaluyskiy  | Alex Valuyskiy, alex.valuiskyi@gmail.com
