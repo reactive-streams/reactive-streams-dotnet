@@ -43,7 +43,7 @@ namespace Reactive.Streams.TCK.Tests
             }
         }
 
-        public RangePublisherTest() : base(new TestEnvironment(25))
+        public RangePublisherTest() : base(new TestEnvironment())
         {
         }
 
