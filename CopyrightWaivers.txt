@@ -22,3 +22,4 @@ cconstantin    | Chris Constantin, chris.constantin@aligned.io, Aligned Software
 viktorklang    | Viktor Klang, viktor.klang@gmail.com, Lightbend, Inc.
 Silv3rcircl3   | Marc Piechura, piechura@gmx.net, Pulmokard GmbH
 alexvaluyskiy  | Alex Valuyskiy, alex.valuiskyi@gmail.com
+akarnokd       | David Karnok, akarnokd@gmail.com
