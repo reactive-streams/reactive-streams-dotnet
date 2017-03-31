@@ -5,21 +5,21 @@ using Reactive.Streams.TCK;
 namespace Reactive.Streams.Example.Unicast.Tests
 {
     [TestFixture]
-    public class SyncSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int?>
+    public class SyncSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int>
     {
         public SyncSubscriberWhiteboxTest() : base(new TestEnvironment())
         {
         }
 
-        public override int? CreateElement(int element) => element;
+        public override int CreateElement(int element) => element;
 
-        public override ISubscriber<int?> CreateSubscriber(WhiteboxSubscriberProbe<int?> probe) => new Subscriber(probe);
+        public override ISubscriber<int> CreateSubscriber(WhiteboxSubscriberProbe<int> probe) => new Subscriber(probe);
 
-        private sealed class Subscriber : SyncSubscriber<int?>
+        private sealed class Subscriber : SyncSubscriber<int>
         {
-            private readonly WhiteboxSubscriberProbe<int?> _probe;
+            private readonly WhiteboxSubscriberProbe<int> _probe;
 
-            public Subscriber(WhiteboxSubscriberProbe<int?> probe)
+            public Subscriber(WhiteboxSubscriberProbe<int> probe)
             {
                 _probe = probe;
             }
@@ -45,13 +45,13 @@ namespace Reactive.Streams.Example.Unicast.Tests
                 public void SignalCancel() => _subscription.Cancel();
             }
 
-            public override void OnNext(int? element)
+            public override void OnNext(int element)
             {
                 base.OnNext(element);
                 _probe.RegisterOnNext(element);
             }
 
-            protected override bool WhenNext(int? element) => true;
+            protected override bool WhenNext(int element) => true;
 
             public override void OnError(Exception cause)
             {
