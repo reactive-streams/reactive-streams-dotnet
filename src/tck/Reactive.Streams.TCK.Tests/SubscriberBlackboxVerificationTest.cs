@@ -116,6 +116,12 @@ namespace Reactive.Streams.TCK.Tests
                 "OnNext(null) did not throw ArgumentNullException");
 
         [Test]
+        public void Required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustIgnoreSpecForValueType_onNext()
+            => RequireTestSkip(
+                () => SimpleSubscriberVerification().Required_spec213_blackbox_onNext_mustThrowNullPointerExceptionWhenParametersAreNull(),
+                "Can't verify behavior for value types");
+
+        [Test]
         public void Required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onError()
             => RequireTestFailure(
                 () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).Required_spec213_blackbox_onError_mustThrowNullPointerExceptionWhenParametersAreNull(),
