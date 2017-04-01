@@ -310,15 +310,17 @@ namespace Reactive.Streams.TCK
         public void Required_spec213_blackbox_onNext_mustThrowNullPointerExceptionWhenParametersAreNull()
             => BlackboxSubscriberWithoutSetupTest(stage =>
             {
+                var element = default(T);
+                if(element != null)
+                    throw new IgnoreException("Can't verify behavior for value types");
+
                 var subscriber = CreateSubscriber();
                 var gotNpe = false;
                 subscriber.OnSubscribe(new Spec213DummySubscription());
 
                 try
                 {
-                    // we can't use null here because we can't enforce a constsraint which supports Nullable<T>
-                    // default(T) will return null for all reference types as well as Nullable<T>
-                    subscriber.OnNext(default(T));
+                    subscriber.OnNext(element);
                 }
                 catch (ArgumentNullException)
                 {
