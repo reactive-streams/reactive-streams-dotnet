@@ -861,6 +861,9 @@ namespace Reactive.Streams.TCK
             {
                 var remainingMilliseconds = (long)(deadline - DateTime.Now).TotalMilliseconds;
 
+                if (remainingMilliseconds < 0)
+                    return _environment.FlopAndFail<List<T>>($"{errorMessage} within {timeoutMilliseconds} ms");
+
                 result.Add(Next(remainingMilliseconds, errorMessage));
                 remaining--;
             }
