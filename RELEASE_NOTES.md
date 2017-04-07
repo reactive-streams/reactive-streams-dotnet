@@ -1,4 +1,4 @@
-#### 1.0.0 - 05.04.2017
+#### 1.0.2 - 07.04.2017
 
 Reactive.Streams
  - Stable release
