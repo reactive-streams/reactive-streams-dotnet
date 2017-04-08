@@ -4,12 +4,13 @@
     <AssemblyName>Reactive.Streams.TCK</AssemblyName>
     <Description>Reactive Streams Technology Compatibility Kit</Description>
     <Copyright>CC0 1.0 Universal</Copyright>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>1.0.3</VersionPrefix>
     <Authors>Reactive Streams</Authors>
     <TargetFrameworks>net45</TargetFrameworks>
     <PackageTags>reactive;stream</PackageTags>
     <PackageProjectUrl>https://github.com/reactive-streams/reactive-streams-dotnet</PackageProjectUrl>
     <PackageLicenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</PackageLicenseUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,8 +19,6 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
     <PackageReference Include="NUnit" Version="3.6.1" />
   </ItemGroup>
 
