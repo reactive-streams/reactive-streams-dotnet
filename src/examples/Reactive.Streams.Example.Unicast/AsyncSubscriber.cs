@@ -50,10 +50,10 @@ namespace Reactive.Streams.Example.Unicast
         {
             public OnSubscribeSignal(ISubscription subscription)
             {
-                Subscritpion = subscription;
+                Subscription = subscription;
             }
 
-            public ISubscription Subscritpion { get; }
+            public ISubscription Subscription { get; }
         }
 
 
@@ -85,7 +85,7 @@ namespace Reactive.Streams.Example.Unicast
                             var subscribe = signal as OnSubscribeSignal;
                             if (subscribe != null)
                             {
-                                HandleOnSubscribe(subscribe.Subscritpion);
+                                HandleOnSubscribe(subscribe.Subscription);
                                 return;
                             }
 
