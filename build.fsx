@@ -62,15 +62,17 @@ Target "Build" (fun _ ->
 )
 
 Target "RunTests" (fun _ ->
-    let nunitAssemblies = !! "./src/tck/Reactive.Streams.TCK.Tests/bin/Release/net45/Reactive.Streams.TCK.Tests.dll" 
-                          ++ "./src/examples/Reactive.Streams.Example.Unicast.Tests/bin/Release/net45/Reactive.Streams.Example.Unicast.Tests.dll"
+    let projects = !! "./src/**/Reactive.Streams.Example.Unicast.Tests.csproj"
+                   ++ "./src/**/Reactive.Streams.TCK.Tests.csproj"
 
-    NUnit3
-        (fun p -> 
-            { p with
-                WorkingDir = outputTests;
-                TeamCity = true;})
-            (nunitAssemblies)
+    let runSingleProject project =
+        DotNetCli.Test
+            (fun p -> 
+                { p with
+                    Project = project
+                    Configuration = configuration })
+
+    projects |> Seq.iter (runSingleProject)
 )
 
 //--------------------------------------------------------------------------------
