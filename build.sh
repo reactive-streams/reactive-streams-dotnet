@@ -7,10 +7,10 @@
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 TOOLS_DIR=$SCRIPT_DIR/tools
 NUGET_EXE=$TOOLS_DIR/nuget.exe
-NUGET_URL=https://dist.nuget.org/win-x86-commandline/v3.5.0/nuget.exe
-FAKE_VERSION=4.50.0
+NUGET_URL=https://dist.nuget.org/win-x86-commandline/v4.1.0/nuget.exe
+FAKE_VERSION=4.57.4
 FAKE_EXE=$TOOLS_DIR/FAKE/tools/FAKE.exe
-DOTNET_VERSION=1.0.0-rc4-004771
+DOTNET_VERSION=1.0.0
 DOTNET_INSTALLER_URL=https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.sh
 
 # Define default arguments.

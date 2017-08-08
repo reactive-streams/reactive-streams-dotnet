@@ -29,12 +29,12 @@ Param(
     [string[]]$ScriptArgs
 )
 
-$FakeVersion = "4.50.0"
+$FakeVersion = "4.57.4"
 $NUnitVersion = "3.6.0"
 $DotNetChannel = "preview";
-$DotNetVersion = "1.0.0-rc4-004771";
+$DotNetVersion = "1.0.0";
 $DotNetInstallerUri = "https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.ps1";
-$NugetVersion = "3.5.0";
+$NugetVersion = "4.1.0";
 $NugetUrl = "https://dist.nuget.org/win-x86-commandline/v$NugetVersion/nuget.exe"
 
 # Make sure tools folder exists
