@@ -30,7 +30,7 @@ Param(
 )
 
 $FakeVersion = "4.57.4"
-$NUnitVersion = "3.6.0"
+$NUnitVersion = "3.12.0"
 $DotNetChannel = "preview";
 $DotNetVersion = "1.0.0";
 $DotNetInstallerUri = "https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.ps1";

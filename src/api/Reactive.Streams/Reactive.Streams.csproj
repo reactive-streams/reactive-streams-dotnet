@@ -6,7 +6,7 @@
     <Copyright>CC0 1.0 Universal</Copyright>
     <VersionPrefix>1.0.3</VersionPrefix>
     <Authors>Reactive Streams</Authors>
-    <TargetFrameworks>netstandard1.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;net45;netcoreapp3.0</TargetFrameworks>
     <PackageTags>reactive;stream</PackageTags>
     <PackageProjectUrl>https://github.com/reactive-streams/reactive-streams-dotnet</PackageProjectUrl>
     <PackageLicenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</PackageLicenseUrl>
