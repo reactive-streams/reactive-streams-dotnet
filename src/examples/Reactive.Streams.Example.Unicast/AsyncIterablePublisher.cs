@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Reactive.Streams.Example.Unicast
 {
     public class AsyncIterablePublisher<T> : IPublisher<T>
-    { 
+    {
         // These represent the protocol of the `AsyncIterablePublishers` SubscriptionImpls
         private interface ISignal { }
 
@@ -61,7 +62,7 @@ namespace Reactive.Streams.Example.Unicast
 
         private AsyncIterablePublisher(IEnumerable<T> elements, int batchSize)
         {
-            if(elements == null)
+            if (elements == null)
                 throw new ArgumentNullException(nameof(elements));
             if (batchSize < 1)
                 throw new ArgumentNullException(nameof(batchSize), "batchSize must be greater than zero!");
@@ -121,13 +122,13 @@ namespace Reactive.Streams.Example.Unicast
                             if (_inboundSignals.TryDequeue(out signal) && !_cancelled) // to make sure that we follow rule 1.8, 3.6 and 3.7
                             {
                                 // Below we simply unpack the `Signal`s and invoke the corresponding method
-                                if(signal is RequestSignal)
+                                if (signal is RequestSignal)
                                     DoRequest(((RequestSignal)signal).N);
                                 else if (signal == SendSignal.Instance)
                                     DoSend();
-                                else if(signal == CancelSignal.Instance)
+                                else if (signal == CancelSignal.Instance)
                                     DoCancel();
-                                else if(signal == SubscribeSignal.Instance)
+                                else if (signal == SubscribeSignal.Instance)
                                     DoSubscribe();
                             }
                         }
@@ -144,12 +145,12 @@ namespace Reactive.Streams.Example.Unicast
             private void DoRequest(long n)
             {
                 if (n < 1)
-                    TerminateDueTo(new ArgumentException(_subscriber +" violated the Reactive Streams rule 3.9 by requesting a non-positive number of elements"));
+                    TerminateDueTo(new ArgumentException(_subscriber + " violated the Reactive Streams rule 3.9 by requesting a non-positive number of elements"));
                 else if (_demand + n < 1)
                 {
                     // As governed by rule 3.17, when demand overflows `long.MaxValue` we treat the signalled demand as "effectively unbounded"
                     _demand = long.MaxValue;
-                        // Here we protect from the overflow and treat it as "effectively unbounded"
+                    // Here we protect from the overflow and treat it as "effectively unbounded"
                     DoSend(); // Then we proceed with sending data downstream
                 }
                 else
@@ -250,13 +251,13 @@ namespace Reactive.Streams.Example.Unicast
                         try
                         {
                             next = _enumerator.Current;
-                                // We have already checked `MoveNext` when subscribing, so we can fall back to testing -after- `Current` is called.
+                            // We have already checked `MoveNext` when subscribing, so we can fall back to testing -after- `Current` is called.
                             hasNext = _enumerator.MoveNext(); // Need to keep track of End-of-Stream
                         }
                         catch (Exception ex)
                         {
                             TerminateDueTo(ex);
-                                // If `Current` or `MoveNext` throws (they can, since it is user-provided), we need to treat the stream as errored as per rule 1.4
+                            // If `Current` or `MoveNext` throws (they can, since it is user-provided), we need to treat the stream as errored as per rule 1.4
                             return;
                         }
 
