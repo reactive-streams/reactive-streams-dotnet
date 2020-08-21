@@ -416,7 +416,7 @@ namespace Reactive.Streams.TCK
 
         public void NotVerified() => NotVerified("Not verified using this TCK.");
 
-        public void NotVerified(string message) => Assert.Ignore(message);
+        public void NotVerified(string message) => TckAssert.Skip(message);
     }
 
     public class BlackBoxTestStage<T> : ManualPublisher<T>
