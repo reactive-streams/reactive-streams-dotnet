@@ -7,7 +7,6 @@ using Reactive.Streams.TCK;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {
-    [TestFixture]
     public class IterablePublisherTest : PublisherVerification<int?>
     {
         public IterablePublisherTest() : base(new TestEnvironment())

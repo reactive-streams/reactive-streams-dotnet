@@ -5,7 +5,6 @@ using Reactive.Streams.TCK.Tests.Support;
 
 namespace Reactive.Streams.TCK.Tests
 {
-    [TestFixture]
     public class SyncTriggeredDemandSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int?>
     {
         public SyncTriggeredDemandSubscriberWhiteboxTest() : base(new TestEnvironment())

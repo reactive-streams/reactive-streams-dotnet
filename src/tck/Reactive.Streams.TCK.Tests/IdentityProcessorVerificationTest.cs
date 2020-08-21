@@ -22,7 +22,6 @@ namespace Reactive.Streams.TCK.Tests
             }, "The Publisher under test only supports 1 subscribers, while this test requires at least 2 to run");
         }
 
-        [TestFixture(Ignore = "Helper verification for single test")]
         private sealed class Spec104WaitingVerification : IdentityProcessorVerification<int>
         {
             /// <summary>
@@ -109,7 +108,6 @@ namespace Reactive.Streams.TCK.Tests
             }, "Did not receive expected error on downstream within " + DefaultTimeoutMilliseconds);
         }
 
-        [TestFixture(Ignore = "Helper verification for single test")]
         private sealed class Spec104IgnoreVerification : IdentityProcessorVerification<int>
         {
             /// <summary>
