@@ -644,8 +644,8 @@ namespace Reactive.Streams.TCK
                 check2.Add(z2);
                 check2.Add(z3);
 
-                Assert.AreEqual(r, check1, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 2");
-                Assert.AreEqual(r, check2, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 3");
+                r.Should().BeEquivalentTo(check1, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 2");
+                r.Should().BeEquivalentTo(check2, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 3");
             });
 
 
@@ -671,9 +671,10 @@ namespace Reactive.Streams.TCK
                 // NOTE: can't check completion, the Publisher may not be able to signal it
                 //       a similar test *with* completion checking is implemented
 
-
-                Assert.AreEqual(received1, received2, "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
-                Assert.AreEqual(received2, received3, "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
+                received1.Should().BeEquivalentTo(received2,
+                    "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
+                received2.Should().BeEquivalentTo(received3,
+                    "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
@@ -699,8 +700,10 @@ namespace Reactive.Streams.TCK
                 sub2.ExpectCompletion();
                 sub3.ExpectCompletion();
 
-                Assert.AreEqual(received1, received2, "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
-                Assert.AreEqual(received2, received3, "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
+                received1.Should().BeEquivalentTo(received2,
+                    "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
+                received2.Should().BeEquivalentTo(received3,
+                    "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
             });
 
         ///////////////////// SUBSCRIPTION TESTS //////////////////////////////////

@@ -16,7 +16,8 @@ namespace Reactive.Streams.Example.Unicast.Tests
 
         public override IPublisher<int?> CreatePublisher(long elements)
         {
-            Assert.LessOrEqual(elements, MaxElementsFromPublisher);
+            Assert.True(elements <= MaxElementsFromPublisher);
+            //Assert.LessOrEqual(elements, MaxElementsFromPublisher);
             return new NumberIterablePublisher(0, (int)elements);
         }
 
