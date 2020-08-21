@@ -7,6 +7,7 @@
     <VersionPrefix>1.0.3</VersionPrefix>
     <Authors>Reactive Streams</Authors>
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
     <PackageTags>reactive;stream</PackageTags>
     <PackageProjectUrl>https://github.com/reactive-streams/reactive-streams-dotnet</PackageProjectUrl>
     <PackageLicenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</PackageLicenseUrl>
