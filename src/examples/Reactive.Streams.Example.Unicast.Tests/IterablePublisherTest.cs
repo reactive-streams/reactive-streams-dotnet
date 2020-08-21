@@ -9,7 +9,7 @@ namespace Reactive.Streams.Example.Unicast.Tests
 {
     public class IterablePublisherTest : PublisherVerification<int?>
     {
-        public IterablePublisherTest() : base(new TestEnvironment())
+        public IterablePublisherTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 

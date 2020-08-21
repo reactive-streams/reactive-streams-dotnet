@@ -7,7 +7,7 @@ namespace Reactive.Streams.TCK.Tests
 {
     public class SyncTriggeredDemandSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int?>
     {
-        public SyncTriggeredDemandSubscriberWhiteboxTest() : base(new TestEnvironment())
+        public SyncTriggeredDemandSubscriberWhiteboxTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 

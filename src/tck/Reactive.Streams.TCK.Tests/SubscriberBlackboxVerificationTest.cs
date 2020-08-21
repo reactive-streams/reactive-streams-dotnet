@@ -11,6 +11,13 @@ namespace Reactive.Streams.TCK.Tests
     /// </summary>
     public class SubscriberBlackboxVerificationTest : TCKVerificationSupport
     {
+        private readonly ITestOutputHelper _output;
+
+        public SubscriberBlackboxVerificationTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [SkippableFact]
         public void Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest_shouldFailBy_notGettingRequestCall()
             => RequireTestFailure(
@@ -134,7 +141,7 @@ namespace Reactive.Streams.TCK.Tests
         /// Verification using a Subscriber that doesn't do anything on any of the callbacks
         /// </summary>
         private SubscriberBlackboxVerification<int> NoopSubscriberVerification()
-            => new NoopBlackboxVerification(new TestEnvironment());
+            => new NoopBlackboxVerification(new TestEnvironment(_output));
 
         private sealed class NoopBlackboxVerification : SubscriberBlackboxVerification<int>
         {
@@ -151,7 +158,7 @@ namespace Reactive.Streams.TCK.Tests
         /// Verification using a Subscriber that only calls 'Requests(1)' on 'OnSubscribe' and 'OnNext'
         /// </summary>
         private SubscriberBlackboxVerification<int> SimpleSubscriberVerification()
-            => new SimpleBlackboxVerification(new TestEnvironment());
+            => new SimpleBlackboxVerification(new TestEnvironment(_output));
 
         private sealed class SimpleBlackboxVerification : SubscriberBlackboxVerification<int>
         {
@@ -178,7 +185,7 @@ namespace Reactive.Streams.TCK.Tests
         /// Custom Verification using given Subscriber
         /// </summary>
         private SubscriberBlackboxVerification<int?> CustomSubscriberVerification(ISubscriber<int?> subscriber)
-            => new CustomBlackboxVerification(new TestEnvironment(), subscriber);
+            => new CustomBlackboxVerification(new TestEnvironment(_output), subscriber);
 
         private sealed class CustomBlackboxVerification : SubscriberBlackboxVerification<int?>
         {

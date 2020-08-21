@@ -9,7 +9,7 @@ namespace Reactive.Streams.Example.Unicast.Tests
 {
     public class UnboundedIntegerIncrementPublisherTest : PublisherVerification<int?>
     {
-        public UnboundedIntegerIncrementPublisherTest() : base(new TestEnvironment())
+        public UnboundedIntegerIncrementPublisherTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 
