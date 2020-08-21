@@ -42,7 +42,7 @@ namespace Reactive.Streams.TCK.Tests.Support
         }
 
         /// <summary>
-        ///  Runs given code block and expects it fail with an <see cref="IgnoreException"/>
+        ///  Runs given code block and expects it fail with an <see cref="SkipException"/>
         /// </summary>
         /// <param name="throwingRun">encapsulates test case which we expect to be skipped</param>
         /// <param name="messagePart">the exception failing the test (inside the run parameter) must contain this message part in one of it's causes</param>
@@ -52,7 +52,7 @@ namespace Reactive.Streams.TCK.Tests.Support
             {
                 throwingRun();
             }
-            catch (IgnoreException ignore)
+            catch (SkipException ignore)
             {
                 if(ignore.Message.Contains(messagePart))
                     return;
