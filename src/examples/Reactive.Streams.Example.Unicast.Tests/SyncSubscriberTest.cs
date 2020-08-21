@@ -5,7 +5,6 @@ using Reactive.Streams.TCK;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {
-    [TestFixture]
     public class SyncSubscriberTest : SubscriberBlackboxVerification<int?>
     {
         public SyncSubscriberTest() : base(new TestEnvironment())

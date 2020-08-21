@@ -5,7 +5,6 @@ using Reactive.Streams.Example.Unicast;
 
 namespace Reactive.Streams.TCK.Tests
 {
-    [TestFixture]
     public class SingleElementPublisherTest : PublisherVerification<int>
     {
         public SingleElementPublisherTest() : base(new TestEnvironment())

@@ -5,10 +5,9 @@ using Reactive.Streams.TCK;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {
-    [TestFixture]
     public class ValueTypeSyncSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int>
     {
-        public ValueTypeSyncSubscriberWhiteboxTest() : base(new TestEnvironment())
+        public ValueTypeSyncSubscriberWhiteboxTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 
@@ -68,7 +67,6 @@ namespace Reactive.Streams.Example.Unicast.Tests
         }
     }
 
-    [TestFixture]
     public class NullableSyncSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int?>
     {
         public NullableSyncSubscriberWhiteboxTest() : base(new TestEnvironment())

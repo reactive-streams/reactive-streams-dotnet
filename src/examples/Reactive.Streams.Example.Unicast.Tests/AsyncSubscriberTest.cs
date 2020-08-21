@@ -7,7 +7,6 @@ using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {
-    [TestFixture]
     public class AsyncSubscriberTest : SubscriberBlackboxVerification<int?>
     {
         public AsyncSubscriberTest() : base(new TestEnvironment())
