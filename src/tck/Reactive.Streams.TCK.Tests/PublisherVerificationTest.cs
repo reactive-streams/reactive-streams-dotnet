@@ -14,6 +14,13 @@ namespace Reactive.Streams.TCK.Tests
     /// </summary>
     public class PublisherVerificationTest : TCKVerificationSupport
     {
+        private readonly ITestOutputHelper _output;
+
+        public PublisherVerificationTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [SkippableFact]
         public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements_shouldFailBy_ExpectingOnError()
             => RequireTestFailure(() => NoopPublisherVerification().Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements(),
@@ -155,7 +162,7 @@ namespace Reactive.Streams.TCK.Tests
         public void Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete_shouldNotAllowEagerOnComplete()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnComplete());
-            var verification = new Spec105Verification(NewTestEnvironment(), publisher);
+            var verification = new Spec105Verification(new TestEnvironment(_output), publisher);
             RequireTestFailure(() => verification.Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete(),
                 "Subscriber.OnComplete() called before Subscriber.OnSubscribe");
         }
@@ -167,7 +174,7 @@ namespace Reactive.Streams.TCK.Tests
             /// <summary>
             /// We need this constructor for NUnit even if the fixture is ignored 
             /// </summary>
-            public Spec105Verification() : base(NewTestEnvironment())
+            public Spec105Verification(TestEnvironment environment) : base(environment)
             {
 
             }
@@ -505,7 +512,7 @@ namespace Reactive.Streams.TCK.Tests
             verification.Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue();
 
             // 11 due to the implementation of this particular TCK test (see impl)
-            Assert.AreEqual(11, sent.Current);
+            Assert.Equal(11, sent.Current);
         }
 
         // FAILING IMPLEMENTATIONS //
@@ -521,7 +528,7 @@ namespace Reactive.Streams.TCK.Tests
                 subscriber.OnSubscribe(new LamdaSubscription());
             });
 
-            return new SimpleVerification(NewTestEnvironment(), publisher);
+            return new SimpleVerification(new TestEnvironment(_output), publisher);
         }
 
         /// <summary>
@@ -537,21 +544,21 @@ namespace Reactive.Streams.TCK.Tests
                 }));
             });
 
-            return new SimpleVerification(NewTestEnvironment(), publisher);
+            return new SimpleVerification(new TestEnvironment(_output), publisher);
         }
 
         /// <summary>
         /// Custom Verification using given Publishers
         /// </summary>
         private PublisherVerification<int> CustomPublisherVerification(IPublisher<int> publisher)
-            => new SimpleVerification(new TestEnvironment(), publisher);
+            => new SimpleVerification(new TestEnvironment(_output), publisher);
 
         /// <summary>
         /// Custom Verification using given Publishers
         /// </summary>
         private PublisherVerification<int> CustomPublisherVerification(IPublisher<int> publisher,
             IPublisher<int> errorPublisher)
-            => new SimpleVerification(new TestEnvironment(), publisher, errorPublisher);
+            => new SimpleVerification(new TestEnvironment(_output), publisher, errorPublisher);
 
         /// <summary>
         /// Verification using a Publisher that publishes elements even with no demand available
@@ -567,7 +574,7 @@ namespace Reactive.Streams.TCK.Tests
                         subscriber.OnNext((int)i);
                 }));
             });
-            return new SimpleVerification(new TestEnvironment(), publisher);
+            return new SimpleVerification(new TestEnvironment(_output), publisher);
         }
 
         /// <summary>
@@ -583,7 +590,7 @@ namespace Reactive.Streams.TCK.Tests
         /// Verification using a Publisher that publishes elements even with no demand available, from multiple threads (!).
         /// </summary>
         private PublisherVerification<int> DemandIgnoringAsynchronousPublisherVerification(bool swallowOnNextExceptions, CancellationToken token)
-            => new SimpleVerification(new TestEnvironment(), new DemandIgnoringAsyncPublisher(swallowOnNextExceptions, token));
+            => new SimpleVerification(new TestEnvironment(_output), new DemandIgnoringAsyncPublisher(swallowOnNextExceptions, token));
 
         private sealed class DemandIgnoringAsyncPublisher : IPublisher<int>
         {
@@ -662,7 +669,7 @@ namespace Reactive.Streams.TCK.Tests
             /// <summary>
             /// We need this constructor for NUnit even if the fixture is ignored 
             /// </summary>
-            public SimpleVerification() : base(NewTestEnvironment()) { }
+            public SimpleVerification(TestEnvironment environment) : base(environment) { }
 
             public SimpleVerification(TestEnvironment environment, IPublisher<int> publisher, IPublisher<int> failedPublisher = null) : base(environment)
             {
@@ -675,6 +682,5 @@ namespace Reactive.Streams.TCK.Tests
             public override IPublisher<int> CreateFailedPublisher() => _failedPublisher;
         }
 
-        private static TestEnvironment NewTestEnvironment() => new TestEnvironment();
     }
 }

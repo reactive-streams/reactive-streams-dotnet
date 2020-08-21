@@ -69,7 +69,7 @@ namespace Reactive.Streams.Example.Unicast.Tests
 
     public class NullableSyncSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int?>
     {
-        public NullableSyncSubscriberWhiteboxTest() : base(new TestEnvironment())
+        public NullableSyncSubscriberWhiteboxTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 

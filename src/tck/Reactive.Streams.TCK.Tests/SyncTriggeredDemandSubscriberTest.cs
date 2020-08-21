@@ -6,7 +6,7 @@ namespace Reactive.Streams.TCK.Tests
 {
     public class SyncTriggeredDemandSubscriberTest : SubscriberBlackboxVerification<int?>
     {
-        public SyncTriggeredDemandSubscriberTest() : base(new TestEnvironment())
+        public SyncTriggeredDemandSubscriberTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 

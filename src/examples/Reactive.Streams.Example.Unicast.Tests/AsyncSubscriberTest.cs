@@ -9,7 +9,7 @@ namespace Reactive.Streams.Example.Unicast.Tests
 {
     public class AsyncSubscriberTest : SubscriberBlackboxVerification<int?>
     {
-        public AsyncSubscriberTest() : base(new TestEnvironment())
+        public AsyncSubscriberTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 

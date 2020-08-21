@@ -11,9 +11,15 @@ namespace Reactive.Streams.TCK.Tests
     /// Validates that the TCK's <see cref="SubscriberWhiteboxVerification{T}"/> fails with nice human readable errors.
     /// >Important: Please note that all Publishers implemented in this file are *wrong*!
     /// </summary>
-    [TestFixture]
     public class SubscriberWhiteboxVerificationTest : TCKVerificationSupport
     {
+        private readonly ITestOutputHelper _output;
+
+        public SubscriberWhiteboxVerificationTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [SkippableFact]
         public void Required_spec201_mustSignalDemandViaSubscriptionRequest_shouldFailBy_notGettingRequestCall()
         {
@@ -255,7 +261,7 @@ namespace Reactive.Streams.TCK.Tests
         /// This verification can be used in the "simples case, subscriber which does basically nothing case" validation.
         /// </summary>
         private SubscriberWhiteboxVerification<int?> SimpleSubscriberVerification()
-            => new SimpleWhiteboxVerification(new TestEnvironment());
+            => new SimpleWhiteboxVerification(new TestEnvironment(_output));
 
         private sealed class SimpleWhiteboxVerification : SubscriberWhiteboxVerification<int?>
         {
@@ -280,7 +286,7 @@ namespace Reactive.Streams.TCK.Tests
         /// </summary>
         private SubscriberWhiteboxVerification<int?> CustomSubscriberVerification(
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> newSubscriber)
-            => new CustomWhiteboxVerification(new TestEnvironment(), newSubscriber);
+            => new CustomWhiteboxVerification(new TestEnvironment(_output), newSubscriber);
 
         private sealed class CustomWhiteboxVerification : SubscriberWhiteboxVerification<int?>
         {
