@@ -6,8 +6,6 @@ using Xunit;
 using Xunit.Abstractions;
 using Reactive.Streams.TCK.Support;
 
-//using Reactive.Streams.TCK.Support;
-
 namespace Reactive.Streams.TCK
 {
     public abstract class PublisherVerification<T> : IPublisherVerificationRules
@@ -1157,10 +1155,12 @@ namespace Reactive.Streams.TCK
             {
                 NotVerified(skipMessage + "Reason for skipping was: " + ex.Message);
             }
+            /*
             catch (Exception)
             {
                 NotVerified(skipMessage);
             }
+            */
         }
 
         public const string SkippingNoErrorPublisherAvailable =
