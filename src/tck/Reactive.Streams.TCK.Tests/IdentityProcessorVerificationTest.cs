@@ -1,5 +1,6 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Tests.Support;
 
 namespace Reactive.Streams.TCK.Tests
@@ -11,7 +12,7 @@ namespace Reactive.Streams.TCK.Tests
         private static readonly long DefaultNoSignalsTimeoutMilliseconds =
             TestEnvironment.EnvironmentDefaultNoSignalsTimeoutMilliseconds();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError_shouldBeIgnored()
         {
             RequireTestSkip(() =>
@@ -98,7 +99,7 @@ namespace Reactive.Streams.TCK.Tests
             public override IPublisher<int> CreateFailedPublisher() => null;
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError_shouldFailWhileWaitingForOnError()
         {
             RequireTestFailure(() =>

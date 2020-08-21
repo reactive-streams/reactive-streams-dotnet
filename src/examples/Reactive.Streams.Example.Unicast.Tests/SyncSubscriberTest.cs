@@ -1,5 +1,6 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK;
 
 namespace Reactive.Streams.Example.Unicast.Tests

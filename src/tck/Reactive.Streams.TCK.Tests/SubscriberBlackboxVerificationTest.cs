@@ -1,5 +1,6 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Tests.Support;
 
 namespace Reactive.Streams.TCK.Tests
@@ -11,17 +12,17 @@ namespace Reactive.Streams.TCK.Tests
     [TestFixture]
     public class SubscriberBlackboxVerificationTest : TCKVerificationSupport
     {
-        [Test]
+        [SkippableFact]
         public void Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest_shouldFailBy_notGettingRequestCall()
             => RequireTestFailure(
                 () => NoopSubscriberVerification().Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest(),
                 "Did not receive expected `Request` call within");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest_shouldPass()
             => SimpleSubscriberVerification().Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingRequest()
         {
             ISubscription subscription = null;
@@ -32,7 +33,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Subscription.Request MUST NOT be called from Subscriber.OnComplete (Rule 2.3)!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingCancel()
         {
             ISubscription subscription = null;
@@ -43,7 +44,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Subscription.Cancel MUST NOT be called from Subscriber.OnComplete (Rule 2.3)!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingRequest()
         {
             ISubscription subscription = null;
@@ -54,7 +55,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Subscription.Request MUST NOT be called from Subscriber.OnError (Rule 2.3)!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingCancel()
         {
             ISubscription subscription = null;
@@ -65,7 +66,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Subscription.Cancel MUST NOT be called from Subscriber.OnError (Rule 2.3)!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec205_blackbox_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal_shouldFail()
         {
             ISubscription subscription = null;
@@ -79,18 +80,18 @@ namespace Reactive.Streams.TCK.Tests
                 "illegally called `Subscription.Request(1)`");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall_shouldFail()
             => RequireTestFailure(
                 () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall(),
                 "did not call `RegisterOnComplete()`");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall_shouldPass_withNoopSubscriber() 
             => CustomSubscriberVerification(new LamdaSubscriber<int?>())
                     .Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec210_blackbox_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall_shouldFail()
         {
             var subscriber = new LamdaSubscriber<int?>(onError: cause =>
@@ -103,25 +104,25 @@ namespace Reactive.Streams.TCK.Tests
                 "Test Exception: Boom!"); // checks that the expected exception was delivered to onError, we don't expect anyone to implement onError so weirdly
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onSubscribe()
             => RequireTestFailure(
                 () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).Required_spec213_blackbox_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull(),
                 "OnSubscribe(null) did not throw ArgumentNullException");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onNext()
             => RequireTestFailure(
                 () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).Required_spec213_blackbox_onNext_mustThrowNullPointerExceptionWhenParametersAreNull(),
                 "OnNext(null) did not throw ArgumentNullException");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustIgnoreSpecForValueType_onNext()
             => RequireTestSkip(
                 () => SimpleSubscriberVerification().Required_spec213_blackbox_onNext_mustThrowNullPointerExceptionWhenParametersAreNull(),
                 "Can't verify behavior for value types");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec213_blackbox_mustThrowNullPointerExceptionWhenParametersAreNull_mustFailOnIgnoredNull_onError()
             => RequireTestFailure(
                 () => CustomSubscriberVerification(new LamdaSubscriber<int?>()).Required_spec213_blackbox_onError_mustThrowNullPointerExceptionWhenParametersAreNull(),

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.TCK
@@ -22,6 +23,8 @@ namespace Reactive.Streams.TCK
         protected SubscriberBlackboxVerification(TestEnvironment environment)
         {
             Environment = environment;
+
+            Setup();
         }
 
         // USER API
@@ -44,13 +47,12 @@ namespace Reactive.Streams.TCK
 
         ////////////////////// TEST ENV CLEANUP /////////////////////////////////////
 
-        [SetUp]
         public void Setup() => Environment.ClearAsyncErrors();
 
         ////////////////////// SPEC RULE VERIFICATION ///////////////////////////////
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.1
-        [Test]
+        [SkippableFact]
         public void Required_spec201_blackbox_mustSignalDemandViaSubscriptionRequest()
             => BlackboxSubscriberTest(stage =>
             {
@@ -63,12 +65,12 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.2
-        [Test]
+        [SkippableFact]
         public void Untested_spec202_blackbox_shouldAsynchronouslyDispatch()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.3
-        [Test]
+        [SkippableFact]
         public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete()
             => BlackboxSubscriberWithoutSetupTest(stage =>
             {
@@ -81,7 +83,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.3
-        [Test]
+        [SkippableFact]
         public void Required_spec203_blackbox_mustNotCallMethodsOnSubscriptionOrPublisherInOnError()
             => BlackboxSubscriberWithoutSetupTest(stage =>
             {
@@ -124,12 +126,12 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.4
-        [Test]
+        [SkippableFact]
         public void Untested_spec204_blackbox_mustConsiderTheSubscriptionAsCancelledInAfterRecievingOnCompleteOrOnError()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.5
-        [Test]
+        [SkippableFact]
         public void
             Required_spec205_blackbox_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal
             ()
@@ -166,12 +168,12 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.6
-        [Test]
+        [SkippableFact]
         public void Untested_spec206_blackbox_mustCallSubscriptionCancelIfItIsNoLongerValid()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.7
-        [Test]
+        [SkippableFact]
         public void
             Untested_spec207_blackbox_mustEnsureAllCallsOnItsSubscriptionTakePlaceFromTheSameThreadOrTakeCareOfSynchronization
             ()
@@ -179,12 +181,12 @@ namespace Reactive.Streams.TCK
         // the same thread part of the clause can be verified but that is not very useful, or is it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.8
-        [Test]
+        [SkippableFact]
         public void Untested_spec208_blackbox_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.9
-        [Test]
+        [SkippableFact]
         public void Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall()
             => BlackboxSubscriberWithoutSetupTest(stage =>
             {
@@ -238,7 +240,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.9
-        [Test]
+        [SkippableFact]
         public void Required_spec209_blackbox_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall()
             => BlackboxSubscriberWithoutSetupTest(stage =>
             {
@@ -258,7 +260,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.10
-        [Test]
+        [SkippableFact]
         public void Required_spec210_blackbox_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall()
             => BlackboxSubscriberTest(stage =>
             {
@@ -267,24 +269,24 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.11
-        [Test]
+        [SkippableFact]
         public void
             Untested_spec211_blackbox_mustMakeSureThatAllCallsOnItsMethodsHappenBeforeTheProcessingOfTheRespectiveEvents
             ()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.12
-        [Test]
+        [SkippableFact]
         public void Untested_spec212_blackbox_mustNotCallOnSubscribeMoreThanOnceBasedOnObjectEquality()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
-        [Test]
+        [SkippableFact]
         public void Untested_spec213_blackbox_failingOnSignalInvocation()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
-        [Test]
+        [SkippableFact]
         public void Required_spec213_blackbox_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull()
             => BlackboxSubscriberWithoutSetupTest(stage =>
             {
@@ -306,7 +308,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
-        [Test]
+        [SkippableFact]
         public void Required_spec213_blackbox_onNext_mustThrowNullPointerExceptionWhenParametersAreNull()
             => BlackboxSubscriberWithoutSetupTest(stage =>
             {
@@ -332,7 +334,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
-        [Test]
+        [SkippableFact]
         public void Required_spec213_blackbox_onError_mustThrowNullPointerExceptionWhenParametersAreNull()
             => BlackboxSubscriberWithoutSetupTest(stage =>
             {
@@ -368,37 +370,37 @@ namespace Reactive.Streams.TCK
         ////////////////////// SUBSCRIPTION SPEC RULE VERIFICATION //////////////////
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.1
-        [Test]
+        [SkippableFact]
         public void Untested_spec301_blackbox_mustNotBeCalledOutsideSubscriberContext()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.8
-        [Test]
+        [SkippableFact]
         public void Untested_spec308_blackbox_requestMustRegisterGivenNumberElementsToBeProduced()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.10
-        [Test]
+        [SkippableFact]
         public void Untested_spec310_blackbox_requestMaySynchronouslyCallOnNextOnSubscriber()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.11
-        [Test]
+        [SkippableFact]
         public void Untested_spec311_blackbox_requestMaySynchronouslyCallOnCompleteOrOnError()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.14
-        [Test]
+        [SkippableFact]
         public void Untested_spec314_blackbox_cancelMayCauseThePublisherToShutdownIfNoOtherSubscriptionExists()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.15
-        [Test]
+        [SkippableFact]
         public void Untested_spec315_blackbox_cancelMustNotThrowExceptionAndMustSignalOnError()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.16
-        [Test]
+        [SkippableFact]
         public void Untested_spec316_blackbox_requestMustNotThrowExceptionAndMustOnErrorTheSubscriber()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
