@@ -12,12 +12,19 @@ namespace Reactive.Streams.TCK.Tests
         private static readonly long DefaultNoSignalsTimeoutMilliseconds =
             TestEnvironment.EnvironmentDefaultNoSignalsTimeoutMilliseconds();
 
+        private readonly ITestOutputHelper _output;
+
+        public IdentityProcessorVerificationTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [SkippableFact]
         public void Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError_shouldBeIgnored()
         {
             RequireTestSkip(() =>
             {
-                new Spec104IgnoreVerification(NewTestEnvironment())
+                new Spec104IgnoreVerification(NewTestEnvironment(_output))
                     .Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError();
             }, "The Publisher under test only supports 1 subscribers, while this test requires at least 2 to run");
         }
@@ -27,7 +34,7 @@ namespace Reactive.Streams.TCK.Tests
             /// <summary>
             /// We need this constructor for NUnit even if the fixture is ignored 
             /// </summary>
-            public Spec104WaitingVerification() : base(new TestEnvironment())
+            public Spec104WaitingVerification(ITestOutputHelper output) : base(new TestEnvironment(output))
             {
 
             }
@@ -103,7 +110,7 @@ namespace Reactive.Streams.TCK.Tests
         {
             RequireTestFailure(() =>
             {
-                new Spec104WaitingVerification(NewTestEnvironment(), DefaultTimeoutMilliseconds)
+                new Spec104WaitingVerification(NewTestEnvironment(_output), DefaultTimeoutMilliseconds)
                     .Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError();
             }, "Did not receive expected error on downstream within " + DefaultTimeoutMilliseconds);
         }
@@ -113,7 +120,7 @@ namespace Reactive.Streams.TCK.Tests
             /// <summary>
             /// We need this constructor for NUnit even if the fixture is ignored 
             /// </summary>
-            public Spec104IgnoreVerification() : base(new TestEnvironment())
+            public Spec104IgnoreVerification(ITestOutputHelper output) : base(new TestEnvironment(output))
             {
 
             }
@@ -134,8 +141,8 @@ namespace Reactive.Streams.TCK.Tests
             public override long MaxSupportedSubscribers { get; } = 1;
         }
 
-        private static TestEnvironment NewTestEnvironment()
-            => new TestEnvironment(DefaultTimeoutMilliseconds, DefaultNoSignalsTimeoutMilliseconds);
+        private static TestEnvironment NewTestEnvironment(ITestOutputHelper output)
+            => new TestEnvironment(DefaultTimeoutMilliseconds, DefaultNoSignalsTimeoutMilliseconds, output);
 
 
         // FAILING IMPLEMENTATIONS //

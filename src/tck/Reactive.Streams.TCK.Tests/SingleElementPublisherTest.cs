@@ -7,7 +7,7 @@ namespace Reactive.Streams.TCK.Tests
 {
     public class SingleElementPublisherTest : PublisherVerification<int>
     {
-        public SingleElementPublisherTest() : base(new TestEnvironment())
+        public SingleElementPublisherTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
             
         }

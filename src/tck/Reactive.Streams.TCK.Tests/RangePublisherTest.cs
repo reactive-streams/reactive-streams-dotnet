@@ -20,8 +20,7 @@ namespace Reactive.Streams.TCK.Tests
 
         static int id;
 
-
-        public RangePublisherTest() : base(new TestEnvironment())
+        public RangePublisherTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 

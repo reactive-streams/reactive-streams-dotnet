@@ -7,7 +7,7 @@ namespace Reactive.Streams.TCK.Tests
 {
     public class EmptyLazyPublisherTest : PublisherVerification<int>
     {
-        public EmptyLazyPublisherTest() : base(new TestEnvironment())
+        public EmptyLazyPublisherTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
             
         }
