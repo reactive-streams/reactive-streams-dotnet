@@ -7,7 +7,6 @@ using Reactive.Streams.TCK;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {
-    [TestFixture]
     public class UnboundedIntegerIncrementPublisherTest : PublisherVerification<int?>
     {
         public UnboundedIntegerIncrementPublisherTest() : base(new TestEnvironment())

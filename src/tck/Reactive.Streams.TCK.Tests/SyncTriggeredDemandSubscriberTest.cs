@@ -4,7 +4,6 @@ using Reactive.Streams.TCK.Tests.Support;
 
 namespace Reactive.Streams.TCK.Tests
 {
-    [TestFixture]
     public class SyncTriggeredDemandSubscriberTest : SubscriberBlackboxVerification<int?>
     {
         public SyncTriggeredDemandSubscriberTest() : base(new TestEnvironment())

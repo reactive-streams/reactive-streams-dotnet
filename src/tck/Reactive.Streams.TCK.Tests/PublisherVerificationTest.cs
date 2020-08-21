@@ -160,7 +160,6 @@ namespace Reactive.Streams.TCK.Tests
                 "Subscriber.OnComplete() called before Subscriber.OnSubscribe");
         }
 
-        [TestFixture(Ignore = "Helper for single test")]
         private sealed class Spec105Verification : PublisherVerification<int>
         {
             private readonly IPublisher<int> _publisher;
@@ -655,7 +654,6 @@ namespace Reactive.Streams.TCK.Tests
                 }));
         }
 
-        [TestFixture(Ignore = "Helper for single test")]
         private sealed class SimpleVerification : PublisherVerification<int>
         {
             private readonly IPublisher<int> _publisher;
