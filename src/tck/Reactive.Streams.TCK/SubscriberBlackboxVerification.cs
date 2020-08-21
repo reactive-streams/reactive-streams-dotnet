@@ -314,7 +314,7 @@ namespace Reactive.Streams.TCK
             {
                 var element = default(T);
                 if(element != null)
-                    throw new IgnoreException("Can't verify behavior for value types");
+                    throw new SkipException("Can't verify behavior for value types");
 
                 var subscriber = CreateSubscriber();
                 var gotNpe = false;
