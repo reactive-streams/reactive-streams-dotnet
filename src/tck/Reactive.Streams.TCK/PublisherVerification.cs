@@ -353,7 +353,7 @@ namespace Reactive.Streams.TCK
                     _environment.VerifyNoAsyncErrors();
                 });
             }
-            catch (IgnoreException)
+            catch (SkipException)
             {
                 throw;
             }
