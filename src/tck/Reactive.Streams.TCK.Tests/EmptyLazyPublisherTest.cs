@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.Example.Unicast;
 
 namespace Reactive.Streams.TCK.Tests
 {
-    [TestFixture]
     public class EmptyLazyPublisherTest : PublisherVerification<int>
     {
         public EmptyLazyPublisherTest() : base(new TestEnvironment())

@@ -44,7 +44,7 @@ Here is an example test method signature:
 
 ```C#
 // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.1
-[Test]
+[SkippableFact]
 public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements()
 {
     // ...
@@ -54,7 +54,7 @@ public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfPr
 #### Test types explained:
 
 ```C#
-[Test]
+[SkippableFact]
 public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements()
 ```
 
@@ -63,7 +63,7 @@ The `Required_` means that this test case is a hard requirement, it covers a *MU
 
 
 ```C#
-[Test]
+[SkippableFact]
 public void Optional_spec104_mustSignalOnErrorWhenFails()
 ```
 
@@ -71,7 +71,7 @@ public void Optional_spec104_mustSignalOnErrorWhenFails()
 The `Optional_` means that this test case is an optional requirement, it covers a *MAY* or *SHOULD* Rule of the Specification.
 
 ```C#
-[Test]
+[SkippableFact]
 public void Stochastic_spec103_mustSignalOnMethodsSequentially()
 ```
 
@@ -80,7 +80,7 @@ The `Stochastic_` means that the Rule is impossible or infeasible to determinist
 usually this means that this test case can yield false positives ("be green") even if for some case, the given implementation may violate the tested behaviour.
 
 ```C#
-[Test]
+[SkippableFact]
 public void Untested_spec106_mustConsiderSubscriptionCancelledAfterOnErrorOrOnCompleteHasBeenCalled()
 ```
 

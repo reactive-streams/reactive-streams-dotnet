@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Tests.Support;
 
 namespace Reactive.Streams.TCK.Tests
