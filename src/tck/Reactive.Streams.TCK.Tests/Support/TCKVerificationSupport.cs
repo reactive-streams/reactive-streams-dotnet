@@ -132,7 +132,7 @@ namespace Reactive.Streams.TCK.Tests.Support
         {
             if (exception is NullReferenceException)
             {
-                Assert.Fail($"{typeof(NullReferenceException).Name} was thrown, definitely not a helpful error!",
+                TckAssert.Fail($"{nameof(NullReferenceException)} was thrown, definitely not a helpful error!",
                     exception);
             }
             if (exception == null || depth == 0)

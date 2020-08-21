@@ -1119,9 +1119,9 @@ namespace Reactive.Streams.TCK
         public void ActivePublisherTest(long elements, bool completionSignalRequired, Action<IPublisher<T>> run)
         {
             if (elements > MaxElementsFromPublisher)
-                Assert.Ignore($"Uable to run this test as required elements nr : {elements} is higher than supported by given producer {MaxElementsFromPublisher}");
+                TckAssert.Skip($"Uable to run this test as required elements nr : {elements} is higher than supported by given producer {MaxElementsFromPublisher}");
             if (completionSignalRequired && MaxElementsFromPublisher == long.MaxValue)
-                Assert.Ignore("Unable to run this test, as it requires an onComplete signal, which this Publisher is unable to provide (as signalled by returning long.MaxValue from `MaxElementsFromPublisher");
+                TckAssert.Skip("Unable to run this test, as it requires an onComplete signal, which this Publisher is unable to provide (as signalled by returning long.MaxValue from `MaxElementsFromPublisher");
 
             var publisher = CreatePublisher(elements);
             run(publisher);
@@ -1139,9 +1139,9 @@ namespace Reactive.Streams.TCK
         public void OptionalActivePublisherTest(long elements, bool completionSignalRequired, Action<IPublisher<T>> run)
         {
             if (elements > MaxElementsFromPublisher)
-                Assert.Ignore($"Uable to run this test as required elements nr : {elements} is higher than supported by given producer {MaxElementsFromPublisher}");
+                TckAssert.Skip($"Uable to run this test as required elements nr : {elements} is higher than supported by given producer {MaxElementsFromPublisher}");
             if (completionSignalRequired && MaxElementsFromPublisher == long.MaxValue)
-                Assert.Ignore("Unable to run this test, as it requires an onComplete signal, which this Publisher is unable to provide (as signalled by returning long.MaxValue from `MaxElementsFromPublisher");
+                TckAssert.Skip("Unable to run this test, as it requires an onComplete signal, which this Publisher is unable to provide (as signalled by returning long.MaxValue from `MaxElementsFromPublisher");
 
             var publisher = CreatePublisher(elements);
             var skipMessage = "Skipped because tested publisher does NOT implement this OPTIONAL requirement.";
@@ -1181,7 +1181,7 @@ namespace Reactive.Streams.TCK
             if (publisher != null)
                 run(publisher);
             else
-                Assert.Ignore(message);
+                TckAssert.Skip(message);
         }
 
         /// <summary>
@@ -1191,7 +1191,7 @@ namespace Reactive.Streams.TCK
         public void StochasticTest(int n, Action<int> body)
         {
             if (SkipStochasticTests)
-                Assert.Ignore("Skipping @Stochastic test because `SkipStochasticTests` returned `true`!");
+                TckAssert.Skip("Skipping @Stochastic test because `SkipStochasticTests` returned `true`!");
 
             for (var i = 0; i < n; i++)
                 body(i);
@@ -1199,7 +1199,7 @@ namespace Reactive.Streams.TCK
 
         public void NotVerified() => NotVerified("Not verified by this TCK.");
 
-        public void NotVerified(string message) => Assert.Ignore(message);
+        public void NotVerified(string message) => TckAssert.Skip(message);
 
         /// <summary>
         /// Return this value from <see cref="MaxElementsFromPublisher"/> to mark that the given <see cref="IPublisher{T}"/>,
