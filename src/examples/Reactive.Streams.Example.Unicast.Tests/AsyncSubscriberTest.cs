@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK;
 using Reactive.Streams.TCK.Support;
 
@@ -22,7 +23,7 @@ namespace Reactive.Streams.Example.Unicast.Tests
             protected override bool WhenNext(int? element) => true;
         }
 
-        [Test]
+        [SkippableFact]
         public void TestAccumulation()
         {
             var i = new AtomicCounterLong(0);

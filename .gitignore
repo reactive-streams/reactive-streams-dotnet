@@ -208,3 +208,4 @@ UpgradeLog*.htm
 
 # Tools
 tools/
+src/.vs/
