@@ -1,4 +1,7 @@
-﻿using Xunit;
+/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
+using Xunit;
 using Xunit.Abstractions;
 using Reactive.Streams.TCK.Tests.Support;
 

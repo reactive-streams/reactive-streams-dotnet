@@ -1,4 +1,7 @@
-﻿using System.Linq;
+/***************************************************
+* Licensed under MIT No Attribution (SPDX: MIT-0) *
+***************************************************/
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 using Reactive.Streams.Example.Unicast;

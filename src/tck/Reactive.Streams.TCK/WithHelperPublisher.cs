@@ -1,4 +1,7 @@
-﻿using Reactive.Streams.TCK.Support;
+﻿/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
+using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.TCK
 {
