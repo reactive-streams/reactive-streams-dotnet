@@ -1,3 +1,6 @@
+/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
 namespace Reactive.Streams
 {
     /// <summary>

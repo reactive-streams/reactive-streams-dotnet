@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Reactive.Streams</AssemblyName>
     <Description>Reactive Streams API</Description>
-    <Copyright>CC0 1.0 Universal</Copyright>
+    <Copyright>MIT-0</Copyright>
     <VersionPrefix>1.0.3</VersionPrefix>
     <Authors>Reactive Streams</Authors>
     <TargetFrameworks>netstandard1.0;net45</TargetFrameworks>

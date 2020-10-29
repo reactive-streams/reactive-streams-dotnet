@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
+using System.Linq;
 using NUnit.Framework;
 using Reactive.Streams.Example.Unicast;
 
