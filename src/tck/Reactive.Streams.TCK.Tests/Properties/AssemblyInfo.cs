@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden 

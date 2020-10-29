@@ -1,4 +1,7 @@
-﻿using System;
+﻿/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
+using System;
 
 namespace Reactive.Streams.TCK.Support
 {

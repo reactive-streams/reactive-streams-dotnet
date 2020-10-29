@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
+using System.Collections.Generic;
 
 namespace Reactive.Streams.TCK.Support
 {
