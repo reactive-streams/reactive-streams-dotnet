@@ -1,4 +1,7 @@
-﻿namespace Reactive.Streams.TCK.Support
+﻿/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
+namespace Reactive.Streams.TCK.Support
 {
     /// <summary>
     /// Internal TCK use only.

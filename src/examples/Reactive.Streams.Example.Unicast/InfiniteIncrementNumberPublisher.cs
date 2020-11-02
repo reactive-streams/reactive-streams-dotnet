@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Reactive.Streams.Example.Unicast

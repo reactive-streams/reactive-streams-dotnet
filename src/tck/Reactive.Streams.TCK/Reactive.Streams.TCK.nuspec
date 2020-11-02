@@ -9,7 +9,7 @@
     <licenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</licenseUrl>
     <projectUrl>https://github.com/reactive-streams/reactive-streams-dotnet</projectUrl>
     <description>Reactive Streams Technology Compatibility Kit</description>
-    <copyright>CC0 1.0 Universal</copyright>
+    <copyright>MIT-0</copyright>
     <tags>reactive stream</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5">
