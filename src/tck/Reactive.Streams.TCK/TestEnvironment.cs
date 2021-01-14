@@ -148,14 +148,7 @@ namespace Reactive.Streams.TCK
         /// </summary>
         public void Flop(string message)
         {
-            try
-            {
-                Assert.Fail(message);
-            }
-            catch (Exception ex)
-            {
-                AsyncErrors.Enqueue(ex);
-            }
+            AsyncErrors.Enqueue(new AssertionException(message));
         }
 
         /// <summary>
@@ -172,14 +165,7 @@ namespace Reactive.Streams.TCK
         /// </summary>
         public void Flop(Exception exception, string message)
         {
-            try
-            {
-                Assert.Fail(message, exception);
-            }
-            catch (Exception)
-            {
-                AsyncErrors.Enqueue(exception);
-            }
+            AsyncErrors.Enqueue(exception);
         }
 
         /// <summary>
@@ -196,14 +182,7 @@ namespace Reactive.Streams.TCK
         /// </summary>
         public void Flop(Exception exception)
         {
-            try
-            {
-                Assert.Fail(exception.Message, exception);
-            }
-            catch (Exception)
-            {
-                AsyncErrors.Enqueue(exception);
-            }
+            AsyncErrors.Enqueue(exception);
         }
 
         /// <summary>
@@ -220,17 +199,9 @@ namespace Reactive.Streams.TCK
         /// </summary>
         public T FlopAndFail<T>(string message)
         {
-            try
-            {
-                Assert.Fail(message);
-            }
-            catch (Exception ex)
-            {
-                AsyncErrors.Enqueue(ex);
-                Assert.Fail(message, ex);
-            }
-
-            return default(T); // unreachable, the previous block will always exit by throwing
+            var ae = new AssertionException(message);
+            AsyncErrors.Enqueue(ae);
+            throw new AssertionException(message, ae);
         }
 
 
@@ -310,7 +281,7 @@ namespace Reactive.Streams.TCK
                 if (exception != null)
                     throw exception;
 
-                Assert.Fail($"Async error during test execution: {error.Message}", error);
+                throw new AssertionException($"Async error during test execution: {error.Message}", error);
             }
         }
 
@@ -741,8 +712,17 @@ namespace Reactive.Streams.TCK
     public class Promise<T>
     {
         private readonly TestEnvironment _environment;
-        private readonly BlockingCollection<T> _blockingCollection = new BlockingCollection<T>();
-        private Option<T> _value;
+        private readonly CountdownEvent cde = new CountdownEvent(1);
+        private PromiseNode _node;
+
+        private sealed class PromiseNode
+        {
+            internal readonly T value;
+            internal PromiseNode(T value)
+            {
+                this.value = value;
+            }
+        }
 
         public Promise(TestEnvironment environment)
         {
@@ -760,20 +740,33 @@ namespace Reactive.Streams.TCK
         {
             get
             {
-                if (IsCompleted())
-                    return _value.Value;
+                var n = Volatile.Read(ref _node);
+                if (n != null)
+                    return n.value;
                 
                 _environment.Flop("Cannot access promise value before completion");
                 return default(T);
             }
         }
 
-        public bool IsCompleted() => _value.HasValue;
-
+        public bool IsCompleted()
+        {
+            return Volatile.Read(ref _node) != null;
+        }
         /// <summary>
         /// Allows using ExpectCompletion to await for completion of the value and complete it _then_
         /// </summary>
-        public void Complete(T value) => _blockingCollection.Add(value);
+        public void Complete(T value)
+        {
+            if (Interlocked.CompareExchange(ref _node, new PromiseNode(value), null) == null)
+            {
+                cde.Signal();
+            }
+            else
+            {
+                _environment.Flop("Already completed");
+            }
+        }
 
         /// <summary>
         /// Completes the promise right away, it is not possible to ExpectCompletion on a Promise completed this way
@@ -781,18 +774,19 @@ namespace Reactive.Streams.TCK
         public void CompleteImmediatly(T value)
         {
             Complete(value); // complete!
-            _value = value; // immediatly!
         }
 
         public void ExpectCompletion(long timeoutMilliseconds, string errorMessage)
         {
             if (!IsCompleted())
             {
-                T value;
-                if (!_blockingCollection.TryTake(out value, TimeSpan.FromMilliseconds(timeoutMilliseconds)))
-                    _environment.Flop($"{errorMessage} within {timeoutMilliseconds} ms");
-                else
-                    _value = value;
+                if (!cde.Wait(TimeSpan.FromMilliseconds(timeoutMilliseconds)))
+                {
+                    if (!IsCompleted())
+                    {
+                        _environment.Flop($"{errorMessage} within {timeoutMilliseconds} ms");
+                    }
+                }
             }
         }
     }
@@ -886,7 +880,10 @@ namespace Reactive.Streams.TCK
 
         public E ExpectError<E>(long timeoutMilliseconds, string errorMessage) where E : Exception
         {
-            Thread.Sleep(TimeSpan.FromMilliseconds(timeoutMilliseconds));
+            if (_environment.AsyncErrors.IsEmpty)
+            {
+                Thread.Sleep(TimeSpan.FromMilliseconds(timeoutMilliseconds));
+            }
 
             if (_environment.AsyncErrors.IsEmpty)
                 return _environment.FlopAndFail<E>($"{errorMessage} within {timeoutMilliseconds} ms");

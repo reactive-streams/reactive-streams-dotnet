@@ -304,7 +304,7 @@ namespace Reactive.Streams.TCK
                     gotNpe = true;
                 }
 
-                Assert.True(gotNpe, "OnSubscribe(null) did not throw ArgumentNullException");
+                InternalAssertTrue(gotNpe, "OnSubscribe(null) did not throw ArgumentNullException");
                 Environment.VerifyNoAsyncErrorsNoDelay();
             });
 
@@ -330,7 +330,7 @@ namespace Reactive.Streams.TCK
                     gotNpe = true;
                 }
 
-                Assert.True(gotNpe, "OnNext(null) did not throw ArgumentNullException");
+                InternalAssertTrue(gotNpe, "OnNext(null) did not throw ArgumentNullException");
                 Environment.VerifyNoAsyncErrorsNoDelay();
             });
 
@@ -352,9 +352,17 @@ namespace Reactive.Streams.TCK
                     gotNpe = true;
                 }
 
-                Assert.True(gotNpe, "OnError(null) did not throw ArgumentNullException");
+                InternalAssertTrue(gotNpe, "OnError(null) did not throw ArgumentNullException");
                 Environment.VerifyNoAsyncErrorsNoDelay();
             });
+
+        private void InternalAssertTrue(bool condition, string message)
+        {
+            if (!condition)
+            {
+                throw new AssertionException(message);
+            }
+        }
 
         private sealed class Spec213DummySubscription : ISubscription
         {

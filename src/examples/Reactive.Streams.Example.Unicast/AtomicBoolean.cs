@@ -33,8 +33,7 @@ namespace Reactive.Streams.Example.Unicast
         {
             get
             {
-                Interlocked.MemoryBarrier();
-                return _value == TrueValue;
+                return Volatile.Read(ref _value) == TrueValue;
             }
             set
             {

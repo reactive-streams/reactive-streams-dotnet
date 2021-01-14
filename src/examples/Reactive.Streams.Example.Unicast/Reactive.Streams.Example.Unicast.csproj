@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>Reactive.Streams.Example.Unicast</AssemblyName>
-    <TargetFrameworks>netstandard1.4;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.4;net45;netcoreapp3.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 

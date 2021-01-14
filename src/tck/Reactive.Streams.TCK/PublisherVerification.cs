@@ -132,7 +132,7 @@ namespace Reactive.Streams.TCK
             ActivePublisherTest(1, true, publisher =>
             {
                 var subscriber = _environment.NewManualSubscriber(publisher);
-                Assert.True(requestNextElementOrEndOfStream(publisher, subscriber).HasValue, $"Publisher {publisher} produced no elements");
+                InternalAssertTrue(requestNextElementOrEndOfStream(publisher, subscriber).HasValue, $"Publisher {publisher} produced no elements");
                 subscriber.RequestEndOfStream();
             });
         }
@@ -148,20 +148,20 @@ namespace Reactive.Streams.TCK
             ActivePublisherTest(3, true, publisher =>
             {
                 var subscriber = _environment.NewManualSubscriber(publisher);
-                Assert.True(requestNextElementOrEndOfStream(publisher, subscriber).HasValue, $"Publisher {publisher} produced no elements");
-                Assert.True(requestNextElementOrEndOfStream(publisher, subscriber).HasValue, $"Publisher {publisher} produced only 1 element");
-                Assert.True(requestNextElementOrEndOfStream(publisher, subscriber).HasValue, $"Publisher {publisher} produced only 3 element");
+                InternalAssertTrue(requestNextElementOrEndOfStream(publisher, subscriber).HasValue, $"Publisher {publisher} produced no elements");
+                InternalAssertTrue(requestNextElementOrEndOfStream(publisher, subscriber).HasValue, $"Publisher {publisher} produced only 1 element");
+                InternalAssertTrue(requestNextElementOrEndOfStream(publisher, subscriber).HasValue, $"Publisher {publisher} produced only 3 element");
                 subscriber.RequestEndOfStream();
             });
         }
 
         [Test]
         public void Required_validate_maxElementsFromPublisher()
-            => Assert.True(MaxElementsFromPublisher >= 0, "maxElementsFromPublisher MUST return a number >= 0");
+            => InternalAssertTrue(MaxElementsFromPublisher >= 0, "maxElementsFromPublisher MUST return a number >= 0");
 
         [Test]
         public void Required_validate_boundedDepthOfOnNextAndRequestRecursion()
-            => Assert.True(BoundedDepthOfOnNextAndRequestRecursion >= 1, "boundedDepthOfOnNextAndRequestRecursion must return a number >= 1");
+            => InternalAssertTrue(BoundedDepthOfOnNextAndRequestRecursion >= 1, "boundedDepthOfOnNextAndRequestRecursion must return a number >= 1");
 
 
         ////////////////////// SPEC RULE VERIFICATION ///////////////////////////////
@@ -645,8 +645,8 @@ namespace Reactive.Streams.TCK
                 check2.Add(z2);
                 check2.Add(z3);
 
-                Assert.AreEqual(r, check1, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 2");
-                Assert.AreEqual(r, check2, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 3");
+                InternalAssertAreEqual(r, check1, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 2");
+                InternalAssertAreEqual(r, check2, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 3");
             });
 
 
@@ -673,9 +673,17 @@ namespace Reactive.Streams.TCK
                 //       a similar test *with* completion checking is implemented
 
 
-                Assert.AreEqual(received1, received2, "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
-                Assert.AreEqual(received2, received3, "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
+                InternalAssertAreEqual(received1, received2, "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
+                InternalAssertAreEqual(received2, received3, "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
             });
+
+        private void InternalAssertAreEqual(object one, object two, string message)
+        {
+            if (!object.Equals(one, two))
+            {
+                throw new AssertionException(message + "\r\nExpected: " + one + "\r\nBut was:  " + two);
+            }
+        }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
         [Test]
@@ -700,8 +708,8 @@ namespace Reactive.Streams.TCK
                 sub2.ExpectCompletion();
                 sub3.ExpectCompletion();
 
-                Assert.AreEqual(received1, received2, "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
-                Assert.AreEqual(received2, received3, "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
+                InternalAssertAreEqual(received1, received2, "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
+                InternalAssertAreEqual(received2, received3, "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
             });
 
         ///////////////////// SUBSCRIPTION TESTS //////////////////////////////////
@@ -968,12 +976,20 @@ namespace Reactive.Streams.TCK
                     }
 
                     // if the Publisher tries to emit more elements than was requested (and/or ignores cancellation) this will throw
-                    Assert.True(onNextSignalled <= totalDemand,
+                    InternalAssertTrue(onNextSignalled <= totalDemand,
                         $"Publisher signalled {onNextSignalled} elements, which is more than the signalled demand: {totalDemand}");
                 } while (stillbeeingSignalled);
             });
 
             _environment.VerifyNoAsyncErrorsNoDelay();
+        }
+
+        private void InternalAssertTrue(bool condition, string message)
+        {
+            if (!condition)
+            {
+                throw new AssertionException(message);
+            }
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.13
