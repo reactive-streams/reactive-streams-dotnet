@@ -1,4 +1,7 @@
-﻿using System.Threading;
+﻿/***************************************************
+ * Licensed under MIT No Attribution (SPDX: MIT-0) *
+ ***************************************************/
+using System.Threading;
 
 namespace Reactive.Streams.Example.Unicast
 {
