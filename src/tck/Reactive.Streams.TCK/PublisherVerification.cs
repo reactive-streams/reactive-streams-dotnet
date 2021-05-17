@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Support;
-
-//using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.TCK
 {
@@ -34,6 +34,7 @@ namespace Reactive.Streams.TCK
         {
             _environment = environment;
             _publisherReferenceGcTimeoutMillis = publisherReferenceGcTimeoutMillis;
+            SetUp();
         }
 
         /// <summary>
@@ -116,12 +117,11 @@ namespace Reactive.Streams.TCK
 
         ////////////////////// TEST ENV CLEANUP /////////////////////////////////////
 
-        [SetUp]
         public void SetUp() => _environment.ClearAsyncErrors();
 
         ////////////////////// TEST SETUP VERIFICATION //////////////////////////////
 
-        [Test]
+        [SkippableFact]
         public void Required_createPublisher1MustProduceAStreamOfExactly1Element()
         {
             Func<IPublisher<T>, ManualSubscriber<T>, Option<T>> requestNextElementOrEndOfStream =
@@ -137,7 +137,7 @@ namespace Reactive.Streams.TCK
             });
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_createPublisher3MustProduceAStreamOfExactly3Elements()
         {
             Func<IPublisher<T>, ManualSubscriber<T>, Option<T>> requestNextElementOrEndOfStream =
@@ -155,11 +155,11 @@ namespace Reactive.Streams.TCK
             });
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_validate_maxElementsFromPublisher()
             => Assert.True(MaxElementsFromPublisher >= 0, "maxElementsFromPublisher MUST return a number >= 0");
 
-        [Test]
+        [SkippableFact]
         public void Required_validate_boundedDepthOfOnNextAndRequestRecursion()
             => Assert.True(BoundedDepthOfOnNextAndRequestRecursion >= 1, "boundedDepthOfOnNextAndRequestRecursion must return a number >= 1");
 
@@ -167,7 +167,7 @@ namespace Reactive.Streams.TCK
         ////////////////////// SPEC RULE VERIFICATION ///////////////////////////////
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.1
-        [Test]
+        [SkippableFact]
         public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements()
             => ActivePublisherTest(5, false, publisher =>
             {
@@ -193,7 +193,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.2
-        [Test]
+        [SkippableFact]
         public void Required_spec102_maySignalLessThanRequestedAndTerminateSubscription()
         {
             const int elements = 3;
@@ -209,7 +209,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.3
-        [Test]
+        [SkippableFact]
         public void Stochastic_spec103_mustSignalOnMethodsSequentially()
         {
             const int iterations = 100;
@@ -335,7 +335,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.4
-        [Test]
+        [SkippableFact]
         public void Optional_spec104_mustSignalOnErrorWhenFails()
         {
             try
@@ -354,7 +354,7 @@ namespace Reactive.Streams.TCK
                     _environment.VerifyNoAsyncErrors();
                 });
             }
-            catch (IgnoreException)
+            catch (SkipException)
             {
                 throw;
             }
@@ -395,7 +395,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.5
-        [Test]
+        [SkippableFact]
         public void Required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates()
             => ActivePublisherTest(3, true, publisher =>
             {
@@ -408,7 +408,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.5
-        [Test]
+        [SkippableFact]
         public void Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete()
             => OptionalActivePublisherTest(0, true, publisher =>
             {
@@ -419,12 +419,12 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.6
-        [Test]
+        [SkippableFact]
         public void Untested_spec106_mustConsiderSubscriptionCancelledAfterOnErrorOrOnCompleteHasBeenCalled()
             => NotVerified(); // not really testable without more control over the Publisher
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.7
-        [Test]
+        [SkippableFact]
         public void Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled()
             => ActivePublisherTest(1, true, publisher =>
             {
@@ -438,22 +438,22 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.7
-        [Test]
+        [SkippableFact]
         public void Untested_spec107_mustNotEmitFurtherSignalsOnceOnErrorHasBeenSignalled()
             => NotVerified(); // can we meaningfully test this, without more control over the publisher?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.8
-        [Test]
+        [SkippableFact]
         public void Untested_spec108_possiblyCanceledSubscriptionShouldNotReceiveOnErrorOrOnCompleteSignals()
             => NotVerified(); // can we meaningfully test this?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.9
-        [Test]
+        [SkippableFact]
         public void Untested_spec109_subscribeShouldNotThrowNonFatalThrowable()
             => NotVerified(); // can we meaningfully test this?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.9
-        [Test]
+        [SkippableFact]
         public void Required_spec109_subscribeThrowNPEOnNullSubscriber()
             => ActivePublisherTest(0, false, publisher =>
             {
@@ -472,7 +472,7 @@ namespace Reactive.Streams.TCK
 
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.9
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mustIssueOnSubscribeForNonNullSubscriber()
             => ActivePublisherTest(0, false, publisher =>
             {
@@ -524,7 +524,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.9
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe()
             => WhenHasErrorPublisherTest(publisher =>
             {
@@ -566,12 +566,12 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.10
-        [Test]
+        [SkippableFact]
         public void Untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice()
             => NotVerified(); // can we meaningfully test this?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_maySupportMultiSubscribe()
             => OptionalActivePublisherTest(1, false, publisher =>
             {
@@ -595,7 +595,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingOneByOne()
             => OptionalActivePublisherTest(5, true, publisher =>
             {
@@ -645,13 +645,13 @@ namespace Reactive.Streams.TCK
                 check2.Add(z2);
                 check2.Add(z3);
 
-                Assert.AreEqual(r, check1, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 2");
-                Assert.AreEqual(r, check2, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 3");
+                r.Should().BeEquivalentTo(check1, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 2");
+                r.Should().BeEquivalentTo(check2, $"Publisher {publisher} did not produce the same element sequence for subscribers 1 and 3");
             });
 
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront()
             => OptionalActivePublisherTest(3, false, publisher =>
             {
@@ -672,13 +672,14 @@ namespace Reactive.Streams.TCK
                 // NOTE: can't check completion, the Publisher may not be able to signal it
                 //       a similar test *with* completion checking is implemented
 
-
-                Assert.AreEqual(received1, received2, "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
-                Assert.AreEqual(received2, received3, "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
+                received1.Should().BeEquivalentTo(received2,
+                    "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
+                received2.Should().BeEquivalentTo(received3,
+                    "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.11
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfrontAndCompleteAsExpected()
             => OptionalActivePublisherTest(3, true, publisher =>
             {
@@ -700,14 +701,16 @@ namespace Reactive.Streams.TCK
                 sub2.ExpectCompletion();
                 sub3.ExpectCompletion();
 
-                Assert.AreEqual(received1, received2, "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
-                Assert.AreEqual(received2, received3, "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
+                received1.Should().BeEquivalentTo(received2,
+                    "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
+                received2.Should().BeEquivalentTo(received3,
+                    "Expected elements to be signaled in the same sequence to 2st and 3nd subscribers");
             });
 
         ///////////////////// SUBSCRIPTION TESTS //////////////////////////////////
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.2
-        [Test]
+        [SkippableFact]
         public void Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe()
             => ActivePublisherTest(6, false, publisher =>
             {
@@ -738,7 +741,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.3
-        [Test]
+        [SkippableFact]
         public void Required_spec303_mustNotAllowUnboundedRecursion()
         {
             var oneMoreThanBoundedLimit = BoundedDepthOfOnNextAndRequestRecursion + 1;
@@ -835,17 +838,17 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.4
-        [Test]
+        [SkippableFact]
         public void Untested_spec304_requestShouldNotPerformHeavyComputations()
             => NotVerified();  // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.5
-        [Test]
+        [SkippableFact]
         public void Untested_spec305_cancelMustNotSynchronouslyPerformHeavyCompuatation()
             => NotVerified();  // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.6
-        [Test]
+        [SkippableFact]
         public void Required_spec306_afterSubscriptionIsCancelledRequestMustBeNops()
             => ActivePublisherTest(3, false, publisher =>
             {
@@ -880,7 +883,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.7
-        [Test]
+        [SkippableFact]
         public void Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops()
             => ActivePublisherTest(1, false, publisher =>
             {
@@ -898,7 +901,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.9
-        [Test]
+        [SkippableFact]
         public void Required_spec309_requestZeroMustSignalIllegalArgumentException()
             => ActivePublisherTest(10, false, publisher =>
             {
@@ -908,7 +911,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.9
-        [Test]
+        [SkippableFact]
         public void Required_spec309_requestNegativeNumberMustSignalIllegalArgumentException()
             => ActivePublisherTest(10, false, publisher =>
             {
@@ -919,7 +922,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.12
-        [Test]
+        [SkippableFact]
         public void Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling()
         {
             // the publisher is able to signal more elements than the subscriber will be requesting in total
@@ -977,7 +980,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.13
-        [Test]
+        [SkippableFact]
         public void Required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber()
         {
             Func<IPublisher<T>, WeakReference<ManualSubscriber<T>>> run = publisher =>
@@ -1010,7 +1013,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.17
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue()
         {
             const int totalElements = 3;
@@ -1028,7 +1031,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.17
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue()
         {
             const int totalElements = 3;
@@ -1055,7 +1058,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.17
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue()
             => ActivePublisherTest(int.MaxValue, false, publisher =>
             {
@@ -1120,9 +1123,9 @@ namespace Reactive.Streams.TCK
         public void ActivePublisherTest(long elements, bool completionSignalRequired, Action<IPublisher<T>> run)
         {
             if (elements > MaxElementsFromPublisher)
-                Assert.Ignore($"Uable to run this test as required elements nr : {elements} is higher than supported by given producer {MaxElementsFromPublisher}");
+                TckAssert.Skip($"Uable to run this test as required elements nr : {elements} is higher than supported by given producer {MaxElementsFromPublisher}");
             if (completionSignalRequired && MaxElementsFromPublisher == long.MaxValue)
-                Assert.Ignore("Unable to run this test, as it requires an onComplete signal, which this Publisher is unable to provide (as signalled by returning long.MaxValue from `MaxElementsFromPublisher");
+                TckAssert.Skip("Unable to run this test, as it requires an onComplete signal, which this Publisher is unable to provide (as signalled by returning long.MaxValue from `MaxElementsFromPublisher");
 
             var publisher = CreatePublisher(elements);
             run(publisher);
@@ -1140,9 +1143,9 @@ namespace Reactive.Streams.TCK
         public void OptionalActivePublisherTest(long elements, bool completionSignalRequired, Action<IPublisher<T>> run)
         {
             if (elements > MaxElementsFromPublisher)
-                Assert.Ignore($"Uable to run this test as required elements nr : {elements} is higher than supported by given producer {MaxElementsFromPublisher}");
+                TckAssert.Skip($"Uable to run this test as required elements nr : {elements} is higher than supported by given producer {MaxElementsFromPublisher}");
             if (completionSignalRequired && MaxElementsFromPublisher == long.MaxValue)
-                Assert.Ignore("Unable to run this test, as it requires an onComplete signal, which this Publisher is unable to provide (as signalled by returning long.MaxValue from `MaxElementsFromPublisher");
+                TckAssert.Skip("Unable to run this test, as it requires an onComplete signal, which this Publisher is unable to provide (as signalled by returning long.MaxValue from `MaxElementsFromPublisher");
 
             var publisher = CreatePublisher(elements);
             var skipMessage = "Skipped because tested publisher does NOT implement this OPTIONAL requirement.";
@@ -1155,10 +1158,12 @@ namespace Reactive.Streams.TCK
             {
                 NotVerified(skipMessage + "Reason for skipping was: " + ex.Message);
             }
+            /*
             catch (Exception)
             {
                 NotVerified(skipMessage);
             }
+            */
         }
 
         public const string SkippingNoErrorPublisherAvailable =
@@ -1182,7 +1187,7 @@ namespace Reactive.Streams.TCK
             if (publisher != null)
                 run(publisher);
             else
-                Assert.Ignore(message);
+                TckAssert.Skip(message);
         }
 
         /// <summary>
@@ -1192,7 +1197,7 @@ namespace Reactive.Streams.TCK
         public void StochasticTest(int n, Action<int> body)
         {
             if (SkipStochasticTests)
-                Assert.Ignore("Skipping @Stochastic test because `SkipStochasticTests` returned `true`!");
+                TckAssert.Skip("Skipping @Stochastic test because `SkipStochasticTests` returned `true`!");
 
             for (var i = 0; i < n; i++)
                 body(i);
@@ -1200,7 +1205,7 @@ namespace Reactive.Streams.TCK
 
         public void NotVerified() => NotVerified("Not verified by this TCK.");
 
-        public void NotVerified(string message) => Assert.Ignore(message);
+        public void NotVerified(string message) => TckAssert.Skip(message);
 
         /// <summary>
         /// Return this value from <see cref="MaxElementsFromPublisher"/> to mark that the given <see cref="IPublisher{T}"/>,

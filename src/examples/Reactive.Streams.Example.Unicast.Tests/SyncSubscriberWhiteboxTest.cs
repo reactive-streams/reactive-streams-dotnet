@@ -1,16 +1,16 @@
-﻿/***************************************************
- * Licensed under MIT No Attribution (SPDX: MIT-0) *
- ***************************************************/
+/***************************************************
+* Licensed under MIT No Attribution (SPDX: MIT-0) *
+***************************************************/
 using System;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {
-    [TestFixture]
     public class ValueTypeSyncSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int>
     {
-        public ValueTypeSyncSubscriberWhiteboxTest() : base(new TestEnvironment())
+        public ValueTypeSyncSubscriberWhiteboxTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 
@@ -70,10 +70,9 @@ namespace Reactive.Streams.Example.Unicast.Tests
         }
     }
 
-    [TestFixture]
     public class NullableSyncSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int?>
     {
-        public NullableSyncSubscriberWhiteboxTest() : base(new TestEnvironment())
+        public NullableSyncSubscriberWhiteboxTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 

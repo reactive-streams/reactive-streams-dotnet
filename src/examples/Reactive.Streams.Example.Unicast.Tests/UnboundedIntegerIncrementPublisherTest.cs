@@ -4,15 +4,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {
-    [TestFixture]
     public class UnboundedIntegerIncrementPublisherTest : PublisherVerification<int?>
     {
-        public UnboundedIntegerIncrementPublisherTest() : base(new TestEnvironment())
+        public UnboundedIntegerIncrementPublisherTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 

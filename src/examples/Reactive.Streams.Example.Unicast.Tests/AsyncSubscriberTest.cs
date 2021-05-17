@@ -3,16 +3,16 @@
  ***************************************************/
 using System;
 using System.Threading;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK;
 using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {
-    [TestFixture]
     public class AsyncSubscriberTest : SubscriberBlackboxVerification<int?>
     {
-        public AsyncSubscriberTest() : base(new TestEnvironment())
+        public AsyncSubscriberTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 
@@ -25,7 +25,7 @@ namespace Reactive.Streams.Example.Unicast.Tests
             protected override bool WhenNext(int? element) => true;
         }
 
-        [Test]
+        [SkippableFact]
         public void TestAccumulation()
         {
             var i = new AtomicCounterLong(0);
@@ -33,7 +33,7 @@ namespace Reactive.Streams.Example.Unicast.Tests
             var subscriber = new AccSubscriber(i, latch);
             new NumberIterablePublisher(0,10).Subscribe(subscriber);
             latch.Wait(TimeSpan.FromMilliseconds(Environment.DefaultTimeoutMilliseconds*10));
-            Assert.AreEqual(45, i.Current);
+            Assert.Equal(45, i.Current);
         }
 
         private sealed class AccSubscriber : AsyncSubscriber<int?>

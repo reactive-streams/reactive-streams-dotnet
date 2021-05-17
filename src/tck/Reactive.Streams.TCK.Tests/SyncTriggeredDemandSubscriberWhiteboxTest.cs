@@ -1,16 +1,16 @@
-﻿/***************************************************
- * Licensed under MIT No Attribution (SPDX: MIT-0) *
- ***************************************************/
+/***************************************************
+* Licensed under MIT No Attribution (SPDX: MIT-0) *
+***************************************************/
 using System;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Tests.Support;
 
 namespace Reactive.Streams.TCK.Tests
 {
-    [TestFixture]
     public class SyncTriggeredDemandSubscriberWhiteboxTest : SubscriberWhiteboxVerification<int?>
     {
-        public SyncTriggeredDemandSubscriberWhiteboxTest() : base(new TestEnvironment())
+        public SyncTriggeredDemandSubscriberWhiteboxTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 

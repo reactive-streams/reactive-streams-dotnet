@@ -1,8 +1,9 @@
-﻿/***************************************************
- * Licensed under MIT No Attribution (SPDX: MIT-0) *
- ***************************************************/
+/***************************************************
+* Licensed under MIT No Attribution (SPDX: MIT-0) *
+***************************************************/
 using System;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.TCK.Tests.Support
@@ -44,7 +45,7 @@ namespace Reactive.Streams.TCK.Tests.Support
         }
 
         /// <summary>
-        ///  Runs given code block and expects it fail with an <see cref="IgnoreException"/>
+        ///  Runs given code block and expects it fail with an <see cref="SkipException"/>
         /// </summary>
         /// <param name="throwingRun">encapsulates test case which we expect to be skipped</param>
         /// <param name="messagePart">the exception failing the test (inside the run parameter) must contain this message part in one of it's causes</param>
@@ -54,7 +55,7 @@ namespace Reactive.Streams.TCK.Tests.Support
             {
                 throwingRun();
             }
-            catch (IgnoreException ignore)
+            catch (SkipException ignore)
             {
                 if(ignore.Message.Contains(messagePart))
                     return;
@@ -134,7 +135,7 @@ namespace Reactive.Streams.TCK.Tests.Support
         {
             if (exception is NullReferenceException)
             {
-                Assert.Fail($"{typeof(NullReferenceException).Name} was thrown, definitely not a helpful error!",
+                TckAssert.Fail($"{nameof(NullReferenceException)} was thrown, definitely not a helpful error!",
                     exception);
             }
             if (exception == null || depth == 0)

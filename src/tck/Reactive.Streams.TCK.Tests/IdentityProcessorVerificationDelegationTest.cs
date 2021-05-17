@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Reactive.Streams.TCK.Tests
 {
@@ -19,7 +20,7 @@ namespace Reactive.Streams.TCK.Tests
     /// </summary>
     public class IdentityProcessorVerificationDelegationTest
     {
-        [Test]
+        [SkippableFact]
         public void ShouldIncludeAllTestsFromPublisherVerification()
         {
             var processeroTests = GetTestNames(typeof(IdentityProcessorVerification<>)).ToList();
@@ -28,7 +29,7 @@ namespace Reactive.Streams.TCK.Tests
                 typeof(PublisherVerification<>), publisherTests);
         }
         
-        [Test]
+        [SkippableFact]
         public void ShouldIncludeAllTestsFromSubscriberVerification()
         {
             var processeroTests = GetTestNames(typeof(IdentityProcessorVerification<>)).ToList();
@@ -45,7 +46,7 @@ namespace Reactive.Streams.TCK.Tests
                 var message = new StringBuilder();
                 message.AppendLine($"Test '{targetTest}' in '{targetClass}' has not been properly delegated to in aggregate '{delegatingFrom}'!");
                 message.AppendLine($"You must delegate to this test from {delegatingFrom}, like this:");
-                message.AppendLine("[Test]");
+                message.AppendLine("[SkippableFact]");
                 message.AppendLine($"public void {targetTest} () => delegate{targetClass.Name}.{targetTest}();");
 
                 Assert.True(TestsInclude(allTests, targetTest), message.ToString());
@@ -57,7 +58,9 @@ namespace Reactive.Streams.TCK.Tests
 
         private static IEnumerable<string> GetTestNames(Type type)
             => type.GetMethods()
-                .Where(m => m.GetCustomAttribute<TestAttribute>() != null)
+                .Where(m => 
+                    m.GetCustomAttribute<FactAttribute>() != null || 
+                    m.GetCustomAttribute<SkippableFactAttribute>() != null)
                 .Select(m => m.Name);
     }
 }

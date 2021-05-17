@@ -1,8 +1,9 @@
-﻿/***************************************************
- * Licensed under MIT No Attribution (SPDX: MIT-0) *
- ***************************************************/
+/***************************************************
+* Licensed under MIT No Attribution (SPDX: MIT-0) *
+***************************************************/
 using System;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Tests.Support;
 
 namespace Reactive.Streams.TCK.Tests
@@ -14,23 +15,29 @@ namespace Reactive.Streams.TCK.Tests
         private static readonly long DefaultNoSignalsTimeoutMilliseconds =
             TestEnvironment.EnvironmentDefaultNoSignalsTimeoutMilliseconds();
 
-        [Test]
+        private readonly ITestOutputHelper _output;
+
+        public IdentityProcessorVerificationTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        [SkippableFact]
         public void Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError_shouldBeIgnored()
         {
             RequireTestSkip(() =>
             {
-                new Spec104IgnoreVerification(NewTestEnvironment())
+                new Spec104IgnoreVerification(NewTestEnvironment(_output))
                     .Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError();
             }, "The Publisher under test only supports 1 subscribers, while this test requires at least 2 to run");
         }
 
-        [TestFixture(Ignore = "Helper verification for single test")]
         private sealed class Spec104WaitingVerification : IdentityProcessorVerification<int>
         {
             /// <summary>
             /// We need this constructor for NUnit even if the fixture is ignored 
             /// </summary>
-            public Spec104WaitingVerification() : base(new TestEnvironment())
+            public Spec104WaitingVerification(ITestOutputHelper output) : base(new TestEnvironment(output))
             {
 
             }
@@ -101,23 +108,22 @@ namespace Reactive.Streams.TCK.Tests
             public override IPublisher<int> CreateFailedPublisher() => null;
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError_shouldFailWhileWaitingForOnError()
         {
             RequireTestFailure(() =>
             {
-                new Spec104WaitingVerification(NewTestEnvironment(), DefaultTimeoutMilliseconds)
+                new Spec104WaitingVerification(NewTestEnvironment(_output), DefaultTimeoutMilliseconds)
                     .Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError();
             }, "Did not receive expected error on downstream within " + DefaultTimeoutMilliseconds);
         }
 
-        [TestFixture(Ignore = "Helper verification for single test")]
         private sealed class Spec104IgnoreVerification : IdentityProcessorVerification<int>
         {
             /// <summary>
             /// We need this constructor for NUnit even if the fixture is ignored 
             /// </summary>
-            public Spec104IgnoreVerification() : base(new TestEnvironment())
+            public Spec104IgnoreVerification(ITestOutputHelper output) : base(new TestEnvironment(output))
             {
 
             }
@@ -138,8 +144,8 @@ namespace Reactive.Streams.TCK.Tests
             public override long MaxSupportedSubscribers { get; } = 1;
         }
 
-        private static TestEnvironment NewTestEnvironment()
-            => new TestEnvironment(DefaultTimeoutMilliseconds, DefaultNoSignalsTimeoutMilliseconds);
+        private static TestEnvironment NewTestEnvironment(ITestOutputHelper output)
+            => new TestEnvironment(DefaultTimeoutMilliseconds, DefaultNoSignalsTimeoutMilliseconds, output);
 
 
         // FAILING IMPLEMENTATIONS //

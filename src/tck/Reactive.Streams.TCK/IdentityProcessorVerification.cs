@@ -3,7 +3,8 @@
  ***************************************************/
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.TCK
@@ -55,6 +56,8 @@ namespace Reactive.Streams.TCK
             _processorBufferSize = processorBufferSize;
             _subscriberVerification = new IdentifierWhiteboxVerification(this);
             _publisherVerification = new IdentifierPublisherVerification(this, publisherReferenceGcTimeoutMillis);
+
+            SetUp();
         }
 
         private sealed class IdentifierPublisherVerification : PublisherVerification<T>
@@ -157,7 +160,6 @@ namespace Reactive.Streams.TCK
 
         ////////////////////// TEST ENV CLEANUP /////////////////////////////////////
 
-        [SetUp]
         public void SetUp()
         {
             _publisherVerification.SetUp();
@@ -174,11 +176,11 @@ namespace Reactive.Streams.TCK
             return processor; // we run the PublisherVerification against this
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_validate_maxElementsFromPublisher()
             => _publisherVerification.Required_validate_maxElementsFromPublisher();
 
-        [Test]
+        [SkippableFact]
         public void Required_validate_boundedDepthOfOnNextAndRequestRecursion()
             => _publisherVerification.Required_validate_boundedDepthOfOnNextAndRequestRecursion();
 
@@ -186,146 +188,146 @@ namespace Reactive.Streams.TCK
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#4.1
 
 
-        [Test]
+        [SkippableFact]
         public void Required_createPublisher1MustProduceAStreamOfExactly1Element()
             => _publisherVerification.Required_createPublisher1MustProduceAStreamOfExactly1Element();
 
-        [Test]
+        [SkippableFact]
         public void Required_createPublisher3MustProduceAStreamOfExactly3Elements()
             => _publisherVerification.Required_createPublisher3MustProduceAStreamOfExactly3Elements();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements()
             => _publisherVerification.Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec102_maySignalLessThanRequestedAndTerminateSubscription()
             => _publisherVerification.Required_spec102_maySignalLessThanRequestedAndTerminateSubscription();
 
-        [Test]
+        [SkippableFact]
         public void Stochastic_spec103_mustSignalOnMethodsSequentially()
             => _publisherVerification.Stochastic_spec103_mustSignalOnMethodsSequentially();
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec104_mustSignalOnErrorWhenFails()
             => _publisherVerification.Optional_spec104_mustSignalOnErrorWhenFails();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates()
             => _publisherVerification.Required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates();
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete()
             => _publisherVerification.Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete();
 
-        [Test]
+        [SkippableFact]
         public void Untested_spec106_mustConsiderSubscriptionCancelledAfterOnErrorOrOnCompleteHasBeenCalled()
             => _publisherVerification.Untested_spec106_mustConsiderSubscriptionCancelledAfterOnErrorOrOnCompleteHasBeenCalled();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled()
             => _publisherVerification.Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled();
 
-        [Test]
+        [SkippableFact]
         public void Untested_spec107_mustNotEmitFurtherSignalsOnceOnErrorHasBeenSignalled()
             => _publisherVerification.Untested_spec107_mustNotEmitFurtherSignalsOnceOnErrorHasBeenSignalled();
 
-        [Test]
+        [SkippableFact]
         public void Untested_spec108_possiblyCanceledSubscriptionShouldNotReceiveOnErrorOrOnCompleteSignals()
             => _publisherVerification.Untested_spec108_possiblyCanceledSubscriptionShouldNotReceiveOnErrorOrOnCompleteSignals();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mustIssueOnSubscribeForNonNullSubscriber()
             => _publisherVerification.Required_spec109_mustIssueOnSubscribeForNonNullSubscriber();
 
-        [Test]
+        [SkippableFact]
         public void Untested_spec109_subscribeShouldNotThrowNonFatalThrowable()
             => _publisherVerification.Untested_spec109_subscribeShouldNotThrowNonFatalThrowable();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_subscribeThrowNPEOnNullSubscriber()
             => _publisherVerification.Required_spec109_subscribeThrowNPEOnNullSubscriber();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe()
             => _publisherVerification.Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe();
 
-        [Test]
+        [SkippableFact]
         public void Untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice()
             => _publisherVerification.Untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice();
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_maySupportMultiSubscribe()
             => _publisherVerification.Optional_spec111_maySupportMultiSubscribe();
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingOneByOne()
             => _publisherVerification.Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingOneByOne();
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront()
             => _publisherVerification.Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront();
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfrontAndCompleteAsExpected()
             => _publisherVerification.Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfrontAndCompleteAsExpected();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe()
             => _publisherVerification.Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec303_mustNotAllowUnboundedRecursion()
             => _publisherVerification.Required_spec303_mustNotAllowUnboundedRecursion();
 
-        [Test]
+        [SkippableFact]
         public void Untested_spec304_requestShouldNotPerformHeavyComputations()
             => _publisherVerification.Untested_spec304_requestShouldNotPerformHeavyComputations();
 
-        [Test]
+        [SkippableFact]
         public void Untested_spec305_cancelMustNotSynchronouslyPerformHeavyCompuatation()
             => _publisherVerification.Untested_spec305_cancelMustNotSynchronouslyPerformHeavyCompuatation();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec306_afterSubscriptionIsCancelledRequestMustBeNops()
             => _publisherVerification.Required_spec306_afterSubscriptionIsCancelledRequestMustBeNops();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops()
             => _publisherVerification.Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec309_requestZeroMustSignalIllegalArgumentException()
             => _publisherVerification.Required_spec309_requestZeroMustSignalIllegalArgumentException();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec309_requestNegativeNumberMustSignalIllegalArgumentException()
             => _publisherVerification.Required_spec309_requestNegativeNumberMustSignalIllegalArgumentException();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling()
             => _publisherVerification.Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber()
             => _publisherVerification.Required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue()
             => _publisherVerification.Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue()
             => _publisherVerification.Required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue()
             => _publisherVerification.Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue();
 
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#1.4
         // for multiple subscribers
-        [Test]
+        [SkippableFact]
         public void Required_spec104_mustCallOnErrorOnAllItsSubscribersIfItEncountersANonRecoverableError()
             => OptionalMultipleSubscribersTest(2, setup =>
             {
@@ -422,7 +424,7 @@ namespace Reactive.Streams.TCK
 
         // A Processor
         //   must immediately pass on `onError` events received from its upstream to its downstream
-        [Test]
+        [SkippableFact]
         public void MustImmediatelyPassOnOnErrorEventsReceivedFromItsUpstreamToItsDownstream()
         {
             var setup = new TestSetup(_environment, _processorBufferSize, 1, this);
@@ -439,85 +441,85 @@ namespace Reactive.Streams.TCK
         /////////////////////// DELEGATED TESTS, A PROCESSOR "IS A" SUBSCRIBER //////////////////////
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#4.1
 
-        [Test]
+        [SkippableFact]
         public void Required_exerciseWhiteboxHappyPath()
            => _subscriberVerification.Required_exerciseWhiteboxHappyPath();
-        [Test]
+        [SkippableFact]
         public void Required_spec201_mustSignalDemandViaSubscriptionRequest()
             => _subscriberVerification.Required_spec201_mustSignalDemandViaSubscriptionRequest();
-        [Test]
+        [SkippableFact]
         public void Untested_spec202_shouldAsynchronouslyDispatch()
             => _subscriberVerification.Untested_spec202_shouldAsynchronouslyDispatch();
-        [Test]
+        [SkippableFact]
         public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete()
             => _subscriberVerification.Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete();
-        [Test]
+        [SkippableFact]
         public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError()
             => _subscriberVerification.Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError();
-        [Test]
+        [SkippableFact]
         public void Untested_spec204_mustConsiderTheSubscriptionAsCancelledInAfterRecievingOnCompleteOrOnError()
             => _subscriberVerification.Untested_spec204_mustConsiderTheSubscriptionAsCancelledInAfterRecievingOnCompleteOrOnError();
-        [Test]
+        [SkippableFact]
         public void Required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal()
             => _subscriberVerification.Required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal();
-        [Test]
+        [SkippableFact]
         public void Untested_spec206_mustCallSubscriptionCancelIfItIsNoLongerValid()
             => _subscriberVerification.Untested_spec206_mustCallSubscriptionCancelIfItIsNoLongerValid();
-        [Test]
+        [SkippableFact]
         public void Untested_spec207_mustEnsureAllCallsOnItsSubscriptionTakePlaceFromTheSameThreadOrTakeCareOfSynchronization()
             => _subscriberVerification.Untested_spec207_mustEnsureAllCallsOnItsSubscriptionTakePlaceFromTheSameThreadOrTakeCareOfSynchronization();
-        [Test]
+        [SkippableFact]
         public void Required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel()
             => _subscriberVerification.Required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel();
-        [Test]
+        [SkippableFact]
         public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall()
             => _subscriberVerification.Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall();
-        [Test]
+        [SkippableFact]
         public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall()
             => _subscriberVerification.Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall();
-        [Test]
+        [SkippableFact]
         public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall()
             => _subscriberVerification.Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall();
-        [Test]
+        [SkippableFact]
         public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall()
             => _subscriberVerification.Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall();
-        [Test]
+        [SkippableFact]
         public void Untested_spec211_mustMakeSureThatAllCallsOnItsMethodsHappenBeforeTheProcessingOfTheRespectiveEvents()
             => _subscriberVerification.Untested_spec211_mustMakeSureThatAllCallsOnItsMethodsHappenBeforeTheProcessingOfTheRespectiveEvents();
-        [Test]
+        [SkippableFact]
         public void Untested_spec212_mustNotCallOnSubscribeMoreThanOnceBasedOnObjectEquality_specViolation()
             => _subscriberVerification.Untested_spec212_mustNotCallOnSubscribeMoreThanOnceBasedOnObjectEquality_specViolation();
-        [Test]
+        [SkippableFact]
         public void Untested_spec213_failingOnSignalInvocation()
             => _subscriberVerification.Untested_spec213_failingOnSignalInvocation();
-        [Test]
+        [SkippableFact]
         public void Required_spec213_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull()
             => _subscriberVerification.Required_spec213_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull();
-        [Test]
+        [SkippableFact]
         public void Required_spec213_onNext_mustThrowNullPointerExceptionWhenParametersAreNull()
             => _subscriberVerification.Required_spec213_onNext_mustThrowNullPointerExceptionWhenParametersAreNull();
-        [Test]
+        [SkippableFact]
         public void Required_spec213_onError_mustThrowNullPointerExceptionWhenParametersAreNull()
             => _subscriberVerification.Required_spec213_onError_mustThrowNullPointerExceptionWhenParametersAreNull();
-        [Test]
+        [SkippableFact]
         public void Untested_spec301_mustNotBeCalledOutsideSubscriberContext()
             => _subscriberVerification.Untested_spec301_mustNotBeCalledOutsideSubscriberContext();
-        [Test]
+        [SkippableFact]
         public void Required_spec308_requestMustRegisterGivenNumberElementsToBeProduced()
             => _subscriberVerification.Required_spec308_requestMustRegisterGivenNumberElementsToBeProduced();
-        [Test]
+        [SkippableFact]
         public void Untested_spec310_requestMaySynchronouslyCallOnNextOnSubscriber()
             => _subscriberVerification.Untested_spec310_requestMaySynchronouslyCallOnNextOnSubscriber();
-        [Test]
+        [SkippableFact]
         public void Untested_spec311_requestMaySynchronouslyCallOnCompleteOrOnError()
             => _subscriberVerification.Untested_spec311_requestMaySynchronouslyCallOnCompleteOrOnError();
-        [Test]
+        [SkippableFact]
         public void Untested_spec314_cancelMayCauseThePublisherToShutdownIfNoOtherSubscriptionExists()
             => _subscriberVerification.Untested_spec314_cancelMayCauseThePublisherToShutdownIfNoOtherSubscriptionExists();
-        [Test]
+        [SkippableFact]
         public void Untested_spec315_cancelMustNotThrowExceptionAndMustSignalOnError()
             => _subscriberVerification.Untested_spec315_cancelMustNotThrowExceptionAndMustSignalOnError();
-        [Test]
+        [SkippableFact]
         public void Untested_spec316_requestMustNotThrowExceptionAndMustOnErrorTheSubscriber()
             => _subscriberVerification.Untested_spec316_requestMustNotThrowExceptionAndMustOnErrorTheSubscriber();
 
@@ -525,7 +527,7 @@ namespace Reactive.Streams.TCK
 
         // A Processor
         //   must trigger `requestFromUpstream` for elements that have been requested 'long ago'
-        [Test]
+        [SkippableFact]
         public void Required_mustRequestFromUpstreamForElementsThatHaveBeenRequestedLongAgo()
         {
             OptionalMultipleSubscribersTest(2, setup =>

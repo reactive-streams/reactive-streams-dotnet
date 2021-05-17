@@ -4,7 +4,8 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.TCK
@@ -20,6 +21,7 @@ namespace Reactive.Streams.TCK
         protected SubscriberWhiteboxVerification(TestEnvironment environment)
         {
             _environment = environment;
+            SetUp();
         }
 
         // USER API
@@ -35,13 +37,12 @@ namespace Reactive.Streams.TCK
 
         ////////////////////// TEST ENV CLEANUP /////////////////////////////////////
 
-        [SetUp]
         public void SetUp() => _environment.ClearAsyncErrors();
 
 
         ////////////////////// TEST SETUP VERIFICATION //////////////////////////////
         
-        [Test]
+        [SkippableFact]
         public void Required_exerciseWhiteboxHappyPath()
             => SubscriberTest(stage =>
             {
@@ -69,7 +70,7 @@ namespace Reactive.Streams.TCK
         ////////////////////// SPEC RULE VERIFICATION ///////////////////////////////
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.1
-        [Test]
+        [SkippableFact]
         public void Required_spec201_mustSignalDemandViaSubscriptionRequest()
             => SubscriberTest(stage =>
             {
@@ -80,12 +81,12 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.2
-        [Test]
+        [SkippableFact]
         public void Untested_spec202_shouldAsynchronouslyDispatch()
             => NotVerified();  // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.3
-        [Test]
+        [SkippableFact]
         public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete()
             => SubscriberTestWithoutSetup(stage =>
             {
@@ -131,7 +132,7 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.3
-        [Test]
+        [SkippableFact]
         public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError()
             => SubscriberTestWithoutSetup(stage =>
             {
@@ -176,12 +177,12 @@ namespace Reactive.Streams.TCK
         }
         
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.4
-        [Test]
+        [SkippableFact]
         public void Untested_spec204_mustConsiderTheSubscriptionAsCancelledInAfterRecievingOnCompleteOrOnError()
             => NotVerified();  // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.5
-        [Test]
+        [SkippableFact]
         public void Required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal()
             => SubscriberTest(stage =>
             {
@@ -217,18 +218,18 @@ namespace Reactive.Streams.TCK
         }
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.6
-        [Test]
+        [SkippableFact]
         public void Untested_spec206_mustCallSubscriptionCancelIfItIsNoLongerValid()
             => NotVerified();  // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.7
-        [Test]
+        [SkippableFact]
         public void Untested_spec207_mustEnsureAllCallsOnItsSubscriptionTakePlaceFromTheSameThreadOrTakeCareOfSynchronization()
             => NotVerified();  // cannot be meaningfully tested, or can it?
                                // the same thread part of the clause can be verified but that is not very useful, or is it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.8
-        [Test]
+        [SkippableFact]
         public void Required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel()
             => SubscriberTest(stage =>
             {
@@ -243,7 +244,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.9
-        [Test]
+        [SkippableFact]
         public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall()
             => SubscriberTest(stage =>
             {
@@ -255,7 +256,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.9
-        [Test]
+        [SkippableFact]
         public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall()
             => SubscriberTest(stage =>
             {
@@ -266,7 +267,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.10
-        [Test]
+        [SkippableFact]
         public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall()
             => SubscriberTest(stage =>
             {
@@ -281,7 +282,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.10
-        [Test]
+        [SkippableFact]
         public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall()
             => SubscriberTest(stage =>
             {
@@ -293,22 +294,22 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.11
-        [Test]
+        [SkippableFact]
         public void Untested_spec211_mustMakeSureThatAllCallsOnItsMethodsHappenBeforeTheProcessingOfTheRespectiveEvents()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.12
-        [Test]
+        [SkippableFact]
         public void Untested_spec212_mustNotCallOnSubscribeMoreThanOnceBasedOnObjectEquality_specViolation()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
-        [Test]
+        [SkippableFact]
         public void Untested_spec213_failingOnSignalInvocation()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
-        [Test]
+        [SkippableFact]
         public void Required_spec213_onSubscribe_mustThrowNullPointerExceptionWhenParametersAreNull()
             => SubscriberTest(stage =>
             {
@@ -328,13 +329,13 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
-        [Test]
+        [SkippableFact]
         public void Required_spec213_onNext_mustThrowNullPointerExceptionWhenParametersAreNull()
             => SubscriberTest(stage =>
             {
                 var element = default(T);
                 if (element != null)
-                    throw new IgnoreException("Can't verify behavior for value types");
+                    throw new SkipException("Can't verify behavior for value types");
 
                 var subscriber = stage.Sub;
                 var gotNpe = false;
@@ -352,7 +353,7 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#2.13
-        [Test]
+        [SkippableFact]
         public void Required_spec213_onError_mustThrowNullPointerExceptionWhenParametersAreNull()
             => SubscriberTest(stage =>
             {
@@ -374,12 +375,12 @@ namespace Reactive.Streams.TCK
         ////////////////////// SUBSCRIPTION SPEC RULE VERIFICATION //////////////////
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.1
-        [Test]
+        [SkippableFact]
         public void Untested_spec301_mustNotBeCalledOutsideSubscriberContext()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.8
-        [Test]
+        [SkippableFact]
         public void Required_spec308_requestMustRegisterGivenNumberElementsToBeProduced()
             => SubscriberTest(stage =>
             {
@@ -394,27 +395,27 @@ namespace Reactive.Streams.TCK
             });
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.10
-        [Test]
+        [SkippableFact]
         public void Untested_spec310_requestMaySynchronouslyCallOnNextOnSubscriber()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.11
-        [Test]
+        [SkippableFact]
         public void Untested_spec311_requestMaySynchronouslyCallOnCompleteOrOnError()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.14
-        [Test]
+        [SkippableFact]
         public void Untested_spec314_cancelMayCauseThePublisherToShutdownIfNoOtherSubscriptionExists()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.15
-        [Test]
+        [SkippableFact]
         public void Untested_spec315_cancelMustNotThrowExceptionAndMustSignalOnError()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
         // Verifies rule: https://github.com/reactive-streams/reactive-streams-jvm#3.16
-        [Test]
+        [SkippableFact]
         public void Untested_spec316_requestMustNotThrowExceptionAndMustOnErrorTheSubscriber()
             => NotVerified(); // cannot be meaningfully tested, or can it?
 
@@ -458,7 +459,7 @@ namespace Reactive.Streams.TCK
 
         public void NotVerified() => NotVerified("Not verified using this TCK.");
 
-        public void NotVerified(string message) => Assert.Ignore(message);
+        public void NotVerified(string message) => TckAssert.Skip(message);
     }
 
     public class WhiteboxTestStage<T> : ManualPublisher<T>

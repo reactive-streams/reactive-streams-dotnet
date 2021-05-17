@@ -29,12 +29,11 @@ Param(
     [string[]]$ScriptArgs
 )
 
-$FakeVersion = "4.57.4"
-$NUnitVersion = "3.6.0"
-$DotNetChannel = "preview";
-$DotNetVersion = "1.0.0";
-$DotNetInstallerUri = "https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.ps1";
-$NugetVersion = "4.1.0";
+$FakeVersion = "4.63.0"
+$DotNetChannel = "LTS";
+$DotNetVersion = "3.1.105";
+$DotNetInstallerUri = "https://dot.net/v1/dotnet-install.ps1";
+$NugetVersion = "4.3.0";
 $NugetUrl = "https://dist.nuget.org/win-x86-commandline/v$NugetVersion/nuget.exe"
 
 # Make sure tools folder exists
@@ -108,20 +107,6 @@ if (!(Test-Path $FakeExePath)) {
     Invoke-Expression "&`"$NugetPath`" install Fake -ExcludeVersion -Version $FakeVersion -OutputDirectory `"$ToolPath`"" | Out-Null;
     if ($LASTEXITCODE -ne 0) {
         Throw "An error occured while restoring Fake from NuGet."
-    }
-}
-
-###########################################################################
-# INSTALL NUnit3 Test Runner
-###########################################################################
-
-# Make sure NUnit3 Test Runner has been installed.
-$NUnitDllPath = Join-Path $ToolPath "NUnit.ConsoleRunner/tools/nunit3-console.exe"
-if (!(Test-Path $NUnitDllPath)) {
-    Write-Host "Installing NUnit3 Runner..."
-    Invoke-Expression "&`"$NugetPath`" install NUnit.ConsoleRunner -ExcludeVersion -Version $NUnitVersion -OutputDirectory `"$ToolPath`"" | Out-Null;
-    if ($LASTEXITCODE -ne 0) {
-        Throw "An error occured while restoring NUnit3 Test from NuGet."
     }
 }
 

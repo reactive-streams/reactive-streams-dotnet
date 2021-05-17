@@ -1,16 +1,16 @@
-﻿/***************************************************
- * Licensed under MIT No Attribution (SPDX: MIT-0) *
- ***************************************************/
+/***************************************************
+* Licensed under MIT No Attribution (SPDX: MIT-0) *
+***************************************************/
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.Example.Unicast;
 
 namespace Reactive.Streams.TCK.Tests
 {
-    [TestFixture]
     public class EmptyLazyPublisherTest : PublisherVerification<int>
     {
-        public EmptyLazyPublisherTest() : base(new TestEnvironment())
+        public EmptyLazyPublisherTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
             
         }

@@ -1,7 +1,8 @@
-﻿/***************************************************
- * Licensed under MIT No Attribution (SPDX: MIT-0) *
- ***************************************************/
-using NUnit.Framework;
+/***************************************************
+* Licensed under MIT No Attribution (SPDX: MIT-0) *
+***************************************************/
+using Xunit;
+using Xunit.Abstractions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ using System.Threading.Tasks;
 
 namespace Reactive.Streams.TCK.Tests
 {
-    [TestFixture]
-    public class RangePublisherTest : PublisherVerification<int>
+    //[TestFixture]
+    public class RangePublisherTest : PublisherVerification<int>, IDisposable
     {
         static readonly ConcurrentDictionary<int, string> stacks = new ConcurrentDictionary<int, string>();
 
@@ -22,31 +23,7 @@ namespace Reactive.Streams.TCK.Tests
 
         static int id;
 
-        [TearDown]
-        public void AfterTest()
-        {
-            bool fail = false;
-            StringBuilder b = new StringBuilder();
-            foreach (var t in states)
-            {
-                if (!t.Value)
-                {
-                    b.Append("\r\n-------------------------------");
-
-                    b.Append("\r\nat ").Append(stacks[t.Key]);
-
-                    fail = true;
-                }
-            }
-            states.Clear();
-            stacks.Clear();
-            if (fail)
-            {
-                throw new InvalidOperationException("Cancellations were missing:" + b);
-            }
-        }
-
-        public RangePublisherTest() : base(new TestEnvironment())
+        public RangePublisherTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 
@@ -189,6 +166,29 @@ namespace Reactive.Streams.TCK.Tests
                     cancelled = true;
                     states[ids] = true;
                 }
+            }
+        }
+
+        public void Dispose()
+        {
+            bool fail = false;
+            StringBuilder b = new StringBuilder();
+            foreach (var t in states)
+            {
+                if (!t.Value)
+                {
+                    b.Append("\r\n-------------------------------");
+
+                    b.Append("\r\nat ").Append(stacks[t.Key]);
+
+                    fail = true;
+                }
+            }
+            states.Clear();
+            stacks.Clear();
+            if (fail)
+            {
+                throw new InvalidOperationException("Cancellations were missing:" + b);
             }
         }
     }

@@ -4,7 +4,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Support;
 using Reactive.Streams.TCK.Tests.Support;
 
@@ -16,22 +17,29 @@ namespace Reactive.Streams.TCK.Tests
     /// </summary>
     public class PublisherVerificationTest : TCKVerificationSupport
     {
-        [Test]
+        private readonly ITestOutputHelper _output;
+
+        public PublisherVerificationTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        [SkippableFact]
         public void Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements_shouldFailBy_ExpectingOnError()
             => RequireTestFailure(() => NoopPublisherVerification().Required_spec101_subscriptionRequestMustResultInTheCorrectNumberOfProducedElements(),
                     "produced no element after first");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec102_maySignalLessThanRequestedAndTerminateSubscription_shouldFailBy_notReceivingAnyElement()
             => RequireTestFailure(() => NoopPublisherVerification().Required_spec102_maySignalLessThanRequestedAndTerminateSubscription(),
                     "Did not receive expected element");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec102_maySignalLessThanRequestedAndTerminateSubscription_shouldFailBy_receivingTooManyElements()
             => RequireTestFailure(() => DemandIgnoringSynchronousPublisherVerification().Required_spec102_maySignalLessThanRequestedAndTerminateSubscription(),
                     "Expected end-of-stream but got element [3]");
 
-        [Test]
+        [SkippableFact]
         public void Stochastic_spec103_mustSignalOnMethodsSequentially_shouldFailBy_concurrentlyAccessingOnNext()
         {
             var verification = CustomPublisherVerification(new ConcurrentAccessPublisher());
@@ -97,7 +105,7 @@ namespace Reactive.Streams.TCK.Tests
                 }));
         }
 
-        [Test]
+        [SkippableFact]
         public void Stochastic_spec103_mustSignalOnMethodsSequentially_shouldPass_forSynchronousPublisher()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -115,7 +123,7 @@ namespace Reactive.Streams.TCK.Tests
             CustomPublisherVerification(publisher).Stochastic_spec103_mustSignalOnMethodsSequentially();
         }
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec104_mustSignalOnErrorWhenFails_shouldFail()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -127,12 +135,12 @@ namespace Reactive.Streams.TCK.Tests
                 "Publisher threw exception (It is not valid to throw here!) instead of signalling error via onError!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec104_mustSignalOnErrorWhenFails_shouldBeSkippedWhenNoErrorPublisherGiven()
             => RequireTestSkip(() => NoopPublisherVerification().Optional_spec104_mustSignalOnErrorWhenFails(),
                     PublisherVerification<int>.SkippingNoErrorPublisherAvailable);
 
-        [Test]
+        [SkippableFact]
         public void Required_spec105_mustSignalOnCompleteWhenFiniteStreamTerminates_shouldFail()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -153,16 +161,15 @@ namespace Reactive.Streams.TCK.Tests
                 messagePart: "Expected end-of-stream but got element [3]");
         }
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete_shouldNotAllowEagerOnComplete()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnComplete());
-            var verification = new Spec105Verification(NewTestEnvironment(), publisher);
+            var verification = new Spec105Verification(new TestEnvironment(_output), publisher);
             RequireTestFailure(() => verification.Optional_spec105_emptyStreamMustTerminateBySignallingOnComplete(),
                 "Subscriber.OnComplete() called before Subscriber.OnSubscribe");
         }
 
-        [TestFixture(Ignore = "Helper for single test")]
         private sealed class Spec105Verification : PublisherVerification<int>
         {
             private readonly IPublisher<int> _publisher;
@@ -170,7 +177,7 @@ namespace Reactive.Streams.TCK.Tests
             /// <summary>
             /// We need this constructor for NUnit even if the fixture is ignored 
             /// </summary>
-            public Spec105Verification() : base(NewTestEnvironment())
+            public Spec105Verification(TestEnvironment environment) : base(environment)
             {
 
             }
@@ -187,7 +194,7 @@ namespace Reactive.Streams.TCK.Tests
             public override long MaxElementsFromPublisher { get; } = 0; // it is an "empty" Publisher
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled_shouldFailForNotCompletingPublisher()
         {
             var cancellation = new CancellationTokenSource();
@@ -205,7 +212,7 @@ namespace Reactive.Streams.TCK.Tests
             }
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec107_mustNotEmitFurtherSignalsOnceOnCompleteHasBeenSignalled_shouldFailForPublisherWhichCompletesButKeepsServingData()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -231,7 +238,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Unexpected element 0 received after stream completed");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_subscribeThrowNPEOnNullSubscriber_shouldFailIfDoesntThrowNPE()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => { });
@@ -240,7 +247,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Publisher did not throw a ArgumentNullException when given a null Subscribe in subscribe");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_actuallyPass()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -252,7 +259,7 @@ namespace Reactive.Streams.TCK.Tests
                 .Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe();
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnCompleteHappensFirst()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnComplete());
@@ -261,7 +268,7 @@ namespace Reactive.Streams.TCK.Tests
                 "OnSubscribe should be called prior to OnComplete always");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnNextHappensFirst()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnNext(1337));
@@ -270,7 +277,7 @@ namespace Reactive.Streams.TCK.Tests
                 "OnSubscribe should be called prior to OnNext always");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mustIssueOnSubscribeForNonNullSubscriber_mustFailIfOnErrorHappensFirst()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnError(new TestException()));
@@ -279,7 +286,7 @@ namespace Reactive.Streams.TCK.Tests
                 "OnSubscribe should be called prior to OnError always");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_shouldFail()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber => subscriber.OnSubscribe(new LamdaSubscription()));
@@ -288,25 +295,25 @@ namespace Reactive.Streams.TCK.Tests
                 "Should have received OnError");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe_beSkippedForNoGivenErrorPublisher()
         {
             RequireTestSkip(() => NoopPublisherVerification().Required_spec109_mayRejectCallsToSubscribeIfPublisherIsUnableOrUnwillingToServeThemRejectionMustTriggerOnErrorAfterOnSubscribe(),
                 PublisherVerification<int>.SkippingNoErrorPublisherAvailable);
         }
 
-        [Test]
+        [SkippableFact]
         public void Untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice_shouldFailBy_skippingSinceOptional()
         {
             RequireTestFailure(() => NoopPublisherVerification().Untested_spec110_rejectASubscriptionRequestIfTheSameSubscriberSubscribesTwice(),
                 "Not verified by this TCK.");
         }
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_maySupportMultiSubscribe_shouldFailBy_actuallyPass()
             => NoopPublisherVerification().Optional_spec111_maySupportMultiSubscribe();
 
-        [Test]
+        [SkippableFact]
         public void Optional_spec111_multicast_mustProduceTheSameElementsInTheSameSequenceToAllOfItsSubscribersWhenRequestingManyUpfront_shouldFailBy_expectingOnError()
         {
             var random = new Random();
@@ -323,12 +330,12 @@ namespace Reactive.Streams.TCK.Tests
                 "Expected elements to be signaled in the same sequence to 1st and 2nd subscribers");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe_shouldFailBy_reportingAsyncError()
             => RequireTestFailure(() => OnErroringPublisherVerification().Required_spec302_mustAllowSynchronousRequestCallsFromOnNextAndOnSubscribe(),
                 "Async error during test execution: Test Exception: Boom!");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec303_mustNotAllowUnboundedRecursion_shouldFailBy_informingAboutTooDeepStack()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -343,16 +350,16 @@ namespace Reactive.Streams.TCK.Tests
               /*Got 2 onNext calls within thread: ... */ "yet expected recursive bound was 1");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec306_afterSubscriptionIsCancelledRequestMustBeNops_shouldFailBy_unexpectedElement()
             => RequireTestFailure(() => DemandIgnoringSynchronousPublisherVerification().Required_spec306_afterSubscriptionIsCancelledRequestMustBeNops(),
                 "Did not expect an element but got element [0]");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops_shouldPass()
             => DemandIgnoringSynchronousPublisherVerification().Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec307_afterSubscriptionIsCancelledAdditionalCancelationsMustBeNops_shouldFailBy_unexpectedErrorInCancelling()
         {
             var publisher = new LamdaPublisher<int>(onSubscribe: subscriber =>
@@ -367,17 +374,17 @@ namespace Reactive.Streams.TCK.Tests
                "Async error during test execution: Test Exception: Boom!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec309_requestZeroMustSignalIllegalArgumentException_shouldFailBy_expectingOnError()
             => RequireTestFailure(() => NoopPublisherVerification().Required_spec309_requestZeroMustSignalIllegalArgumentException(),
                 "Expected OnError");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec309_requestNegativeNumberMustSignalIllegalArgumentException_shouldFailBy_expectingOnError()
             => RequireTestFailure(() => NoopPublisherVerification().Required_spec309_requestNegativeNumberMustSignalIllegalArgumentException(),
                 "Expected OnError");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec312_cancelMustMakeThePublisherToEventuallyStopSignaling_shouldFailBy_havingEmitedMoreThanRequested()
         {
             var cancellation = new CancellationTokenSource();
@@ -395,7 +402,7 @@ namespace Reactive.Streams.TCK.Tests
             }
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec313_cancelMustMakeThePublisherEventuallyDropAllReferencesToTheSubscriber_shouldFailBy_keepingTheReferenceLongerThanNeeded()
         {
             ISubscriber<int> sub;
@@ -417,7 +424,7 @@ namespace Reactive.Streams.TCK.Tests
                "did not drop reference to test subscriber after subscription cancellation");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue_shouldFail_onAsynchDemandIgnoringPublisher()
         {
             var cancellation = new CancellationTokenSource();
@@ -435,12 +442,12 @@ namespace Reactive.Streams.TCK.Tests
             }
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue_shouldFail_onSynchDemandIgnoringPublisher()
             => RequireTestFailure(() => DemandIgnoringSynchronousPublisherVerification().Required_spec317_mustSupportAPendingElementCountUpToLongMaxValue(),
                 "Received more than bufferSize (32) OnNext signals. The Publisher probably emited more signals than expected!");
 
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue_shouldFail_onSynchOverflowingPublisher()
         {
             var demand = 0L;
@@ -462,7 +469,7 @@ namespace Reactive.Streams.TCK.Tests
                "Async error during test execution: Illegally signalling OnError (violates rule 3.17)");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustSupportACumulativePendingElementCountUpToLongMaxValue_shouldFailWhenErrorSignalledOnceMaxValueReached()
         {
             var demand = 0L;
@@ -484,7 +491,7 @@ namespace Reactive.Streams.TCK.Tests
                "Async error during test execution: Illegally signalling onError too soon!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue_forSynchronousPublisher()
         {
             var sent = new AtomicCounter(0);
@@ -508,7 +515,7 @@ namespace Reactive.Streams.TCK.Tests
             verification.Required_spec317_mustNotSignalOnErrorWhenPendingAboveLongMaxValue();
 
             // 11 due to the implementation of this particular TCK test (see impl)
-            Assert.AreEqual(11, sent.Current);
+            Assert.Equal(11, sent.Current);
         }
 
         // FAILING IMPLEMENTATIONS //
@@ -524,7 +531,7 @@ namespace Reactive.Streams.TCK.Tests
                 subscriber.OnSubscribe(new LamdaSubscription());
             });
 
-            return new SimpleVerification(NewTestEnvironment(), publisher);
+            return new SimpleVerification(new TestEnvironment(_output), publisher);
         }
 
         /// <summary>
@@ -540,21 +547,21 @@ namespace Reactive.Streams.TCK.Tests
                 }));
             });
 
-            return new SimpleVerification(NewTestEnvironment(), publisher);
+            return new SimpleVerification(new TestEnvironment(_output), publisher);
         }
 
         /// <summary>
         /// Custom Verification using given Publishers
         /// </summary>
         private PublisherVerification<int> CustomPublisherVerification(IPublisher<int> publisher)
-            => new SimpleVerification(new TestEnvironment(), publisher);
+            => new SimpleVerification(new TestEnvironment(_output), publisher);
 
         /// <summary>
         /// Custom Verification using given Publishers
         /// </summary>
         private PublisherVerification<int> CustomPublisherVerification(IPublisher<int> publisher,
             IPublisher<int> errorPublisher)
-            => new SimpleVerification(new TestEnvironment(), publisher, errorPublisher);
+            => new SimpleVerification(new TestEnvironment(_output), publisher, errorPublisher);
 
         /// <summary>
         /// Verification using a Publisher that publishes elements even with no demand available
@@ -570,7 +577,7 @@ namespace Reactive.Streams.TCK.Tests
                         subscriber.OnNext((int)i);
                 }));
             });
-            return new SimpleVerification(new TestEnvironment(), publisher);
+            return new SimpleVerification(new TestEnvironment(_output), publisher);
         }
 
         /// <summary>
@@ -586,7 +593,7 @@ namespace Reactive.Streams.TCK.Tests
         /// Verification using a Publisher that publishes elements even with no demand available, from multiple threads (!).
         /// </summary>
         private PublisherVerification<int> DemandIgnoringAsynchronousPublisherVerification(bool swallowOnNextExceptions, CancellationToken token)
-            => new SimpleVerification(new TestEnvironment(), new DemandIgnoringAsyncPublisher(swallowOnNextExceptions, token));
+            => new SimpleVerification(new TestEnvironment(_output), new DemandIgnoringAsyncPublisher(swallowOnNextExceptions, token));
 
         private sealed class DemandIgnoringAsyncPublisher : IPublisher<int>
         {
@@ -657,7 +664,6 @@ namespace Reactive.Streams.TCK.Tests
                 }));
         }
 
-        [TestFixture(Ignore = "Helper for single test")]
         private sealed class SimpleVerification : PublisherVerification<int>
         {
             private readonly IPublisher<int> _publisher;
@@ -666,7 +672,7 @@ namespace Reactive.Streams.TCK.Tests
             /// <summary>
             /// We need this constructor for NUnit even if the fixture is ignored 
             /// </summary>
-            public SimpleVerification() : base(NewTestEnvironment()) { }
+            public SimpleVerification(TestEnvironment environment) : base(environment) { }
 
             public SimpleVerification(TestEnvironment environment, IPublisher<int> publisher, IPublisher<int> failedPublisher = null) : base(environment)
             {
@@ -679,6 +685,5 @@ namespace Reactive.Streams.TCK.Tests
             public override IPublisher<int> CreateFailedPublisher() => _failedPublisher;
         }
 
-        private static TestEnvironment NewTestEnvironment() => new TestEnvironment();
     }
 }

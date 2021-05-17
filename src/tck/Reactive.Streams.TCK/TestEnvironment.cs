@@ -5,7 +5,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Support;
 
 namespace Reactive.Streams.TCK
@@ -17,6 +18,7 @@ namespace Reactive.Streams.TCK
         private const long DefaultTimeoutMillis = 500;
         private const string DefaultNoSignalsTimeoutMillisEnv = "DEFAULT_NO_SIGNALS_TIMEOUT_MILLIS";
         
+        public ITestOutputHelper Output { get; }
 
         /// <summary>
         /// Tests must specify the timeout for expected outcome of asynchronous
@@ -26,12 +28,12 @@ namespace Reactive.Streams.TCK
         /// </summary>
         /// <param name="defaultTimeoutMilliseconds">default timeout to be used in all expect* methods</param>
         /// <param name="defaultNoSignalsTimeoutMilliseconds">default timeout to be used when no further signals are expected anymore</param>
-        /// <param name="writeLineDebug">if true, signals such as OnNext / Request / OnComplete etc will be printed to standard output. Default: false</param>
-        public TestEnvironment(long defaultTimeoutMilliseconds, long defaultNoSignalsTimeoutMilliseconds, bool writeLineDebug = false)
+        /// <param name="output">if not null, signals such as OnNext / Request / OnComplete etc will be printed to standard output. Default: null</param>
+        public TestEnvironment(long defaultTimeoutMilliseconds, long defaultNoSignalsTimeoutMilliseconds, ITestOutputHelper output = null)
         {
             DefaultTimeoutMilliseconds = defaultTimeoutMilliseconds;
             DefaultNoSignalsTimeoutMilliseconds = defaultNoSignalsTimeoutMilliseconds;
-            WriteLineDebug = writeLineDebug;
+            Output = output;
         }
 
         /// <summary>
@@ -41,8 +43,11 @@ namespace Reactive.Streams.TCK
         /// run the tests.
         /// </summary>
         /// <param name="defaultTimeoutMilliseconds">default timeout to be used in all expect* methods</param>
-        public TestEnvironment(long defaultTimeoutMilliseconds)
-            : this(defaultTimeoutMilliseconds, defaultTimeoutMilliseconds)
+        public TestEnvironment(long defaultTimeoutMilliseconds, ITestOutputHelper output)
+            : this(
+                defaultTimeoutMilliseconds,
+                defaultTimeoutMilliseconds,
+                output)
         {
         }
 
@@ -53,11 +58,11 @@ namespace Reactive.Streams.TCK
         /// run the tests.
         /// </summary>
         /// <param name="writeLineDebug">if true, signals such as OnNext / Request / OnComplete etc will be printed to standard output</param>
-        public TestEnvironment(bool writeLineDebug)
+        public TestEnvironment(bool writeLineDebug, ITestOutputHelper output)
             : this(
                 EnvironmentDefaultTimeoutMilliseconds(),
-                EnvironmentDefaultNoSignalsTimeoutMilliseconds(),
-                writeLineDebug)
+                EnvironmentDefaultNoSignalsTimeoutMilliseconds(), 
+                output)
         {
         }
 
@@ -67,8 +72,11 @@ namespace Reactive.Streams.TCK
         /// the implementation, but can in some cases result in longer time to
         /// run the tests.
         /// </summary>
-        public TestEnvironment()
-            : this(EnvironmentDefaultTimeoutMilliseconds(), EnvironmentDefaultNoSignalsTimeoutMilliseconds())
+        public TestEnvironment(ITestOutputHelper output)
+            : this(
+                EnvironmentDefaultTimeoutMilliseconds(),
+                EnvironmentDefaultNoSignalsTimeoutMilliseconds(),
+                output)
         {
         }
 
@@ -82,11 +90,6 @@ namespace Reactive.Streams.TCK
         /// Note that this timeout default
         /// </summary>
         public long DefaultNoSignalsTimeoutMilliseconds { get; }
-
-        /// <summary>
-        /// If true, signals such as OnNext / Request / OnComplete etc will be printed to standard output
-        /// </summary>
-        public bool WriteLineDebug { get; }
 
         public ConcurrentQueue<Exception> AsyncErrors { get; } = new ConcurrentQueue<Exception>();
 
@@ -150,7 +153,7 @@ namespace Reactive.Streams.TCK
         {
             try
             {
-                Assert.Fail(message);
+                TckAssert.Fail(message);
             }
             catch (Exception ex)
             {
@@ -174,7 +177,7 @@ namespace Reactive.Streams.TCK
         {
             try
             {
-                Assert.Fail(message, exception);
+                TckAssert.Fail(message, exception);
             }
             catch (Exception)
             {
@@ -198,7 +201,7 @@ namespace Reactive.Streams.TCK
         {
             try
             {
-                Assert.Fail(exception.Message, exception);
+                TckAssert.Fail(exception.Message, exception);
             }
             catch (Exception)
             {
@@ -222,12 +225,12 @@ namespace Reactive.Streams.TCK
         {
             try
             {
-                Assert.Fail(message);
+                TckAssert.Fail(message);
             }
             catch (Exception ex)
             {
                 AsyncErrors.Enqueue(ex);
-                Assert.Fail(message, ex);
+                TckAssert.Fail(message, ex);
             }
 
             return default(T); // unreachable, the previous block will always exit by throwing
@@ -306,21 +309,19 @@ namespace Reactive.Streams.TCK
         {
             foreach (var error in AsyncErrors)
             {
-                var exception = error as AssertionException;
-                if (exception != null)
+                if (error is AssertionException exception)
                     throw exception;
 
-                Assert.Fail($"Async error during test execution: {error.Message}", error);
+                TckAssert.Fail($"Async error during test execution: {error.Message}", error);
             }
         }
 
         /// <summary>
-        /// If <see cref="WriteLineDebug"/> is true, print debug message to std out.
+        /// If <see cref="Output"/> is not null, print debug message to std out.
         /// </summary>
         public void Debug(string message)
         {
-            if(WriteLineDebug)
-                Console.WriteLine($"[TCK-DEBUG] {message}");
+            Output?.WriteLine($"[TCK-DEBUG] {message}");
         }
 
         /// <summary>

@@ -3,7 +3,8 @@
  ***************************************************/
 using System;
 using System.Runtime.CompilerServices;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK.Support;
 using Reactive.Streams.TCK.Tests.Support;
 
@@ -13,10 +14,16 @@ namespace Reactive.Streams.TCK.Tests
     /// Validates that the TCK's <see cref="SubscriberWhiteboxVerification{T}"/> fails with nice human readable errors.
     /// >Important: Please note that all Publishers implemented in this file are *wrong*!
     /// </summary>
-    [TestFixture]
     public class SubscriberWhiteboxVerificationTest : TCKVerificationSupport
     {
-        [Test]
+        private readonly ITestOutputHelper _output;
+
+        public SubscriberWhiteboxVerificationTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        [SkippableFact]
         public void Required_spec201_mustSignalDemandViaSubscriptionRequest_shouldFailBy_notGettingRequestCall()
         {
             // this mostly verifies the probe is injected correctly
@@ -37,11 +44,11 @@ namespace Reactive.Streams.TCK.Tests
                 "Did not receive expected `Request` call within");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec201_mustSignalDemandViaSubscriptionRequest_shouldPass()
             => SimpleSubscriberVerification().Required_spec201_mustSignalDemandViaSubscriptionRequest();
 
-        [Test]
+        [SkippableFact]
         public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingRequest()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -62,7 +69,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Subscription.Request MUST NOT be called from Subscriber.OnComplete (Rule 2.3)!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnComplete_shouldFail_dueToCallingCancel()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -84,7 +91,7 @@ namespace Reactive.Streams.TCK.Tests
 
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingRequest()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -104,7 +111,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Subscription.Request MUST NOT be called from Subscriber.OnError (Rule 2.3)!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec203_mustNotCallMethodsOnSubscriptionOrPublisherInOnError_shouldFail_dueToCallingCancel()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -124,7 +131,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Subscription.Cancel MUST NOT be called from Subscriber.OnError (Rule 2.3)!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec205_mustCallSubscriptionCancelIfItAlreadyHasAnSubscriptionAndReceivesAnotherOnSubscribeSignal_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -140,7 +147,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Expected 2nd Subscription given to subscriber to be cancelled");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec208_mustBePreparedToReceiveOnNextSignalsAfterHavingCalledSubscriptionCancel_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -176,7 +183,7 @@ namespace Reactive.Streams.TCK.Tests
                 "But I thought it's cancelled!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithPrecedingRequestCall_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -191,7 +198,7 @@ namespace Reactive.Streams.TCK.Tests
                 "did not call `RegisterOnComplete()`");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec209_mustBePreparedToReceiveAnOnCompleteSignalWithoutPrecedingRequestCall_shouldPass_withNoopSubscriber()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -206,7 +213,7 @@ namespace Reactive.Streams.TCK.Tests
                 "did not call `RegisterOnSubscribe`");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithPrecedingRequestCall_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -222,7 +229,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Test Exception: Boom!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec210_mustBePreparedToReceiveAnOnErrorSignalWithoutPrecedingRequestCall_shouldFail()
         {
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> createSubscriber = probe =>
@@ -238,7 +245,7 @@ namespace Reactive.Streams.TCK.Tests
                 "Test Exception: Boom!");
         }
 
-        [Test]
+        [SkippableFact]
         public void Required_spec308_requestMustRegisterGivenNumberElementsToBeProduced_shouldFail()
         {
             // sanity checks the "happy path", that triggerRequest() propagates the right demand
@@ -257,19 +264,10 @@ namespace Reactive.Streams.TCK.Tests
         /// This verification can be used in the "simples case, subscriber which does basically nothing case" validation.
         /// </summary>
         private SubscriberWhiteboxVerification<int?> SimpleSubscriberVerification()
-            => new SimpleWhiteboxVerification(new TestEnvironment());
+            => new SimpleWhiteboxVerification(new TestEnvironment(_output));
 
-        [TestFixture(Ignore = "Helper verification for single test")]
         private sealed class SimpleWhiteboxVerification : SubscriberWhiteboxVerification<int?>
         {
-            /// <summary>
-            /// We need this constructor for NUnit even if the fixture is ignored 
-            /// </summary>
-            public SimpleWhiteboxVerification() : base(new TestEnvironment())
-            {
-
-            }
-
             public SimpleWhiteboxVerification(TestEnvironment environment) : base(environment)
             {
             }
@@ -291,20 +289,11 @@ namespace Reactive.Streams.TCK.Tests
         /// </summary>
         private SubscriberWhiteboxVerification<int?> CustomSubscriberVerification(
             Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> newSubscriber)
-            => new CustomWhiteboxVerification(new TestEnvironment(), newSubscriber);
+            => new CustomWhiteboxVerification(new TestEnvironment(_output), newSubscriber);
 
-        [TestFixture(Ignore = "Helper verification for single test")]
         private sealed class CustomWhiteboxVerification : SubscriberWhiteboxVerification<int?>
         {
             private readonly Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> _newSubscriber;
-
-            /// <summary>
-            /// We need this constructor for NUnit even if the fixture is ignored 
-            /// </summary>
-            public CustomWhiteboxVerification() : base(new TestEnvironment())
-            {
-
-            }
 
             public CustomWhiteboxVerification(TestEnvironment environment,
                 Func<WhiteboxSubscriberProbe<int?>, ISubscriber<int?>> newSubscriber) : base(environment)

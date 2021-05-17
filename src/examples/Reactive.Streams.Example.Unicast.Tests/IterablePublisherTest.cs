@@ -4,21 +4,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
 using Reactive.Streams.TCK;
 
 namespace Reactive.Streams.Example.Unicast.Tests
 {
-    [TestFixture]
     public class IterablePublisherTest : PublisherVerification<int?>
     {
-        public IterablePublisherTest() : base(new TestEnvironment())
+        public IterablePublisherTest(ITestOutputHelper output) : base(new TestEnvironment(output))
         {
         }
 
         public override IPublisher<int?> CreatePublisher(long elements)
         {
-            Assert.LessOrEqual(elements, MaxElementsFromPublisher);
+            Assert.True(elements <= MaxElementsFromPublisher);
+            //Assert.LessOrEqual(elements, MaxElementsFromPublisher);
             return new NumberIterablePublisher(0, (int)elements);
         }
 
