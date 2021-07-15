@@ -6,7 +6,7 @@ namespace Reactive.Streams
     /// <summary>
     /// <para>
     /// A <see cref="ISubscription"/> represents a one-to-one lifecycle of a <see cref="ISubscriber{T}"/>
-    /// subscribing to a <see cref="ISubscriber{T}"/>.
+    /// subscribing to a <see cref="IPublisher{T}"/>.
     /// </para>
     /// <para>
     /// It can only be used once by a single <see cref="IPublisher{T}"/>.
